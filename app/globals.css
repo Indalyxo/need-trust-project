@@ -120,3 +120,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes scroll-slow {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-slow {
+  display: flex;
+  animation: scroll-slow 25s linear infinite;
+}
