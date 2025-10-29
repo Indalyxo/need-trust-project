@@ -56,7 +56,7 @@ const SponserSection = () => {
       <div className="absolute inset-0 bg-linear-to-r from-indigo-100 via-white to-pink-100 opacity-40 blur-3xl" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-        <h2 className="text-2xl md:text-5xl font-semibold text-gray-800 mb-8">
+        <h2 className="text-2xl md:text-5xl font-semibold text-[#fc5a00] mb-8">
           Trusted by Industry Leaders
         </h2>
 
