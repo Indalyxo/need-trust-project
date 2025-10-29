@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,6 +10,18 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const poppins = Poppins({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
+});
+
+const montserrat = Montserrat({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-montserrat",
 });
 
 export const metadata: Metadata = {
@@ -23,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={montserrat.variable}>
         <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -33,7 +45,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased`}
       >
         {children}
       </body>
