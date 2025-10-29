@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Menu, X, ChevronDown } from "lucide-react"
+import { useState } from "react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import CustomButton from "./custom-button";
 
 const links = [
   { label: "About Us", href: "#about" },
@@ -10,26 +11,28 @@ const links = [
   { label: "Our Projects", href: "#projects" },
   { label: "Our Partners", href: "#partners" },
   { label: "Contact Us", href: "#contact" },
-]
+];
 
 function NavigationMenu() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeLink, setActiveLink] = useState("")
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState("");
 
   const handleLinkClick = (label: string) => {
-    setActiveLink(label)
-    setMobileMenuOpen(false)
-  }
+    setActiveLink(label);
+    setMobileMenuOpen(false);
+  };
 
   return (
     <nav className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo/Brand */}
-          <div className="flex-shrink-0">
-            <h2 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#33b9d5] to-[#33b9e1] bg-clip-text text-transparent">
-              Your Brand
-            </h2>
+          <div className="flex items-center shrink-0">
+            <img
+              className="w-[250px] h-[60px]"
+              src="need foundation logo.webp"
+              alt="need foundation logo"
+            />
           </div>
 
           {/* Desktop Navigation */}
@@ -40,7 +43,7 @@ function NavigationMenu() {
                   href={link.href}
                   onClick={() => handleLinkClick(link.label)}
                   className={`
-                    relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 group
+                    relative px-4 py-2 text-[16px] font-medium rounded-lg transition-all duration-300 group
                     ${
                       activeLink === link.label
                         ? "text-pink-600"
@@ -67,9 +70,7 @@ function NavigationMenu() {
 
           {/* CTA Button (Desktop) */}
           <div className="hidden lg:block">
-            <button className="px-6 py-2.5 bg-[#f47216] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-pink-500/50 transition-all duration-300 hover:scale-105">
-              Donate
-            </button>
+            <CustomButton>Donate Now</CustomButton>
           </div>
 
           {/* Mobile Menu Button */}
@@ -104,7 +105,7 @@ function NavigationMenu() {
                 block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200
                 ${
                   activeLink === link.label
-                    ? "bg-gradient-to-r from-pink-600 to-red-600 text-white shadow-md"
+                    ? "bg-linear-to-r from-pink-600 to-red-600 text-white shadow-md"
                     : "text-gray-700 hover:bg-white hover:text-pink-600"
                 }
               `}
@@ -112,10 +113,10 @@ function NavigationMenu() {
               {link.label}
             </a>
           ))}
-          
+
           {/* Mobile CTA Button */}
           <div className="pt-4">
-            <button className="w-full px-6 py-3 bg-[#33b9d5] text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
+            <button className="w-full px-6 py-3 bg-[#f47216] text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
               Get Involved
             </button>
           </div>
@@ -130,7 +131,7 @@ function NavigationMenu() {
         />
       )}
     </nav>
-  )
+  );
 }
 
-export default NavigationMenu
+export default NavigationMenu;
