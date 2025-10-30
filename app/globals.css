@@ -119,6 +119,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  .orange-gradient {
+    @apply bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400;
+  }
 }
 
 @keyframes scroll-slow {
