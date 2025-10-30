@@ -2,6 +2,7 @@ import NavigationMenu from "@/components/custom/navigation-menu";
 import BannerCarousel from "@/components/custom/banner-carousel";
 import SponserSection from "@/components/custom/sponser-section";
 import ImpactSection from "@/components/custom/impact-section";
+import FooterSection from "@/components/custom/footer-section";
 
 export default function Home() {
 
@@ -20,6 +21,7 @@ export default function Home() {
       <BannerCarousel />
       <ImpactSection />
       <SponserSection />
+      <FooterSection/>
     </main>
   );
 }
