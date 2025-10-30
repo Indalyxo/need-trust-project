@@ -1,11 +1,11 @@
 "use client";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
+import { Pagination, Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
+import CustomButton from "./custom-button";
 
 const banners = [
   {
@@ -13,8 +13,7 @@ const banners = [
     subtitle: "Karein shuruaat samay par jaanch ke saath",
     logo: "https://www.netflix.com/favicon.ico",
     image:
-      "https://scontent.fmaa1-1.fna.fbcdn.net/o1/v/t0/f2/m340/AQNHakN2Vl7QGqO3eT4aEk1aL1-cU7RA9DN49yXclV4ocmhzOcT1PRCAe4rUphEPtgDQEvvsX0sykCUr7kTJGQrp8gWR2AU78QXGfXhGvI7UjlnADRobEiFLWzRlV072bjvFfMcs-K1zZk9RjzgxvLQ9vpib.jpeg?_nc_ht=scontent.fmaa1-1.fna.fbcdn.net&_nc_gid=ftNPZOy9Kao0Dypvx0rMeQ&_nc_cat=105&_nc_oc=AdkbdrP1x4thZtB5OopyjXRwHUeKfpeYM85wlR_wmNk9Y8PgQ9aXDmd-1vpR9qMGlpc&ccb=9-4&oh=00_AfdfHisTcHY4I9PnaUvHno9y-Ix5YrfehV9pVW-dQFPlZQ&oe=68FF05CC&_nc_sid=5b3566",
-    button: "Know more",
+      "https://res.cloudinary.com/dhpzmqznv/image/upload/v1761636626/ratan-tata-2025_kdrnaz.webp",
     link: "#",
   },
   {
@@ -22,8 +21,7 @@ const banners = [
     subtitle: "Join the movement for a cancer-free India",
     logo: "https://www.netflix.com/favicon.ico",
     image:
-      "https://scontent.fmaa1-1.fna.fbcdn.net/o1/v/t0/f2/m340/AQOZRJpdGtUwTdgFzA2I3HwgoLMAWufmEqP1KQ4vH-bJ4hGo2SzQaR_FlIwD6cQtcrJmR4jY2tRIgoRnTdP3CYZaHCDs2SQJsU10o3rtITqYI-stnUCnrlojzg9NgxUgZtzpNk0ZfkovhhKm4cWmbWIx0_Tvgw.jpeg?_nc_ht=scontent.fmaa1-1.fna.fbcdn.net&_nc_gid=JGOlcj8UohQCnXsBzfa4MA&_nc_cat=108&_nc_oc=AdknDU5Zgz016W2ZUslrHreTQLH32wX1sJ55Rbb-7lkAAscs840GZZ9X4Z2wsE1pLvM&ccb=9-4&oh=00_AfeIvgBsAw5LN3knHjoa7RtqXSyiL76jq-ATpzTpT6UfHA&oe=68FF06AF&_nc_sid=5b3566",
-    button: "Learn More",
+      "https://res.cloudinary.com/dhpzmqznv/image/upload/v1761636708/tata-trusts-horizons-october-2025_ziviu3.webp",
     link: "#",
   },
 ];
@@ -32,11 +30,7 @@ export default function BannerCarousel() {
   return (
     <div className="relative w-full h-[90vh] overflow-hidden">
       <Swiper
-        modules={[Navigation, Pagination, Autoplay, EffectFade]}
-        navigation={{
-          nextEl: ".swiper-button-next-custom",
-          prevEl: ".swiper-button-prev-custom",
-        }}
+        modules={[Pagination, Autoplay, EffectFade]}
         pagination={{
           clickable: true,
           bulletActiveClass: "swiper-pagination-bullet-active bg-white",
@@ -58,7 +52,7 @@ export default function BannerCarousel() {
                   className="w-full h-full object-cover"
                 />
                 {/* Gradient Overlay for Better Text Readability */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent md:from-black/80 md:via-black/40 md:to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/60 to-transparent md:from-black/80 md:via-black/40 md:to-transparent" />
               </div>
 
               {/* Content Container */}
@@ -88,11 +82,8 @@ export default function BannerCarousel() {
 
                       {/* CTA Button */}
                       <div className="pt-4">
-                        <a
-                          href={banner.link}
-                          className="inline-block bg-gradient-to-tl from-orange-600 via-orange-500 to-yellow-400 hover:from-orange-700 hover:to-yellow-500 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 shadow-2xl hover:shadow-orange-400/50 hover:scale-105 transform"
-                        >
-                          {banner.button}
+                        <a href={banner.link}>
+                          <CustomButton>Donate Now</CustomButton>
                         </a>
                       </div>
                     </div>
@@ -113,7 +104,7 @@ export default function BannerCarousel() {
       </Swiper>
 
       {/* Custom Navigation Buttons */}
-      <button className="swiper-button-prev-custom absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 group">
+      {/* <button className="swiper-button-prev-custom absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 backdrop-blur-sm p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 group">
         <svg
           className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white group-hover:scale-110 transition-transform"
           fill="none"
@@ -143,7 +134,7 @@ export default function BannerCarousel() {
             d="M9 5l7 7-7 7"
           />
         </svg>
-      </button>
+      </button> */}
 
       {/* Custom Styles for Swiper Pagination */}
       <style jsx global>{`
