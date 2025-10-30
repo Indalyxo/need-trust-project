@@ -3,6 +3,7 @@ import BannerCarousel from "@/components/custom/banner-carousel";
 import SponserSection from "@/components/custom/sponser-section";
 import AboutPage from "@/components/custom/aboutus";
 import ImpactSection from "@/components/custom/impact-section";
+import FooterSection from "@/components/custom/footer-section";
 import { LatestNews } from "@/components/custom/latestnews";
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
       <ImpactSection />
       <LatestNews />
       <SponserSection />
+      <FooterSection/>
     </main>
   );
 }
