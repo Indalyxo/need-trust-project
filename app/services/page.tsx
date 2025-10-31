@@ -67,7 +67,7 @@ export default function ServicesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ amount: 0.4 }}
-            className="text-center text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900"
+            className="text-center text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900"
           >
             Services
           </motion.h2>
@@ -127,7 +127,7 @@ export default function ServicesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ amount: 0.4 }}
-            className="text-center text-4xl sm:text-5xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-indigo-800 via-blue-700 to-indigo-900"
+            className="text-center text-4xl sm:text-5xl font-bold mb-12 bg-clip-text text-transparent bg-linear-to-r from-indigo-800 via-blue-700 to-indigo-900"
           >
             Our Impact in Action
           </motion.h2>
@@ -168,7 +168,7 @@ export default function ServicesSection() {
                     alt={impact.title}
                     className="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
                 </motion.div>
               </motion.div>
             ))}
