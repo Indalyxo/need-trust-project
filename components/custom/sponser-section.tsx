@@ -136,7 +136,7 @@ const SponsorSection = () => {
   }, []);
 
   return (
-    <section
+    <section id="sponsors"
       ref={sectionRef}
       className="relative py-20 md:py-28 bg-linear-to-b from-gray-50 via-white to-gray-50 overflow-hidden"
     >

@@ -27,7 +27,7 @@ const impactStats = [
 
 export default function ImpactSection() {
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:py-28 lg:px-8 bg-gray-50 overflow-hidden">
+    <section id="impact" className="relative py-20 px-4 sm:px-6 lg:py-28 lg:px-8 bg-gray-50 overflow-hidden">
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
           <Hand className="w-4 h-4 text-white" />

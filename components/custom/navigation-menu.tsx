@@ -5,11 +5,12 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import CustomButton from "./custom-button";
 
 const links = [
-  { label: "About Us", href: "#about" },
-  { label: "Our Team", href: "#team" },
-  { label: "Our Campaigns", href: "#campaigns" },
-  { label: "Our Projects", href: "#projects" },
-  { label: "Our Partners", href: "#partners" },
+  { label: "About Us", href: "#about-us" },
+  { label: "Latest News", href: "#latest-news" },
+  { label: "Impacts", href: "#impact" },
+  { label: "Services", href: "/services" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Our Partners", href: "#sponsors" },
   { label: "Contact Us", href: "#contact" },
 ];
 

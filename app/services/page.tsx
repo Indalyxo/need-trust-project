@@ -59,7 +59,7 @@ export default function ServicesSection() {
   return (
     <>
       {/* --- Services Section --- */}
-      <section className="bg-white bg-cover bg-center bg-no-repeat min-h-screen py-20 px-4 md:px-12">
+      <section id="services" className="bg-white bg-cover bg-center bg-no-repeat min-h-screen py-20 px-4 md:px-12">
         <div className="max-w-6xl mx-auto">
           {/* Heading */}
           <motion.h2

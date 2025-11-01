@@ -4,7 +4,7 @@ import CustomButton from "./custom-button";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-background mt-10">
+    <main id="about-us" className="min-h-screen bg-background mt-10">
       {/* Header */}
       {/* <div className="bg-gradient-to-b from-primary/10 to-background py-16 text-center">
         <h1 className="text-5xl font-bold text-foreground mb-2">About Us</h1>
