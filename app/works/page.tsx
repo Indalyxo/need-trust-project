@@ -1,30 +1,18 @@
 "use client";
 import { motion } from "framer-motion";
 import React from "react";
+import Navbar from "../../components/custom/navigation-menu";
 
 // --- Services Data ---
 const services = [
   {
-    title: "Women Empowerment Program",
+    title: "Nellai Connect Platform",
     description:
-      "Empowering women through skill development, financial literacy, and entrepreneurship initiatives to build independent livelihoods.",
+      "Nellai Connect bridges Tirunelveli’s people, services, and businesses through a smart digital platform.Connecting communities, simplifying access, and empowering local growth",
     tagline: "Focus Areas: Training • Employment • Awareness",
-    url: "https://react.dev/",
-  },
-  {
-    title: "Child Education Initiative",
-    description:
-      "Providing access to quality education and learning resources for underprivileged children to promote equal opportunities.",
-    tagline: "Focus Areas: Education • Literacy • Growth",
     url: "https://nellaiconnect.in",
   },
-  {
-    title: "Healthcare & Awareness Camps",
-    description:
-      "Organizing free medical checkups, health awareness drives, and blood donation camps to improve community well-being.",
-    tagline: "Focus Areas: Health • Awareness • Well-being",
-    url: "https://needfoundation.org/healthcare-camps",
-  },
+
 ];
 
 // --- Impact Data ---
@@ -59,7 +47,10 @@ export default function ServicesSection() {
   return (
     <>
       {/* --- Services Section --- */}
+      <div>
+        <Navbar />
       <section id="services" className="bg-white bg-cover bg-center bg-no-repeat min-h-screen py-20 px-4 md:px-12">
+        
         <div className="max-w-6xl mx-auto">
           {/* Heading */}
           <motion.h2
@@ -69,7 +60,7 @@ export default function ServicesSection() {
             viewport={{ amount: 0.4 }}
             className="text-center text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900"
           >
-            Services
+            Works We Do
           </motion.h2>
 
           {/* Service Cards */}
@@ -175,6 +166,7 @@ export default function ServicesSection() {
           </div>
         </div>
       </section>
+      </div>
     </>
   );
 }

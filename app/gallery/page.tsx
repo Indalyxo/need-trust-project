@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Navbar from "../../components/custom/navigation-menu";
 
 // ✅ Local images imported directly
 import Img1 from "../../public/img1.jpg";
@@ -61,6 +62,8 @@ export default function Gallery() {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
   return (
+    <div>
+      <Navbar />
     <section className="w-full py-16 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -110,5 +113,6 @@ export default function Gallery() {
         </div>
       </div>
     </section>
+    </div>
   );
 }

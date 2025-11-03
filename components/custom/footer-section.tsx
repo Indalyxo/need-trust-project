@@ -1,14 +1,26 @@
 "use client";
 
+import Image from "next/image";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-10">
+    <footer className="bg-gray-700 text-gray-300 py-10">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-8">
 
         {/* About Section */}
         <div>
+          {/* ✅ Logo added here */}
+          <div className="mb-4">
+            <Image
+              src="/Need Foundation trust.jpg"  // ✅ Correct: images in /public can be used like this
+              alt="Trust Logo"
+              width={300}
+              height={250}
+              className="rounded-lg object-contain"
+            />
+          </div>
+
           <h2 className="text-xl font-semibold text-white mb-4">About Our Trust</h2>
           <p className="text-sm leading-6">
             We are a non-profit organization dedicated to serving the community through
@@ -30,9 +42,15 @@ export default function Footer() {
         {/* Contact Section */}
         <div>
           <h2 className="text-xl font-semibold text-white mb-4">Contact Us</h2>
-          <p className="text-sm">123 Charity Street<br />Chennai, Tamil Nadu, India</p>
-          <p className="text-sm mt-2">Email: <a href="mailto:info@yourtrust.org" className="hover:text-white">info@yourtrust.org</a></p>
-          <p className="text-sm">Phone: <a href="tel:+919876543210" className="hover:text-white">+91 98765 43210</a></p>
+          <p className="text-sm">
+            123 Charity Street<br />Chennai, Tamil Nadu, India
+          </p>
+          <p className="text-sm mt-2">
+            Email: <a href="mailto:info@yourtrust.org" className="hover:text-white">info@yourtrust.org</a>
+          </p>
+          <p className="text-sm">
+            Phone: <a href="tel:+919876543210" className="hover:text-white">+91 98765 43210</a>
+          </p>
         </div>
 
         {/* Social Media */}
@@ -45,7 +63,6 @@ export default function Footer() {
             <a href="#" aria-label="LinkedIn" className="hover:text-white"><FaLinkedin size={20} /></a>
           </div>
         </div>
-
       </div>
 
       {/* Bottom Line */}
