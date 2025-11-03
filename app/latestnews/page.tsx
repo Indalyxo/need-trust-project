@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { Award, ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
-import CustomButton from "./custom-button";
+import CustomButton from "../../components/custom/custom-button";
+import Navbar from "../../components/custom/navigation-menu";
 
 interface NewsItem {
   id: number;
@@ -59,7 +60,7 @@ const newsItems: NewsItem[] = [
   },
 ];
 
-export function LatestNews() {
+export default  function LatestNews() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -198,8 +199,11 @@ export function LatestNews() {
   const currentNews = newsItems[currentIndex];
 
   return (
+    <div>
+        <Navbar />
     <section id="latest-news" className="relative py-16 overflow-hidden bg-linear-to-b from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
         {/* Header Section */}
         <div ref={headerRef} className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
@@ -372,5 +376,6 @@ export function LatestNews() {
         </div>
       </div>
     </section>
+    </div>
   );
 }

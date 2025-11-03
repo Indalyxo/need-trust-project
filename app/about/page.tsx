@@ -1,12 +1,37 @@
 import { Button } from "@/components/ui/button";
-import { Heart, Shield, Users } from "lucide-react";
-
+import { Heart, Shield, Telescope, Users } from "lucide-react";
+import CustomButton from "../../components/custom/custom-button";
+import Navbar from "../../components/custom/navigation-menu";
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-background">
+    
+    <main id="about-us" className="min-h-screen bg-background ">
+      <Navbar/>
       {/* Header */}
-      <div className="bg-linear-to-b from-primary/10 to-background py-16 text-center">
+      {/* <div className="bg-gradient-to-b from-primary/10 to-background py-16 text-center">
         <h1 className="text-5xl font-bold text-foreground mb-2">About Us</h1>
+      </div> */}
+
+      <div className="text-center mb-12 mt-15">
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
+          <Heart className="w-4 h-4 text-white" />
+          <span className="text-sm font-semibold text-white uppercase tracking-wider">
+            About Us
+          </span>
+        </div>
+
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900">
+          Who We Are
+          <br />
+          <span className="bg-clip-text text-transparent bg-linear-to-tl mt-4 from-orange-600 via-orange-500 to-yellow-400 ">
+            Our Story
+          </span>
+        </h2>
+
+        <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+          Discover our journey, values, and commitment to making a difference in
+          the world.
+        </p>
       </div>
 
       {/* Hero Section - Image Left, Content Right */}
@@ -22,7 +47,7 @@ export default function AboutPage() {
           </div>
 
           {/* Right - Content */}
-          <div className="space-y-6 text-xl">
+          <div className="space-y-6 text-xl w-full">
             <div>
               {/* <h2 className="text-3xl font-bold text-foreground mb-4"> 
                 Who We Are
@@ -74,14 +99,6 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
-
-            {/* Donate Button */}
-            <div className="pt-4">
-              <Button className="bg-gradient-to-tl from-orange-600 via-orange-500 to-yellow-400 hover:from-orange-700 hover:to-yellow-500 text-white px-3 sm:px-8 md:px-10 py-3 sm:py-4 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 shadow-2xl hover:shadow-orange-400/50 hover:scale-105 transform">
-                <Heart className="w-5 h-5 mr-2" />
-                Donate now
-              </Button>
-            </div>
           </div>
         </div>
       </section>
@@ -89,10 +106,31 @@ export default function AboutPage() {
       {/* Mission & Vision Section */}
       <section className="bg-secondary/5 py-16">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center text-foreground mb-12">
+          {/* <h2 className="text-4xl font-bold text-center text-foreground mb-12">
             Our Vision & Mission
-          </h2>
+          </h2> */}
 
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
+              <Telescope className="w-4 h-4 text-white" />
+              <span className="text-sm font-semibold text-white uppercase tracking-wider">
+                Vision & Mission
+              </span>
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900">
+              Vision & Mission That
+              <br />
+              <span className="bg-clip-text text-transparent bg-linear-to-tl mt-4 from-orange-600 via-orange-500 to-yellow-400 ">
+                Inspires
+              </span>
+            </h2>
+
+            <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Our vision is to create a world where innovation and compassion
+              come together to drive meaningful change. 
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Mission Card */}
             <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
