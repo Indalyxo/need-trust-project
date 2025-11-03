@@ -52,7 +52,7 @@ export default function ImpactSection() {
 
       {/* Scrolling container */}
       <div className="overflow-hidden">
-        <div className="flex gap-8 animate-scroll-slow w-max">
+        <div className="flex gap-8 animate-scroll-slow w-full">
           {[...impactStats, ...impactStats].map((item, index) => (
             <div
               key={index}

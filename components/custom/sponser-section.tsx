@@ -57,11 +57,6 @@ const imageLogos: logo[] = [
     href: "https://www.linkedin.com",
   },
   {
-    src: "https://www.youtube.com/favicon.ico",
-    alt: "YouTube",
-    href: "https://www.youtube.com",
-  },
-  {
     src: "https://www.microsoft.com/favicon.ico",
     alt: "Microsoft",
     href: "https://www.microsoft.com",

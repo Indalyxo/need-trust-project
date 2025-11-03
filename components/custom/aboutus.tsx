@@ -97,14 +97,6 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
-
-            {/* Donate Button */}
-            <div className="pt-4 flex items-center justify-center">
-              <CustomButton size="lg">
-                <Heart className="w-5 h-5 mr-2" />
-                Donate
-              </CustomButton>
-            </div>
           </div>
         </div>
       </section>
