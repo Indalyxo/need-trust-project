@@ -1,6 +1,7 @@
 "use client";
 import { Hand } from "lucide-react";
 import "../../app/globals.css";
+import { motion } from "framer-motion";
 
 const impactStats = [
   {
@@ -27,14 +28,24 @@ const impactStats = [
 
 export default function ImpactSection() {
   return (
-    <section id="impact" className="relative py-20 px-4 sm:px-6 lg:py-28 lg:px-8 bg-gray-50 overflow-hidden">
+    <section
+      id="impact"
+      className="relative py-20 px-4 sm:px-6 lg:py-28 lg:px-8 bg-gray-50 overflow-hidden"
+    >
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
+        <motion.div
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="inline-flex items-center gap-2 px-6 py-3  bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6 shadow-lg"
+        >
+          {" "}
           <Hand className="w-4 h-4 text-white" />
           <span className="text-sm font-semibold text-white uppercase tracking-wider">
             Impact Created
           </span>
-        </div>
+        </motion.div>
 
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900">
           Impact

@@ -1,6 +1,9 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
 import { Heart, Shield, Telescope, Users } from "lucide-react";
 import CustomButton from "./custom-button";
+import { motion } from "framer-motion";
 
 export default function AboutPage() {
   return (
@@ -11,12 +14,17 @@ export default function AboutPage() {
       </div> */}
 
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
-          <Heart className="w-4 h-4 text-white" />
+        <motion.div
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="inline-flex items-center gap-2 px-6 py-3  bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6 shadow-lg"
+        >          <Heart className="w-4 h-4 text-white" />
           <span className="text-sm font-semibold text-white uppercase tracking-wider">
             About Us
           </span>
-        </div>
+        </motion.div>
 
         <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900">
           Who We Are

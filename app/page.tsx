@@ -8,26 +8,26 @@ import { LatestNews } from "@/components/custom/latestnews";
 
 export default function Home() {
   return (
-    <div>
+    <>
       <NavigationMenu />
-    <main
-      style={{
-        margin: 0,
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <>
-      <BannerCarousel />
-      <AboutPage />
-      <ImpactSection />
-      <LatestNews />
-      <SponserSection />
-      <FooterSection/>
-      </>
-    </main>
-    </div>
+      <main
+        style={{
+          margin: 0,
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <>
+          <BannerCarousel />
+          <AboutPage />
+          <ImpactSection />
+          <LatestNews />
+          <SponserSection />
+          <FooterSection />
+        </>
+      </main>
+    </>
   );
 }
