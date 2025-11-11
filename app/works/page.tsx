@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import Navbar from "../../components/custom/navigation-menu";
+import Footer from "../../components/custom/footer-section";
 
 // --- Services Data ---
 const services = [
@@ -166,6 +167,7 @@ export default function ServicesSection() {
           </div>
         </div>
       </section>
+      <Footer/>
       </div>
     </>
   );
