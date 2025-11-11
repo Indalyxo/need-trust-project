@@ -13,7 +13,7 @@ const links = [
   { label: "Works", href: "/works" },
   { label: "Gallery", href: "/gallery" },
   // { label: "Our Partners", href: "#sponsors" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Contact Us", href: "#contact-us" },
 ];
 
 function NavigationMenu() {

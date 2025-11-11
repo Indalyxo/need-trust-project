@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Navbar from "../../components/custom/navigation-menu";
+import Footer from "../../components/custom/footer-section";
 
 // ✅ Local images imported directly
 import Img1 from "../../public/img1.jpg";
@@ -113,6 +114,7 @@ export default function Gallery() {
         </div>
       </div>
     </section>
+    <Footer/>
     </div>
   );
 }

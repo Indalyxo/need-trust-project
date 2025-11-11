@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { Award, ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
 import CustomButton from "../../components/custom/custom-button";
 import Navbar from "../../components/custom/navigation-menu";
+import Footer from "../../components/custom/footer-section";
 
 interface NewsItem {
   id: number;
@@ -376,6 +377,7 @@ export default  function LatestNews() {
         </div>
       </div>
     </section>
+    <Footer/>
     </div>
   );
 }

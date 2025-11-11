@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Shield, Telescope, Users } from "lucide-react";
 import CustomButton from "../../components/custom/custom-button";
 import Navbar from "../../components/custom/navigation-menu";
+import Footer from "../../components/custom/footer-section";
 export default function AboutPage() {
   return (
     
@@ -201,6 +202,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      <Footer/>
 
       {/* CTA Section */}
     </main>
