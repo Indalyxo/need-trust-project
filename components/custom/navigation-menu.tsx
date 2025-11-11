@@ -1,39 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import CustomButton from "./custom-button";
-import { useRouter  } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const links = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Latest News", href: "/latestnews" },
-  // { label: "Impacts", href: "#impact" },
-  { label: "Works", href: "/works" },
+  { label: "Services", href: "/works" },
   { label: "Gallery", href: "/gallery" },
-  // { label: "Our Partners", href: "#sponsors" },
   { label: "Contact Us", href: "#contact-us" },
 ];
 
 function NavigationMenu() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("");
-
-  const handleLinkClick = (label: string) => {
-    setActiveLink(label);
-    setMobileMenuOpen(false);
-  };
+  const pathname = usePathname();
   const router = useRouter();
-  
-  const handleClick = () => {
-    router.push("/donate"); // Redirect to /about page
+
+  const handleLinkClick = (link: { label: string; href: string }) => {
+    setMobileMenuOpen(false);
+    router.push(link.href);
   };
+
+  const handleClick = () => {
+    router.push("/donate");
+  };
+
   return (
     <nav className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo/Brand */}
+          {/* Logo */}
           <div className="flex items-center shrink-0">
             <img
               className="w-[250px] h-[60px]"
@@ -42,40 +41,34 @@ function NavigationMenu() {
             />
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Nav */}
           <ul className="hidden lg:flex items-center space-x-1">
             {links.map((link) => (
               <li key={link.label}>
-                <a
-                  href={link.href}
-                  onClick={() => handleLinkClick(link.label)}
+                <span
+                  onClick={() => handleLinkClick(link)}
                   className={`
-                    relative px-4 py-2 text-[16px] font-medium rounded-lg transition-all duration-300 group
+                    relative px-4 py-2 text-[16px] font-medium rounded-lg transition-all duration-300 group cursor-pointer
                     ${
-                      activeLink === link.label
+                      pathname === link.href
                         ? "text-pink-600"
                         : "text-gray-500 hover:text-[#f47216]"
                     }
                   `}
                 >
                   {link.label}
-                  {/* Animated Underline */}
                   <span
                     className={`
                       absolute bottom-0 left-0 w-full h-0.5 bg-[#f47216] transform origin-left transition-transform duration-300
-                      ${
-                        activeLink === link.label
-                          ? "scale-x-100"
-                          : "scale-x-0 group-hover:scale-x-100"
-                      }
+                      ${pathname === link.href ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}
                     `}
                   />
-                </a>
+                </span>
               </li>
             ))}
           </ul>
 
-          {/* CTA Button (Desktop) */}
+          {/* Desktop CTA */}
           <div className="hidden lg:block">
             <CustomButton onClick={handleClick}>Donate Now</CustomButton>
           </div>
@@ -86,16 +79,12 @@ function NavigationMenu() {
             className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Nav */}
       <div
         className={`
           lg:hidden overflow-hidden transition-all duration-300 ease-in-out
@@ -106,12 +95,11 @@ function NavigationMenu() {
           {links.map((link) => (
             <a
               key={link.label}
-              href={link.href}
-              onClick={() => handleLinkClick(link.label)}
+              onClick={() => handleLinkClick(link)}
               className={`
-                block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200
+                block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 cursor-pointer
                 ${
-                  activeLink === link.label
+                  pathname === link.href
                     ? "bg-linear-to-r from-pink-600 to-red-600 text-white shadow-md"
                     : "text-gray-700 hover:bg-white hover:text-pink-600"
                 }
@@ -121,16 +109,18 @@ function NavigationMenu() {
             </a>
           ))}
 
-          {/* Mobile CTA Button */}
           <div className="pt-4">
-            <button onClick={handleClick} className="w-full px-6 py-3 bg-[#f47216] text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300">
+            <button
+              onClick={handleClick}
+              className="w-full px-6 py-3 bg-[#f47216] text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+            >
               Get Involved
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu Backdrop */}
+      {/* Mobile Backdrop */}
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black/20 backdrop-blur-sm lg:hidden -z-10"

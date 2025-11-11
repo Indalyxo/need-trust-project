@@ -5,6 +5,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, Heart, QrCode, CheckCircle2, X } from "lucide-react";
 import CustomButton from "@/components/custom/custom-button";
+import Footer from "@/components/custom/footer-section";
 
 export default function Payment() {
   const [formData, setFormData] = useState({
@@ -83,6 +84,7 @@ export default function Payment() {
   };
 
   return (
+    <>
     <section className="relative min-h-screen py-12 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-orange-50 via-yellow-50 to-white">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -469,5 +471,7 @@ export default function Payment() {
         )}
       </AnimatePresence>
     </section>
+    <Footer />
+    </>
   );
 }
