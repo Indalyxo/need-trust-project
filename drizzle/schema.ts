@@ -21,3 +21,12 @@ export const admin = pgTable("admin", {
   "passwordHash": text("password_hash").notNull(),
 })
 
+export const ads = pgTable("ads", {
+  "id": serial("id").primaryKey(),
+  "imageUrl": text("image_url").notNull(),
+  "link": text("link").notNull(),
+  "createdAt": timestamp("created_at").defaultNow().notNull(),
+})
+
+
+
