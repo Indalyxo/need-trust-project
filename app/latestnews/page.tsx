@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
@@ -16,6 +16,7 @@ interface NewsItem {
   image: string;
   category: string;
   date: string;
+  readTime?: string;
 }
 
 const newsItems: NewsItem[] = [
@@ -28,6 +29,7 @@ const newsItems: NewsItem[] = [
     image: "/modern-tech-innovation.png",
     category: "Technology",
     date: "Oct 28, 2025",
+    readTime: "5 min read",
   },
   {
     id: 2,
@@ -38,6 +40,7 @@ const newsItems: NewsItem[] = [
     image: "/financial-markets-growth.jpg",
     category: "Business",
     date: "Oct 27, 2025",
+    readTime: "3 min read",
   },
   {
     id: 3,
@@ -48,6 +51,7 @@ const newsItems: NewsItem[] = [
     image: "/sustainable-environment-green.jpg",
     category: "Environment",
     date: "Oct 26, 2025",
+    readTime: "4 min read",
   },
   {
     id: 4,
@@ -58,6 +62,7 @@ const newsItems: NewsItem[] = [
     image: "/healthcare-medical-research.png",
     category: "Health",
     date: "Oct 25, 2025",
+    readTime: "6 min read",
   },
 ];
 

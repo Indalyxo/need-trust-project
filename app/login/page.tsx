@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState } from "react";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Shield, CheckCircle2 } from "lucide-react";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -24,159 +24,173 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md h-screen flex items-center justify-center mx-auto px-4">
-      {/* Card Container */}
-      <div className="bg-white rounded-2xl shadow-xl p-8 space-y-8 max-w-md w-full">
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-slate-900">Admin Login</h1>
-          <p className="text-slate-600">Sign in to your account </p>
+    <div className="min-h-screen w-full relative overflow-hidden">
+      {/* Background with trust-related imagery */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=2070')",
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-800/85 to-orange-900/75" />
+      </div>
+
+      {/* Subtle decorative elements */}
+      <div className="absolute inset-0 overflow-hidden opacity-5">
+        <div className="absolute top-20 right-20 w-64 h-64 border border-white rounded-full" />
+        <div className="absolute bottom-20 left-20 w-48 h-48 border border-white rounded-full" />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 w-full min-h-screen flex items-center justify-center px-4 py-8">
+        <div className="flex flex-col lg:flex-row items-center gap-12 max-w-5xl w-full">
+          {/* Trust Section - Left Side */}
+          <div className="hidden lg:block flex-1 text-white space-y-6">
+            <div className="space-y-3">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500/20 backdrop-blur-sm rounded-2xl border border-orange-400/30">
+                <Shield className="w-9 h-9 text-orange-400" />
+              </div>
+              <h2 className="text-4xl font-bold">Trust Management Portal</h2>
+              <p className="text-slate-300 text-lg">Secure access for authorized trust administrators</p>
+            </div>
+            
+            <div className="space-y-4 pt-4">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-6 h-6 text-orange-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-lg">Verified Access Only</h3>
+                  <p className="text-slate-400 text-sm">Multi-factor authentication ensures only authorized personnel can access trust data</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-6 h-6 text-orange-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-lg">Complete Audit Trail</h3>
+                  <p className="text-slate-400 text-sm">Every action is logged and monitored for transparency and accountability</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-6 h-6 text-orange-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-lg">Bank-Grade Security</h3>
+                  <p className="text-slate-400 text-sm">Your trust's sensitive information protected with enterprise encryption</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Trust Badge */}
+            <div className="pt-6 mt-6 border-t border-slate-700">
+              <p className="text-slate-400 text-sm">Trusted by leading charitable trusts and foundations across India</p>
+            </div>
+          </div>
+
+          {/* Login Card - Right Side */}
+          <div className="w-full max-w-md">
+            <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-10 space-y-6">
+              {/* Header */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl">
+                    <Shield className="w-6 h-6 text-orange-400" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Trust Admin</h1>
+                    <p className="text-sm text-gray-500">Authorized Access</p>
+                  </div>
+                </div>
+                <p className="text-gray-600">Sign in with your authorized credentials to manage trust operations</p>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Email Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-semibold text-gray-700"
+                  >
+                    Administrator Email
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="trustadmin@organization.org"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full pl-12 pr-4 py-3.5 text-gray-900 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Password Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-semibold text-gray-700"
+                  >
+                    Secure Password
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your secure password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="w-full pl-12 pr-12 py-3.5 text-gray-900 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 focus:bg-white transition-all"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 hover:from-orange-700 hover:via-orange-600 hover:to-orange-700 text-white font-semibold py-3.5 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed mt-6"
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>Verifying credentials...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Shield className="w-5 h-5" />
+                      <span>Access Trust Portal</span>
+                    </>
+                  )}
+                </button>
+              </form>
+
+              {/* Security Info */}
+              <div className="pt-4 border-t border-gray-100 space-y-3">
+                <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                  <Lock className="w-4 h-4 text-orange-500" />
+                  <span>256-bit SSL encryption • SOC 2 compliant</span>
+                </div>
+                <p className="text-xs text-center text-gray-400">
+                  All login attempts are monitored and logged for security purposes
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Email Field */}
-          <div className="space-y-2">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-slate-700"
-            >
-              Email Address
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
-              <input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full pl-10 pr-4 py-2.5 text-black border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              />
-            </div>
-          </div>
-
-          {/* Password Field */}
-          <div className="space-y-2">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-slate-700"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3.5 h-5 w-5 text-slate-400" />
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full pl-10 pr-10 py-2.5 text-black border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600 transition"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Remember Me & Forgot Password */}
-          <div className="flex items-center justify-between text-sm">
-            {/* <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-              />
-              <span className="text-slate-600">Remember me</span>
-            </label> */}
-            {/* <a
-              href="#"
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              Forgot password?
-            </a> */}
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-gradient-to-tl from-orange-600 via-orange-500 to-yellow-400 font-semibold py-2.5 rounded-lg transition duration-200 flex items-center justify-center gap-2"
-          >
-            {isLoading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Signing in...
-              </>
-            ) : (
-              "Sign In"
-            )}
-          </button>
-        </form>
-
-        {/* Divider */}
-        {/* <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-300" />
-          </div> */}
-        {/* <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-slate-500">
-              Or continue with
-            </span>
-          </div> 
-        </div> */}
-
-        {/* Social Login */}
-        {/* <div className="grid grid-cols-2 gap-3">
-          <button className="flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-50 transition font-medium text-slate-700">
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-              <path
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                fill="#4285F4"
-              />
-              <path
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                fill="#34A853"
-              />
-              <path
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                fill="#EA4335"
-              />
-            </svg>
-            Google
-          </button>
-          <button className="flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-300 rounded-lg hover:bg-slate-50 transition font-medium text-slate-700">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-            </svg>
-            GitHub
-          </button>
-        </div> */}
-
-        {/* Footer */}
-        {/* <p className="text-center text-slate-600 text-sm">
-          Don't have an account?{" "}
-          <a
-            href="#"
-            className="text-blue-600 hover:text-blue-700 font-semibold"
-          >
-            Sign up
-          </a>
-        </p> */}
       </div>
     </div>
   );
