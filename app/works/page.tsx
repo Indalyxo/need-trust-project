@@ -20,34 +20,34 @@ const services = [
 // --- Impact Data ---
 const impacts = [
   {
-    title: "Empowering 5,000+ Women",
+    title: "ENTREPRENEURSHIP",
     description:
-      "Through vocational training, micro-financing, and mentorship, over 5,000 women have started sustainable small businesses.",
-    tagline: "Result: 80% increased income levels",
+      "Entrepreneurship is the ability to identify opportunities and turn ideas into impactful solutions.combines creativity, risk-taking, and leadership to build ventures that create value.",
+    // tagline: "Result: 80% increased income levels",
     image:
-      "https://images.unsplash.com/photo-1581091215367-59ab6f63a6b6?auto=format&fit=crop&w=800&q=80",
+      "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763188003/WhatsApp_Image_2025-11-12_at_19.05.59_7d662c40_peinj3.jpg",
     icon: <Users className="w-6 h-6" />,
-    stats: { value: "5,000+", label: "Women Empowered" },
+    stats: { value: "50+", label: "Entrepreneurship" },
   },
   {
-    title: "Educating 2,000+ Children",
+    title: "Health Awareness",
     description:
-      "Our education programs have helped children in rural communities gain access to better schooling, digital literacy, and mentorship.",
-    tagline: "Result: 95% school retention rate",
+      "Health is the state of complete physical, mental, and social well-being.It enables a balanced, active, and fulfilling life every day.",
+    // tagline: "Result: 95% school retention rate",
     image:
-      "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80",
+      "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763188071/WhatsApp_Image_2025-11-12_at_19.44.22_dd951e55_lslxbh.jpg",
     icon: <Heart className="w-6 h-6" />,
-    stats: { value: "2,000+", label: "Children Educated" },
+    stats: { value: "100+", label: "Health" },
   },
   {
-    title: "Improving Rural Health Access",
+    title: "ENVIRONMENT ",
     description:
-      "By conducting medical camps and health awareness drives, we've reached over 10,000 people with essential healthcare services.",
-    tagline: "Result: 70% improvement in preventive care awareness",
+      "The environment is the natural world that supports all life on Earth.Protecting it ensures a healthier, safer, and sustainable future for everyone.",
+    // tagline: "Result: 70% improvement in preventive care awareness",
     image:
-      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=800&q=80",
+      "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763188458/WhatsApp_Image_2025-11-12_at_19.07.12_a00b991d_zccrtb.jpg",
     icon: <Award className="w-6 h-6" />,
-    stats: { value: "10,000+", label: "People Reached" },
+    stats: { value: "10,000+", label: "Environment" },
   },
 ];
 
@@ -243,7 +243,7 @@ export default function ServicesSection() {
                       <div className="p-3 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl shadow-lg">
                         {impact.icon}
                       </div>
-                      <div className="px-4 py-2 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-full border-2 border-orange-200">
+                      <div className="px-4 py-2 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border-2 border-orange-200">
                         <p className="text-2xl font-bold text-orange-600">
                           {impact.stats.value}
                         </p>
@@ -261,52 +261,40 @@ export default function ServicesSection() {
                       {impact.description}
                     </p>
 
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-full">
+                    {/* <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-full">
                       <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
                       <p className="text-sm text-orange-700 font-semibold uppercase tracking-wide">
                         {impact.tagline}
                       </p>
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Image Section */}
-                  <motion.div
-                    whileHover={{ scale: 1.03, rotateY: 2 }}
-                    transition={{ duration: 0.4 }}
-                    className="md:w-1/2 relative group"
-                  >
-                    <div className="relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-100">
-                      <img
-                        src={impact.image}
-                        alt={impact.title}
-                        className="w-full h-80 md:h-96 object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-orange-900/40 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
-                      
-                      {/* Hover Badge */}
-                      <div className="absolute bottom-4 left-4 right-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                        <div className="bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
-                          <p className="text-sm font-semibold text-gray-900">
-                            {impact.title}
-                          </p>
-                          <p className="text-xs text-gray-600 mt-1">
-                            Creating lasting positive change
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                <motion.div
+  whileHover={{ scale: 1.03, rotateY: 2 }}
+  transition={{ duration: 0.4 }}
+  className="md:w-1/2 relative group"
+>
+  {/* <div className="relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-100 bg-white"> */}
+  <img
+    src={impact.image}
+    alt={impact.title}
+    className="w-full h-80 md:h-96 object-contain object-cover rounded-2xl"
+  />
+{/* </div> */}
 
-                    {/* Decorative Elements */}
-                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
-                    <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
-                  </motion.div>
+
+  {/* Decorative Elements */}
+  <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
+  <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
+</motion.div>
+
                 </motion.div>
               ))}
             </div>
 
             {/* Call to Action */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -320,7 +308,7 @@ export default function ServicesSection() {
                 Join Our Mission
                 <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
               </button>
-            </motion.div>
+            </motion.div> */}
           </div>
         </section>
       </div>
