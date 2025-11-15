@@ -152,25 +152,12 @@ export default function AboutPage() {
               </div>
 
               <p className="text-foreground/80 leading-relaxed">
-                To empower individuals and organizations by providing innovative
-                solutions that drive positive change. We are committed to
-                excellence, sustainability, and creating meaningful impact in
-                everything we do.
+             Need Foundation Trust is an Inner Faith Organisation. All services should reach everyone. 
+             We strive to achieve the desired results by using resources properly both efficient
+              and effective manner.
+              Our work standard should meet the highest level by fulfilling the objectives
               </p>
-              <ul className="mt-6 space-y-2">
-                <li className="flex items-center gap-2 text-foreground/70">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  Deliver exceptional quality
-                </li>
-                <li className="flex items-center gap-2 text-foreground/70">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  Foster innovation and growth
-                </li>
-                <li className="flex items-center gap-2 text-foreground/70">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  Build sustainable solutions
-                </li>
-              </ul>
+          
             </div>
 
             {/* Vision Card */}
@@ -184,25 +171,12 @@ export default function AboutPage() {
                 </div>
               </div>
               <p className="text-foreground/80 leading-relaxed">
-                To be a global leader in our industry, recognized for our
-                unwavering commitment to quality, innovation, and social
-                responsibility. We envision a world where our solutions make a
-                tangible difference in people's lives.
+              Need Foundation Trust focus on social consciousness and developing an organised society.
+               Our Vision is People Centric Charity Organisation and to build an outstanding social service 
+               to the society.We bring the best results in the society by implementing 
+               values in each stage of work. 
               </p>
-              <ul className="mt-6 space-y-2">
-                <li className="flex items-center gap-2 text-foreground/70">
-                  <span className="w-2 h-2 bg-accent rounded-full"></span>
-                  Global impact and reach
-                </li>
-                <li className="flex items-center gap-2 text-foreground/70">
-                  <span className="w-2 h-2 bg-accent rounded-full"></span>
-                  Continuous improvement
-                </li>
-                <li className="flex items-center gap-2 text-foreground/70">
-                  <span className="w-2 h-2 bg-accent rounded-full"></span>
-                  Positive social change
-                </li>
-              </ul>
+            
             </div>
           </div>
         </div>

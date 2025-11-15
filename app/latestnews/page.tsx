@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Newspaper, Calendar, Clock } from "lucide-react";
+import { gsap } from "gsap";
+import { ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
 import CustomButton from "../../components/custom/custom-button";
 import Navbar from "../../components/custom/navigation-menu";
 import Footer from "../../components/custom/footer-section";
@@ -66,201 +67,279 @@ const newsItems: NewsItem[] = [
 ];
 
 export default function LatestNews() {
-  const [selectedNews, setSelectedNews] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const handleNewsSelect = (index: number) => {
-    setSelectedNews(index);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const headerRef = useRef<HTMLHeadingElement>(null);
+
+  /* --------------------------------------------------
+      INITIAL ANIMATION — FIXED WITH GSAP CONTEXT
+  -------------------------------------------------- */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+
+      tl.from(headerRef.current, {
+        y: -50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      })
+        .from(
+          imageRef.current,
+          {
+            x: -100,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.5"
+        )
+        .from(
+          [
+            categoryRef.current,
+            titleRef.current,
+            subtitleRef.current,
+            descriptionRef.current,
+          ],
+          {
+            x: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+          },
+          "-=0.7"
+        );
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  /* --------------------------------------------------
+      TRANSITION ANIMATION — FULLY FIXED
+  -------------------------------------------------- */
+  const animateTransition = (newIndex: number) => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setIsAnimating(false);
+        },
+      });
+
+      // Animate OUT
+      tl.to(imageRef.current, {
+        scale: 1.1,
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.in",
+      })
+        .to(
+          [
+            categoryRef.current,
+            titleRef.current,
+            subtitleRef.current,
+            descriptionRef.current,
+          ],
+          {
+            x: -30,
+            opacity: 0,
+            duration: 0.3,
+            stagger: 0.05,
+            ease: "power2.in",
+          },
+          "-=0.2"
+        )
+        .add(() => setCurrentIndex(newIndex)) // <-- UPDATE CONTENT ONLY AFTER OUT
+        .fromTo(
+          imageRef.current,
+          { scale: 0.9, opacity: 0 },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power3.out",
+          }
+        )
+        .fromTo(
+          [
+            categoryRef.current,
+            titleRef.current,
+            subtitleRef.current,
+            descriptionRef.current,
+          ],
+          { x: 40, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            stagger: 0.1,
+            duration: 0.5,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        );
+    });
+
+    return () => ctx.revert();
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors = {
-      Technology: "from-orange-400 to-yellow-500",
-      Business: "from-yellow-500 to-orange-400",
-      Environment: "from-orange-500 to-yellow-600",
-      Health: "from-yellow-400 to-orange-500",
-    };
-    return (
-      colors[category as keyof typeof colors] || "from-orange-500 to-yellow-500"
+  const handleNext = () => {
+    animateTransition((currentIndex + 1) % newsItems.length);
+  };
+
+  const handlePrevious = () => {
+    animateTransition(
+      (currentIndex - 1 + newsItems.length) % newsItems.length
     );
   };
 
+  const handleDotClick = (index: number) => {
+    if (!isAnimating && index !== currentIndex) {
+      animateTransition(index);
+    }
+  };
+
+  /* AUTO SLIDE FIX */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isAnimating) handleNext();
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [currentIndex, isAnimating]);
+
+  const currentNews = newsItems[currentIndex];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-white">
+    <div>
       <Navbar />
 
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header Section */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full mb-6 shadow-lg">
-              <Newspaper className="w-5 h-5 text-white" />
-              <span className="text-sm font-bold text-white uppercase tracking-wider">
+      {/* YOUR UI CODE BELOW (unchanged) */}
+      <section
+        id="latest-news"
+        className="relative py-16 overflow-hidden bg-linear-to-b from-gray-50 to-white"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+          {/* HEADER */}
+          <div ref={headerRef} className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
+              <Newspaper className="w-4 h-4 text-white" />
+              <span className="text-sm font-semibold text-white uppercase tracking-wider">
                 Latest News
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black mb-4 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-                Stay Updated
-              </span>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900">
+              Fresh Updates,
               <br />
-              <span className="bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-600 bg-clip-text text-transparent">
-                Stay Ahead
+              <span className="bg-clip-text text-transparent bg-linear-to-tl mt-4 from-orange-600 via-orange-500 to-yellow-400 ">
+                Straight from Us
               </span>
-            </h1>
-
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Discover the latest trends, insights, and breaking news that
-              matter to you
-            </p>
+            </h2>
           </div>
 
-          {/* Bento Grid Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Featured Article - Large */}
-            <div className="lg:col-span-2">
-              <div className="relative h-full min-h-[600px] bg-white rounded-3xl overflow-hidden shadow-xl border border-orange-100">
-                <div className="relative h-2/3">
-                  <Image
-                    src={newsItems[selectedNews].image}
-                    alt={newsItems[selectedNews].title}
-                    fill
-                    className="object-cover"
-                    priority
-                    onError={(e) => {
-                      const imgElement = e.target as HTMLImageElement;
-                      imgElement.src = "/placeholder.svg";
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                  {/* Category Badge */}
-                  <div className="absolute top-6 left-6">
-                    <span
-                      className={`px-4 py-2 bg-gradient-to-r ${getCategoryColor(
-                        newsItems[selectedNews].category
-                      )} text-white font-bold text-sm rounded-full shadow-lg`}
-                    >
-                      {newsItems[selectedNews].category}
+          {/* MAIN CARD */}
+          <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[500px]">
+              
+              {/* IMAGE */}
+              <div ref={imageRef} className="relative overflow-hidden bg-gray-100">
+                <Image
+                  src={currentNews.image}
+                  alt={currentNews.title}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute top-6 left-6 z-10">
+                  <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-orange-600 font-bold text-sm rounded-full shadow-lg">
+                    {currentNews.category}
+                  </span>
+                </div>
+              </div>
+
+              {/* CONTENT */}
+              <div className="flex flex-col justify-between p-8 md:p-10 lg:p-12">
+                <div className="space-y-6">
+                  <div
+                    ref={categoryRef}
+                    className="flex items-center justify-between gap-4"
+                  >
+                    <span className="text-sm text-gray-600 font-medium">
+                      {currentNews.date}
+                    </span>
+
+                    <span className="font-semibold text-orange-600">
+                      {currentIndex + 1}/{newsItems.length}
                     </span>
                   </div>
-                  {/* Meta Info */}
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <div className="flex items-center gap-4 text-white/90 text-sm mb-4">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        <span>{newsItems[selectedNews].date}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
-                        <span>{newsItems[selectedNews].readTime}</span>
-                      </div>
-                    </div>
-                  </div>
+
+                  <h3
+                    ref={titleRef}
+                    className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900"
+                  >
+                    {currentNews.title}
+                  </h3>
+
+                  <p
+                    ref={subtitleRef}
+                    className="text-lg sm:text-xl text-orange-600 font-semibold"
+                  >
+                    {currentNews.subtitle}
+                  </p>
+
+                  <p
+                    ref={descriptionRef}
+                    className="text-base text-gray-600 leading-relaxed"
+                  >
+                    {currentNews.description}
+                  </p>
+
+                  <CustomButton>Read More →</CustomButton>
                 </div>
 
-                <div className="p-8 h-1/3 flex flex-col justify-between">
-                  <div>
-                    <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 line-clamp-2">
-                      {newsItems[selectedNews].title}
-                    </h2>
-                    <p className="text-lg text-orange-600 font-semibold mb-4">
-                      {newsItems[selectedNews].subtitle}
-                    </p>
-                    <p className="text-gray-600 line-clamp-3">
-                      {newsItems[selectedNews].description}
-                    </p>
+                {/* NAVIGATION */}
+                <div className="flex justify-between mt-8 pt-6 border-t">
+                  <div className="flex gap-2">
+                    {newsItems.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleDotClick(i)}
+                        className={`h-2 rounded-full transition-all ${
+                          i === currentIndex
+                            ? "bg-orange-600 w-8"
+                            : "bg-gray-300 w-2"
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button onClick={handlePrevious} className="p-2 rounded-full bg-gray-100 hover:bg-orange-600 hover:text-white transition">
+                      <ChevronLeft />
+                    </button>
+                    <button onClick={handleNext} className="p-2 rounded-full bg-gray-100 hover:bg-orange-600 hover:text-white transition">
+                      <ChevronRight />
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* News List - Right Side */}
-            <div className="lg:col-span-1">
-              <div className="h-full min-h-[600px] bg-white rounded-3xl p-6 shadow-xl border border-orange-100">
-                <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                  <div className="w-2 h-8 bg-gradient-to-b from-orange-500 to-yellow-500 rounded-full"></div>
-                  Recent Stories
-                </h3>
-
-                <div
-                  className="space-y-3 overflow-y-auto"
-                  style={{ maxHeight: "calc(600px - 6rem)" }}
-                >
-                  {newsItems.map((item, index) => (
-                    <div
-                      key={item.id}
-                      onClick={() => handleNewsSelect(index)}
-                      className={`p-3 rounded-2xl cursor-pointer border-2 ${
-                        selectedNews === index
-                          ? "bg-gradient-to-r from-orange-50 to-yellow-50 border-orange-300 shadow-md"
-                          : "bg-gray-50 border-transparent"
-                      }`}
-                    >
-                      <div className="flex gap-4">
-                        <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                          <Image
-                            src={item.image}
-                            alt={item.title}
-                            fill
-                            className="object-cover"
-                            onError={(e) => {
-                              const imgElement = e.target as HTMLImageElement;
-                              imgElement.src = "/placeholder.svg";
-                            }}
-                          />
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span
-                              className={`px-2 py-1 bg-gradient-to-r ${getCategoryColor(
-                                item.category
-                              )} text-white text-xs font-bold rounded-full`}
-                            >
-                              {item.category}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {item.date}
-                            </span>
-                          </div>
-
-                          <h4 className="font-bold text-gray-900 text-sm line-clamp-2 mb-1">
-                            {item.title}
-                          </h4>
-
-                          <p className="text-xs text-gray-600 line-clamp-2">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Newsletter Signup */}
-          <div className="mt-12 lg:col-span-3">
-            <div className="bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-300 rounded-3xl p-8 lg:p-10 text-center shadow-2xl">
-              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
-                Never Miss an Update
-              </h3>
-              <p className="text-gray-700 text-base mb-6 max-w-2xl mx-auto">
-                Subscribe to our newsletter and get the latest news delivered
-                straight to your inbox
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-6 py-3 rounded-2xl border-0 bg-white/60 backdrop-blur-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-600"
-                />
-                <CustomButton className="bg-gray-900 text-white hover:bg-gray-800 font-bold">
-                  Subscribe
-                </CustomButton>
-              </div>
+            {/* PROGRESS BAR */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
+              <div
+                className="h-full bg-gradient-to-r from-orange-600 to-red-600 transition-all"
+                style={{
+                  width: `${((currentIndex + 1) / newsItems.length) * 100}%`,
+                }}
+              />
             </div>
           </div>
         </div>

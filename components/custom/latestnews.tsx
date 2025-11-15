@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
-import { Award, ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
+import { ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
 import CustomButton from "./custom-button";
 
 interface NewsItem {
@@ -62,95 +62,108 @@ const newsItems: NewsItem[] = [
 export function LatestNews() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+
   const imageRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const categoryRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const headerRef = useRef<HTMLHeadingElement>(null);
 
-  // Initial animation on mount
+  /* --------------------------------------------
+      INITIAL MOUNT ANIMATION (SAFE WITH CONTEXT)
+    -------------------------------------------- */
   useEffect(() => {
-    const tl = gsap.timeline();
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline();
 
-    tl.from(headerRef.current, {
-      y: -50,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out",
-    })
-      .from(
-        imageRef.current,
-        {
-          x: -100,
-          opacity: 0,
-          duration: 1,
-          ease: "power3.out",
-        },
-        "-=0.5"
-      )
-      .from(
-        [
-          categoryRef.current,
-          titleRef.current,
-          subtitleRef.current,
-          descriptionRef.current,
-        ],
-        {
-          x: 50,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out",
-        },
-        "-=0.7"
-      );
+      tl.from(headerRef.current, {
+        y: -50,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      })
+        .from(
+          imageRef.current,
+          {
+            x: -100,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out",
+          },
+          "-=0.5"
+        )
+        .from(
+          [
+            categoryRef.current,
+            titleRef.current,
+            subtitleRef.current,
+            descriptionRef.current,
+          ],
+          {
+            x: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+          },
+          "-=0.7"
+        );
+    });
+
+    return () => ctx.revert();
   }, []);
 
+  /* --------------------------------------------
+      SAFE TRANSITION ANIMATION USING CONTEXT
+    -------------------------------------------- */
   const animateTransition = (newIndex: number) => {
     if (isAnimating) return;
     setIsAnimating(true);
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setCurrentIndex(newIndex);
-        setIsAnimating(false);
-      },
-    });
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        onComplete: () => setIsAnimating(false),
+      });
 
-    // Animate out
-    tl.to(imageRef.current, {
-      scale: 1.1,
-      opacity: 0,
-      duration: 0.4,
-      ease: "power2.in",
-    })
-      .to(
-        [
-          categoryRef.current,
-          titleRef.current,
-          subtitleRef.current,
-          descriptionRef.current,
-        ],
-        {
-          x: -30,
-          opacity: 0,
-          duration: 0.3,
-          stagger: 0.05,
-          ease: "power2.in",
-        },
-        "-=0.3"
-      )
-      // Animate in
-      .set(imageRef.current, { scale: 0.9, x: 0 })
-      .to(imageRef.current, {
-        scale: 1,
-        opacity: 1,
-        duration: 0.6,
-        ease: "power3.out",
+      // Animate OUT
+      tl.to(imageRef.current, {
+        scale: 1.1,
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.in",
       })
-      .fromTo(
+        .to(
+          [
+            categoryRef.current,
+            titleRef.current,
+            subtitleRef.current,
+            descriptionRef.current,
+          ],
+          {
+            x: -30,
+            opacity: 0,
+            duration: 0.3,
+            stagger: 0.05,
+            ease: "power2.in",
+          },
+          "-=0.2"
+        );
+
+      // Swap content AFTER out animation
+      tl.add(() => setCurrentIndex(newIndex));
+
+      // Animate IN
+      tl.fromTo(
+        imageRef.current,
+        { scale: 0.9, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          ease: "power3.out",
+        }
+      ).fromTo(
         [
           categoryRef.current,
           titleRef.current,
@@ -167,193 +180,132 @@ export function LatestNews() {
         },
         "-=0.4"
       );
+    });
+
+    return () => ctx.revert();
   };
 
   const handleNext = () => {
-    const newIndex = (currentIndex + 1) % newsItems.length;
-    animateTransition(newIndex);
+    animateTransition((currentIndex + 1) % newsItems.length);
   };
 
   const handlePrevious = () => {
-    const newIndex = (currentIndex - 1 + newsItems.length) % newsItems.length;
-    animateTransition(newIndex);
+    animateTransition((currentIndex - 1 + newsItems.length) % newsItems.length);
   };
 
   const handleDotClick = (index: number) => {
-    if (index !== currentIndex) {
-      animateTransition(index);
-    }
+    if (index !== currentIndex) animateTransition(index);
   };
 
+  /* Auto-slide every 6 seconds */
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isAnimating) {
-        handleNext();
-      }
+      if (!isAnimating) handleNext();
     }, 6000);
-
     return () => clearInterval(interval);
   }, [currentIndex, isAnimating]);
 
   const currentNews = newsItems[currentIndex];
 
   return (
-    <section id="latest-news" className="relative py-16 overflow-hidden bg-linear-to-b from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
+    <section className="relative py-16 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Header */}
         <div ref={headerRef} className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
-            <Newspaper className="w-4 h-4 text-white" />
-            <span className="text-sm font-semibold text-white uppercase tracking-wider">
-              Latest News
-            </span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-full mb-6">
+            <Newspaper className="w-4 h-4" />
+            <span className="text-sm font-semibold uppercase">Latest News</span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900">
+          <h2 className="text-4xl md:text-6xl font-bold text-gray-900">
             Fresh Updates,
             <br />
-            <span className="bg-clip-text text-transparent bg-linear-to-tl mt-4 from-orange-600 via-orange-500 to-yellow-400 ">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-yellow-400">
               Straight from Us
             </span>
           </h2>
         </div>
 
-        {/* Carousel Container */}
-        <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[500px]">
-            {/* Image Section */}
-            <div
-              ref={imageRef}
-              className="relative overflow-hidden bg-gray-100"
-            >
-              <div className="relative w-full h-full min-h-[400px] lg:min-h-[550px]">
-                <Image
-                  src={currentNews.image}
-                  alt={currentNews.title}
-                  fill
-                  className="object-cover"
-                  priority
-                  quality={85}
-                  onError={(e) => {
-                    const imgElement = e.target as HTMLImageElement;
-                    imgElement.src = "/placeholder.svg";
-                  }}
-                />
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent lg:bg-linear-to-r lg:from-transparent lg:to-black/10" />
-              </div>
+        {/* Main card */}
+        <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            {/* Image */}
+            <div ref={imageRef} className="relative bg-gray-100 min-h-[400px]">
+              <Image
+                src={currentNews.image}
+                alt={currentNews.title}
+                fill
+                className="object-cover"
+              />
 
-              {/* Category Badge on Image */}
-              <div className="absolute top-6 left-6 z-10">
-                <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-orange-600 font-bold text-sm rounded-full shadow-lg">
-                  {currentNews.category}
-                </span>
+              <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 text-orange-600 font-bold text-sm rounded-full shadow">
+                {currentNews.category}
               </div>
             </div>
 
-            {/* Content Section */}
-            <div
-              ref={contentRef}
-              className="flex flex-col justify-between p-8 md:p-10 lg:p-12"
-            >
+            {/* Content */}
+            <div className="p-10 flex flex-col justify-between">
               <div className="space-y-6">
-                {/* Meta Info */}
-                <div ref={categoryRef} className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="h-1 w-12 bg-gradient-to-r from-orange-600 to-red-600 rounded-full" />
-                    <span className="text-sm text-gray-600 font-medium">
-                      {currentNews.date}
-                    </span>
-                  </div>
-                  {/* Counter */}
-                  <div className="text-center text-sm text-gray-600">
-                    <span className="font-semibold text-orange-600">
-                      {currentIndex + 1}
-                    </span>
-                    {" / "}
-                    <span>{newsItems.length}</span>
-                  </div>
+                {/* Meta */}
+                <div ref={categoryRef} className="flex justify-between">
+                  <span className="text-gray-600">{currentNews.date}</span>
+                  <span className="text-orange-600 font-semibold">
+                    {currentIndex + 1} / {newsItems.length}
+                  </span>
                 </div>
 
                 {/* Title */}
-                <h3
-                  ref={titleRef}
-                  className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight"
-                >
+                <h3 ref={titleRef} className="text-3xl font-bold">
                   {currentNews.title}
                 </h3>
 
                 {/* Subtitle */}
-                <p
-                  ref={subtitleRef}
-                  className="text-lg sm:text-xl text-orange-600 font-semibold"
-                >
+                <p ref={subtitleRef} className="text-xl text-orange-600 font-semibold">
                   {currentNews.subtitle}
                 </p>
 
                 {/* Description */}
-                <p
-                  ref={descriptionRef}
-                  className="text-base text-gray-600 leading-relaxed"
-                >
+                <p ref={descriptionRef} className="text-gray-600">
                   {currentNews.description}
                 </p>
 
-                {/* Read More Button */}
-                <CustomButton>
-                  Read More
-                  <svg
-                    className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </CustomButton>
+                <CustomButton>Read More →</CustomButton>
               </div>
 
-              {/* Navigation Controls */}
-              <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
-                {/* Dot Indicators */}
+              {/* Controls */}
+              <div className="flex justify-between items-center mt-8 pt-6 border-t">
+                {/* Dots */}
                 <div className="flex gap-2">
-                  {newsItems.map((_, index) => (
+                  {newsItems.map((_, i) => (
                     <button
-                      key={index}
-                      onClick={() => handleDotClick(index)}
+                      key={i}
+                      onClick={() => handleDotClick(i)}
                       disabled={isAnimating}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        index === currentIndex
-                          ? "bg-gradient-to-r from-orange-600 to-red-600 w-8"
-                          : "bg-gray-300 w-2 hover:bg-gray-400"
+                      className={`h-2 rounded-full transition-all ${
+                        i === currentIndex
+                          ? "w-8 bg-orange-600"
+                          : "w-2 bg-gray-300"
                       }`}
-                      aria-label={`Go to news ${index + 1}`}
                     />
                   ))}
                 </div>
 
-                {/* Arrow Navigation */}
+                {/* Arrows */}
                 <div className="flex gap-2">
                   <button
                     onClick={handlePrevious}
                     disabled={isAnimating}
-                    className="p-2 rounded-full bg-gray-100 hover:bg-orange-600 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
-                    aria-label="Previous news"
+                    className="p-2 bg-gray-100 rounded-full hover:bg-orange-600 hover:text-white transition"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft />
                   </button>
+
                   <button
                     onClick={handleNext}
                     disabled={isAnimating}
-                    className="p-2 rounded-full bg-gray-100 hover:bg-orange-600 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
-                    aria-label="Next news"
+                    className="p-2 bg-gray-100 rounded-full hover:bg-orange-600 hover:text-white transition"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight />
                   </button>
                 </div>
               </div>
@@ -361,9 +313,9 @@ export function LatestNews() {
           </div>
 
           {/* Progress Bar */}
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
+          <div className="h-1 bg-gray-200">
             <div
-              className="h-full bg-gradient-to-r from-orange-600 to-red-600 transition-all duration-300"
+              className="h-full bg-gradient-to-r from-orange-600 to-yellow-400 transition-all"
               style={{
                 width: `${((currentIndex + 1) / newsItems.length) * 100}%`,
               }}
