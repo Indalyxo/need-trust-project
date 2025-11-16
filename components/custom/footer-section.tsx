@@ -67,7 +67,7 @@ export default function Footer() {
 
       {/* Bottom Line */}
       <div className="border-t border-gray-700 mt-10 pt-4 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} Your Trust Name. All rights reserved.
+        © {new Date().getFullYear()} Need Foundation Trust. All rights reserved.
       </div>
     </footer>
   );

@@ -21,14 +21,14 @@ export default function BannerCarousel() {
       subtitle: "Karein shuruaat samay par jaanch ke saath",
       logo: "https://www.netflix.com/favicon.ico",
       image:
-        "https://res.cloudinary.com/dhpzmqznv/image/upload/v1761636626/ratan-tata-2025_kdrnaz.webp",
+        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763182947/WhatsApp_Image_2025-11-12_at_19.44.25_efff6fa5_r8myr6.jpg",
     },
     {
       title: "Cancer Se Jeetna Sambhav Hai",
       subtitle: "Join the movement for a cancer-free India",
       logo: "https://www.netflix.com/favicon.ico",
       image:
-        "https://res.cloudinary.com/dhpzmqznv/image/upload/v1761636708/tata-trusts-horizons-october-2025_ziviu3.webp",
+        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763182466/WhatsApp_Image_2025-11-12_at_19.07.39_357de3e2_wxdast.jpg",
     },
   ];
 

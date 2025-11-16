@@ -9,7 +9,7 @@ const links = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Latest News", href: "/latestnews" },
-  { label: "Services", href: "/works" },
+  { label: "Works", href: "/works" },
   { label: "Gallery", href: "/gallery" },
   { label: "Contact Us", href: "#contact-us" },
 ];
@@ -35,9 +35,10 @@ function NavigationMenu() {
           {/* Logo */}
           <div className="flex items-center shrink-0">
             <img
-              className="w-[250px] h-[60px]"
+              className="w-[250px] h-[60px] cursor-pointer"
               src="need foundation trust.jpg"
               alt="need foundation logo"
+              onClick={() => handleLinkClick({ label: "Home", href: "/" })}
             />
           </div>
 

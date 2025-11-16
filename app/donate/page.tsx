@@ -6,10 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Upload, Heart, QrCode, CheckCircle2, X } from "lucide-react";
 import CustomButton from "@/components/custom/custom-button";
 import Footer from "@/components/custom/footer-section";
+import Navbar from "../../components/custom/navigation-menu";
 
 export default function Payment() {
   const [formData, setFormData] = useState({
     name: "",
+    email:"",
     amount: "",
     panNumber: "",
     transactionId: "",
@@ -43,6 +45,7 @@ export default function Payment() {
       formData.amount &&
       formData.panNumber &&
       formData.transactionId &&
+      formData.email &&
       formData.transactionScreenshot
     ) {
       setSubmitted(true);
@@ -52,6 +55,7 @@ export default function Payment() {
       setTimeout(() => {
         setFormData({
           name: "",
+          email:"",
           amount: "",
           panNumber: "",
           transactionId: "",
@@ -85,6 +89,7 @@ export default function Payment() {
 
   return (
     <>
+    <Navbar />
     <section className="relative min-h-screen py-12 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-orange-50 via-yellow-50 to-white">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -145,9 +150,11 @@ export default function Payment() {
               >
                 {showQR ? (
                   <img
-                    src={"/placeholder.svg"}
+                    src={"https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763184799/Screenshot_2025-11-15_110257_vuttqc.png"}
                     alt="Donation QR Code"
-                    className="w-64 h-64 rounded-xl shadow-lg"
+                   className="w-72 h-72 rounded shadow-[0_10px_35px_rgba(255,140,0,0.45)]"
+
+
                   />
                 ) : (
                   <div className="text-center">
@@ -171,8 +178,10 @@ export default function Payment() {
               </CustomButton>
 
               <div className="mt-6 p-4 bg-orange-50 rounded-xl border border-orange-100">
-                <p className="text-sm text-gray-700 text-center font-medium">
-                  🔒 Secure payment • Scan with any UPI app
+                <p className="text-lg text-gray-700 text-center font-medium">
+                  🔒 Secure payment • Scan with any UPI app <br/>
+                  IFSC CODE: UBIN0921017 <br/>
+                  A/C NO: 510101001939350
                 </p>
               </div>
 
@@ -224,6 +233,21 @@ export default function Payment() {
                     onChange={handleChange}
                     placeholder="Full Name (As on PAN Card)"
                     className="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-400 transition-all"
+                    required
+                  />
+                </motion.div>
+                {/* Email */}
+                 <motion.div variants={itemVariants} custom={5}>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.panNumber}
+                    onChange={handleChange}
+                    placeholder="Example@gmail.com"
+                    className="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-400  transition-all"
                     required
                   />
                 </motion.div>
@@ -347,11 +371,11 @@ export default function Payment() {
               </form>
 
               {/* Security Badge */}
-              <div className="mt-6 p-4 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border border-orange-100">
+              {/* <div className="mt-6 p-4 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border border-orange-100">
                 <p className="text-xs text-gray-700 text-center font-medium">
                   🛡️ Your information is secure and encrypted
                 </p>
-              </div>
+              </div> */}
             </div>
           </motion.div>
         </div>
