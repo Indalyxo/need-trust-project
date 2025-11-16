@@ -131,7 +131,8 @@ const SponsorSection = () => {
   }, []);
 
   return (
-    <section id="sponsors"
+    <section
+      id="sponsors"
       ref={sectionRef}
       className="relative py-20 md:py-28 bg-linear-to-b from-gray-50 via-white to-gray-50 overflow-hidden"
     >
@@ -225,29 +226,6 @@ const SponsorSection = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center mt-16">
-          <p className="text-gray-600 mb-6 text-lg">
-            Join these industry leaders
-          </p>
-          <CustomButton className="mx-auto">
-            <span>Become a Partner</span>
-            <svg
-              className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
-              />
-            </svg>
-            {/* Animated glow effect */}
-            <div className="absolute inset-0 rounded-full bg-linear-to-r from-pink-400 to-purple-400 blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
-          </CustomButton>
-        </div>
       </div>
 
       <style jsx>{`

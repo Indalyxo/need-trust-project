@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   GalleryHorizontal,
   HandFist,
@@ -8,7 +9,9 @@ import {
   Menu,
   Newspaper,
   X,
+  LogOut,
 } from "lucide-react";
+import { authService } from "@/lib/authService";
 
 interface SidebarProps {
   activeSection: string;
@@ -27,7 +30,13 @@ export default function Sidebar({
   activeSection,
   setActiveSection,
 }: SidebarProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
+
+  const handleLogout = async () => {
+    await authService.logout();
+    router.push("/login");
+  };
 
   return (
     <>
@@ -81,9 +90,16 @@ export default function Sidebar({
           ))}
         </nav>
 
-        {/* Footer */}
+        {/* Logout Button */}
         <div className="p-4 border-t border-sidebar-border">
-          <div className="text-xs text-sidebar-foreground/60 text-center">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sidebar-foreground hover:bg-red-50 hover:text-red-600 transition-all duration-200"
+          >
+            <LogOut className="w-5 h-5" />
+            <span className="font-medium">Logout</span>
+          </button>
+          <div className="text-xs text-sidebar-foreground/60 text-center mt-4">
             <p>© 2025 TrustHub</p>
             <p>All rights reserved</p>
           </div>

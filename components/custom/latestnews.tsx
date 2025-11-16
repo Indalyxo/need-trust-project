@@ -5,6 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
 import CustomButton from "./custom-button";
+import VerticalAd from "./vertical-ad";
 
 interface NewsItem {
   id: number;
@@ -208,13 +209,15 @@ export function LatestNews() {
   const currentNews = newsItems[currentIndex];
 
   return (
-    <section className="relative py-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
-        <div ref={headerRef} className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-full mb-6">
-            <Newspaper className="w-4 h-4" />
-            <span className="text-sm font-semibold uppercase">Latest News</span>
+    <section id="latest-news" className="relative py-16 overflow-hidden bg-linear-to-b from-gray-50 to-white w-full">
+      <div className="w-full">
+        {/* Header Section */}
+        <div ref={headerRef} className="text-center mb-12 px-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
+            <Newspaper className="w-4 h-4 text-white" />
+            <span className="text-sm font-semibold text-white uppercase tracking-wider">
+              Latest News
+            </span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold text-gray-900">
@@ -226,20 +229,43 @@ export function LatestNews() {
           </h2>
         </div>
 
-        {/* Main card */}
-        <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2">
-            {/* Image */}
-            <div ref={imageRef} className="relative bg-gray-100 min-h-[400px]">
-              <Image
-                src={currentNews.image}
-                alt={currentNews.title}
-                fill
-                className="object-cover"
-              />
+        {/* Main Content with Vertical Ads */}
+        <div className="flex flex-col lg:flex-row gap-6 items-start justify-center px-4">
+          {/* Left Vertical Ad */}
+          <div className="hidden lg:block flex-shrink-0">
+            <VerticalAd position="left" />
+          </div>
 
-              <div className="absolute top-6 left-6 px-4 py-2 bg-white/90 text-orange-600 font-bold text-sm rounded-full shadow">
-                {currentNews.category}
+          {/* Carousel Container */}
+          <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100 flex-1 max-w-5xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 max-h-[600px]">
+            {/* Image Section */}
+            <div
+              ref={imageRef}
+              className="relative overflow-hidden bg-gray-100"
+            >
+              <div className="relative w-full h-full min-h-[400px] lg:min-h-[550px]">
+                <Image
+                  src={currentNews.image}
+                  alt={currentNews.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  quality={85}
+                  onError={(e) => {
+                    const imgElement = e.target as HTMLImageElement;
+                    imgElement.src = "/placeholder.svg";
+                  }}
+                />
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent lg:bg-linear-to-r lg:from-transparent lg:to-black/10" />
+              </div>
+
+              {/* Category Badge on Image */}
+              <div className="absolute top-6 left-6 z-10">
+                <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-orange-600 font-bold text-sm rounded-full shadow-lg">
+                  {currentNews.category}
+                </span>
               </div>
             </div>
 
@@ -320,6 +346,12 @@ export function LatestNews() {
                 width: `${((currentIndex + 1) / newsItems.length) * 100}%`,
               }}
             />
+          </div>
+        </div>
+
+          {/* Right Vertical Ad */}
+          <div className="hidden lg:block flex-shrink-0">
+            <VerticalAd position="right" />
           </div>
         </div>
       </div>

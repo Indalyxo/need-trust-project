@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import React from "react";
 import Navbar from "../../components/custom/navigation-menu";
 import { ExternalLink, TrendingUp, Users, Heart, Award } from "lucide-react";
+import Footer from "@/components/custom/footer-section";
 
 // --- Services Data ---
 const services = [
@@ -311,6 +312,8 @@ export default function ServicesSection() {
             </motion.div> */}
           </div>
         </section>
+
+        <Footer />
       </div>
     </>
   );
