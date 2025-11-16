@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
-import { Award, ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
+import { ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
 import CustomButton from "./custom-button";
+import VerticalAd from "./vertical-ad";
 
 interface NewsItem {
   id: number;
@@ -198,10 +199,10 @@ export function LatestNews() {
   const currentNews = newsItems[currentIndex];
 
   return (
-    <section id="latest-news" className="relative py-16 overflow-hidden bg-linear-to-b from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="latest-news" className="relative py-16 overflow-hidden bg-linear-to-b from-gray-50 to-white w-full">
+      <div className="w-full">
         {/* Header Section */}
-        <div ref={headerRef} className="text-center mb-12">
+        <div ref={headerRef} className="text-center mb-12 px-4">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
             <Newspaper className="w-4 h-4 text-white" />
             <span className="text-sm font-semibold text-white uppercase tracking-wider">
@@ -218,9 +219,16 @@ export function LatestNews() {
           </h2>
         </div>
 
-        {/* Carousel Container */}
-        <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[500px]">
+        {/* Main Content with Vertical Ads */}
+        <div className="flex flex-col lg:flex-row gap-6 items-start justify-center px-4">
+          {/* Left Vertical Ad */}
+          <div className="hidden lg:block flex-shrink-0">
+            <VerticalAd position="left" />
+          </div>
+
+          {/* Carousel Container */}
+          <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100 flex-1 max-w-5xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 max-h-[600px]">
             {/* Image Section */}
             <div
               ref={imageRef}
@@ -368,6 +376,12 @@ export function LatestNews() {
                 width: `${((currentIndex + 1) / newsItems.length) * 100}%`,
               }}
             />
+          </div>
+        </div>
+
+          {/* Right Vertical Ad */}
+          <div className="hidden lg:block flex-shrink-0">
+            <VerticalAd position="right" />
           </div>
         </div>
       </div>
