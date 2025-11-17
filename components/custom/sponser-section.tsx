@@ -1,134 +1,90 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import LogoLoop from "../LogoLoop";
 import { Handshake } from "lucide-react";
-import CustomButton from "./custom-button";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type logo = {
-  src: string;
-  alt: string;
-  href: string;
-};
-
-const imageLogos: logo[] = [
-  {
-    src: "https://www.apple.com/favicon.ico",
-    alt: "Apple",
-    href: "https://www.apple.com",
-  },
-  {
-    src: "https://www.google.com/favicon.ico",
-    alt: "Google",
-    href: "https://www.google.com",
-  },
-  {
-    src: "https://www.netflix.com/favicon.ico",
-    alt: "Netflix",
-    href: "https://www.netflix.com",
-  },
-  {
-    src: "https://www.facebook.com/favicon.ico",
-    alt: "Facebook",
-    href: "https://www.facebook.com",
-  },
-  {
-    src: "https://www.amazon.com/favicon.ico",
-    alt: "Amazon",
-    href: "https://www.amazon.com",
-  },
-  {
-    src: "https://www.spotify.com/favicon.ico",
-    alt: "Spotify",
-    href: "https://www.spotify.com",
-  },
-  {
-    src: "https://twitter.com/favicon.ico",
-    alt: "Twitter",
-    href: "https://twitter.com",
-  },
-  {
-    src: "https://www.linkedin.com/favicon.ico",
-    alt: "LinkedIn",
-    href: "https://www.linkedin.com",
-  },
-  {
-    src: "https://www.microsoft.com/favicon.ico",
-    alt: "Microsoft",
-    href: "https://www.microsoft.com",
-  },
-  {
-    src: "https://www.adobe.com/favicon.ico",
-    alt: "Adobe",
-    href: "https://www.adobe.com",
-  },
-  {
-    src: "https://www.tesla.com/favicon.ico",
-    alt: "Tesla",
-    href: "https://www.tesla.com",
-  },
-];
+interface Sponsor {
+  id: number;
+  name: string;
+  link: string;
+  imageUrl: string;
+  createdAt: string;
+}
 
 const SponsorSection = () => {
+  const [sponsors, setSponsors] = useState<Sponsor[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
   const logoRow1Ref = useRef<HTMLDivElement>(null);
   const logoRow2Ref = useRef<HTMLDivElement>(null);
 
+  // Fetch sponsors data
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Header animation
-      gsap.from(headerRef.current, {
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          end: "top 20%",
-          toggleActions: "play none none reverse",
-        },
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
-      });
+    const fetchSponsors = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/sponsors');
+        if (!response.ok) {
+          throw new Error('Failed to fetch sponsors');
+        }
+        const data = await response.json();
+        setSponsors(data);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching sponsors:', err);
+        setError('Failed to load sponsors');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      // Stats animation
-      gsap.from(statsRef.current?.children || [], {
-        scrollTrigger: {
-          trigger: statsRef.current,
-          start: "top 85%",
-          end: "top 40%",
-          toggleActions: "play none none reverse",
-        },
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-      });
-
-      // Logo rows animation
-      gsap.from([logoRow1Ref.current, logoRow2Ref.current], {
-        scrollTrigger: {
-          trigger: logoRow1Ref.current,
-          start: "top 90%",
-          end: "top 50%",
-          toggleActions: "play none none reverse",
-        },
-        opacity: 0,
-        scale: 0.95,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power3.out",
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
+    fetchSponsors();
   }, []);
+
+  useEffect(() => {
+    if (!loading && !error && sponsors.length > 0) {
+      const ctx = gsap.context(() => {
+        // Header animation
+        gsap.from(headerRef.current, {
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            end: "top 20%",
+            toggleActions: "play none none reverse",
+          },
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        });
+
+        // Logo rows animation
+        gsap.from([logoRow1Ref.current, logoRow2Ref.current], {
+          scrollTrigger: {
+            trigger: logoRow1Ref.current,
+            start: "top 90%",
+            end: "top 50%",
+            toggleActions: "play none none reverse",
+          },
+          opacity: 0,
+          scale: 0.95,
+          duration: 1,
+          stagger: 0.2,
+          ease: "power3.out",
+        });
+      }, sectionRef);
+
+      return () => ctx.revert();
+    }
+  }, [loading, error, sponsors.length]);
 
   return (
     <section
@@ -170,62 +126,99 @@ const SponsorSection = () => {
           </p>
         </div>
 
-        {/* Logo Carousel Rows */}
-        <div className="space-y-4 md:space-y-3">
-          {/* First Row */}
-          <div ref={logoRow1Ref} className="relative">
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-linear-to-r from-gray-50 to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-linear-to-l from-gray-50 to-transparent z-10" />
-            <LogoLoop
-              logos={imageLogos}
-              speed={50}
-              direction="right"
-              logoHeight={64}
-              gap={80}
-              pauseOnHover
-              scaleOnHover
-              fadeOut
-              fadeOutColor="#fafafa"
-              ariaLabel="Technology partners row 1"
-            />
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600"></div>
+            <p className="mt-4 text-gray-600">Loading sponsors...</p>
           </div>
+        )}
 
-          {/* Second Row */}
-          <div ref={logoRow2Ref} className="relative">
-            <LogoLoop
-              logos={imageLogos}
-              speed={50}
-              direction="left"
-              logoHeight={64}
-              gap={80}
-              pauseOnHover
-              scaleOnHover
-              fadeOut
-              fadeOutColor="#fafafa"
-              ariaLabel="Technology partners row 2"
-            />
+        {/* Error State */}
+        {error && (
+          <div className="text-center py-12">
+            <p className="text-red-600">{error}</p>
           </div>
+        )}
 
-          {/* Third Row (Optional - for more logos) */}
-          <div className="relative">
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-linear-to-r from-gray-50 to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-linear-to-l from-gray-50 to-transparent z-10" />
-            <LogoLoop
-              logos={imageLogos}
-              speed={50}
-              direction="right"
-              logoHeight={64}
-              gap={80}
-              pauseOnHover
-              scaleOnHover
-              fadeOut
-              fadeOutColor="#fafafa"
-              ariaLabel="Technology partners row 3"
-            />
+        {/* Sponsors Display */}
+        {!loading && !error && sponsors.length > 0 && (
+          <div className="space-y-8">
+            {/* First Row - Moving Right */}
+            <div ref={logoRow1Ref} className="relative overflow-hidden">
+              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10" />
+              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent z-10" />
+              <div className="flex animate-scroll-right space-x-8 py-4">
+                {[...sponsors, ...sponsors, ...sponsors].map((sponsor, index) => (
+                  <a
+                    key={`right-${index}`}
+                    href={sponsor.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 group"
+                  >
+                    <div className="w-24 h-16 bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={sponsor.imageUrl}
+                          alt={sponsor.name}
+                          fill
+                          className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                          unoptimized={sponsor.imageUrl.startsWith('/uploads/')}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = '/placeholder-image.svg';
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Second Row - Moving Left */}
+            <div ref={logoRow2Ref} className="relative overflow-hidden">
+              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10" />
+              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent z-10" />
+              <div className="flex animate-scroll-left space-x-8 py-4">
+                {[...sponsors, ...sponsors, ...sponsors].map((sponsor, index) => (
+                  <a
+                    key={`left-${index}`}
+                    href={sponsor.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 group"
+                  >
+                    <div className="w-24 h-16 bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={sponsor.imageUrl}
+                          alt={sponsor.name}
+                          fill
+                          className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                          unoptimized={sponsor.imageUrl.startsWith('/uploads/')}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = '/placeholder-image.svg';
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* CTA Section */}
+        {/* No Sponsors State */}
+        {!loading && !error && sponsors.length === 0 && (
+          <div className="text-center py-12">
+            <Handshake className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600">No sponsors available at the moment.</p>
+          </div>
+        )}
       </div>
 
       <style jsx>{`
@@ -245,8 +238,34 @@ const SponsorSection = () => {
           }
         }
 
+        @keyframes scroll-right {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-33.333%);
+          }
+        }
+
+        @keyframes scroll-left {
+          0% {
+            transform: translateX(-33.333%);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+
         .animate-pulse {
           animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .animate-scroll-right {
+          animation: scroll-right 30s linear infinite;
+        }
+
+        .animate-scroll-left {
+          animation: scroll-left 30s linear infinite;
         }
 
         .delay-1000 {
