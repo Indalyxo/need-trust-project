@@ -2,20 +2,40 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
-export default function NewsInputForm() {
+interface NewsInputFormProps {
+  onSuccess?: () => void;
+}
+
+export default function NewsInputForm({ onSuccess }: NewsInputFormProps) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     image: null as File | null,
     imagePreview: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Cleanup blob URLs on component unmount
+  useEffect(() => {
+    return () => {
+      if (formData.imagePreview) {
+        URL.revokeObjectURL(formData.imagePreview);
+      }
+    };
+  }, [formData.imagePreview]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Clean up previous blob URL to prevent memory leaks
+      if (formData.imagePreview) {
+        URL.revokeObjectURL(formData.imagePreview);
+      }
+
       setFormData((prev) => ({
         ...prev,
         image: file,
@@ -34,10 +54,78 @@ export default function NewsInputForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission here
+    setIsLoading(true);
+    setError("");
+
+    try {
+      // Validate form
+      if (!formData.title || !formData.description || !formData.image) {
+        setError("Please fill in all fields and select an image");
+        return;
+      }
+
+      // Upload image first
+      const imageFormData = new FormData();
+      imageFormData.append("file", formData.image);
+
+      const uploadResponse = await fetch("/api/upload", {
+        method: "POST",
+        body: imageFormData,
+      });
+
+      if (!uploadResponse.ok) {
+        const uploadError = await uploadResponse.json();
+        throw new Error(uploadError.error || "Failed to upload image");
+      }
+
+      const { imageUrl } = await uploadResponse.json();
+      console.log("Uploaded image URL:", imageUrl); // Debug log
+
+      // Validate that we got a proper URL, not a blob
+      if (!imageUrl || imageUrl.startsWith('blob:')) {
+        throw new Error("Invalid image URL received from upload");
+      }
+
+      // Create news article
+      const newsResponse = await fetch("/api/news", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: formData.title,
+          content: formData.description,
+          imageUrl,
+        }),
+      });
+
+      if (!newsResponse.ok) {
+        const newsError = await newsResponse.json();
+        throw new Error(newsError.error || "Failed to create news article");
+      }
+
+      // Clean up blob URL before resetting
+      if (formData.imagePreview) {
+        URL.revokeObjectURL(formData.imagePreview);
+      }
+
+      // Reset form
+      setFormData({
+        title: "",
+        description: "",
+        image: null,
+        imagePreview: "",
+      });
+
+      // Call success callback
+      onSuccess?.();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -139,12 +227,20 @@ export default function NewsInputForm() {
           />
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-600">{error}</p>
+          </div>
+        )}
+
         {/* Submit Button */}
         <Button
           type="submit"
-          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 py-2 rounded-lg font-medium transition-colors"
+          disabled={isLoading}
+          className="w-full bg-primary text-primary-foreground hover:bg-primary/90 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
         >
-          Latest news
+          {isLoading ? "Creating..." : "Create News Article"}
         </Button>
       </form>
     </div>
