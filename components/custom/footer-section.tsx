@@ -33,9 +33,9 @@ export default function Footer() {
           <h2 className="text-xl font-semibold text-white mb-4">Quick Links</h2>
           <ul className="space-y-2 text-sm">
             <li><a href="/about" className="hover:text-white transition">About Us</a></li>
-            <li><a href="/projects" className="hover:text-white transition">Our Projects</a></li>
+            <li><a href="/work" className="hover:text-white transition">Works</a></li>
             <li><a href="/donate" className="hover:text-white transition">Donate</a></li>
-            <li><a href="/contact" className="hover:text-white transition">Contact</a></li>
+
           </ul>
         </div>
 
@@ -43,24 +43,28 @@ export default function Footer() {
         <div>
           <h2 className="text-xl font-semibold text-white mb-4">Contact Us</h2>
           <p className="text-sm">
-            123 Charity Street<br />Chennai, Tamil Nadu, India
+            TS No.75/1A,1B,
+            Sri Selva Vinayagar Complex
+            60 Ft, STC,Scheme Road<br />
+            Perumalpuram,
+            Tirunelveli 627 007
           </p>
           <p className="text-sm mt-2">
-            Email: <a href="mailto:info@yourtrust.org" className="hover:text-white">info@yourtrust.org</a>
+            Email: <a href="mailto:info@yourtrust.org" className="hover:text-white">nellaiconnectad@gmail.com </a>
           </p>
           <p className="text-sm">
-            Phone: <a href="tel:+919876543210" className="hover:text-white">+91 98765 43210</a>
+            Phone: <a href="tel:+919876543210" className="hover:text-white">+91 99525 41141</a>
           </p>
         </div>
 
         {/* Social Media */}
         <div>
-          <h2 className="text-xl font-semibold text-white mb-4">Follow Us</h2>
-          <div className="flex space-x-4">
-            <a href="#" aria-label="Facebook" className="hover:text-white"><FaFacebook size={20} /></a>
-            <a href="#" aria-label="Twitter" className="hover:text-white"><FaTwitter size={20} /></a>
-            <a href="#" aria-label="Instagram" className="hover:text-white"><FaInstagram size={20} /></a>
-            <a href="#" aria-label="LinkedIn" className="hover:text-white"><FaLinkedin size={20} /></a>
+          <h2 className="text-xl font-semibold text-white mb-4">Managing Team</h2>
+          <div className="grid space-x-4">
+            <p className=" text-white ">Gomathy Akilandam <br />
+              Trustee</p><br/>
+            <p className=" text-white ">E.SA.Agilantam
+             <br/> Managing Trustee</p>
           </div>
         </div>
       </div>

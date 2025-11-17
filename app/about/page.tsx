@@ -41,9 +41,9 @@ export default function AboutPage() {
           {/* Left - Image */}
           <div className="flex justify-center">
             <img
-              src="aboutus.webp"
+              src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763358187/about_iw0wl9.jpg"
               alt="Our team working together"
-              className="rounded-lg shadow-lg w-full max-w-xl object-cover"
+              className="rounded-lg shadow-lg w-full max-w-xl object-cover "
             />
           </div>
 
