@@ -11,7 +11,7 @@ const links = [
   { label: "Latest News", href: "/latestnews" },
   { label: "Works", href: "/works" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Contact Us", href: "#contact-us" },
+  // { label: "Contact Us", href: "#contact-us" },
 ];
 
 function NavigationMenu() {
