@@ -28,5 +28,17 @@ export const ads = pgTable("ads", {
   "createdAt": timestamp("created_at").defaultNow().notNull(),
 })
 
+export const donations = pgTable("donations", {
+  "id": serial("id").primaryKey(),
+  "fullName": text("full_name").notNull(),
+  "email": text("email").notNull(),
+  "amount": text("amount").notNull(),
+  "panCard": text("pan_card").notNull(),
+  "transactionId": text("transaction_id").notNull(),
+  "proofImageUrl": text("proof_image_url").notNull(),
+  "status": text("status").default("pending").notNull(), // pending, verified, rejected
+  "createdAt": timestamp("created_at").defaultNow().notNull(),
+})
+
 
 

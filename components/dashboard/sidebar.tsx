@@ -9,6 +9,7 @@ import {
   Menu,
   Newspaper,
   X,
+  HandHeart,
   LogOut,
 } from "lucide-react";
 import { authService } from "@/lib/authService";
@@ -24,6 +25,7 @@ const menuItems = [
   { id: "impact", label: "Impact", icon: HandFist },
   { id: "sponsors", label: "Sponsors", icon: Handshake },
   { id: "gallery", label: "Gallery", icon: GalleryHorizontal },
+  { id: "donors", label: "Donors", icon: HandHeart },
 ];
 
 export default function Sidebar({
