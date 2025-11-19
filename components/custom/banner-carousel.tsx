@@ -17,18 +17,18 @@ export default function BannerCarousel() {
 
   const banners = [
     {
-      title: "Khud se Jeet",
-      subtitle: "Karein shuruaat samay par jaanch ke saath",
-      logo: "https://www.netflix.com/favicon.ico",
+      title: "Need Trust Foundation",
+      subtitle: "Empowering Communities, Transforming Lives",
+      logo: "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763358914/trust_qbvmui.png",
       image:
-        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763182947/WhatsApp_Image_2025-11-12_at_19.44.25_efff6fa5_r8myr6.jpg",
+        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763367291/1_tqh0b4_dvsrfn.jpg",
     },
     {
-      title: "Cancer Se Jeetna Sambhav Hai",
-      subtitle: "Join the movement for a cancer-free India",
-      logo: "https://www.netflix.com/favicon.ico",
+      title: "Support Patients in Need",
+      subtitle: "Your Donation Can Save Lives",
+      logo: "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763359201/donation_zo33wh.png",
       image:
-        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763182466/WhatsApp_Image_2025-11-12_at_19.07.39_357de3e2_wxdast.jpg",
+        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763367341/2_ufjeoz_se37wu.jpg",
     },
   ];
 

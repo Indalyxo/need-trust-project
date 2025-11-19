@@ -11,76 +11,52 @@ import Footer from "../../components/custom/footer-section";
 interface NewsItem {
   id: number;
   title: string;
-  subtitle: string;
-  description: string;
-  image: string;
-  category: string;
-  date: string;
-  readTime?: string;
+  content: string;
+  imageUrl: string;
+  createdAt: string;
 }
-
-const newsItems: NewsItem[] = [
-  {
-    id: 1,
-    title: "Breaking: New Technology Revolutionizes Industry",
-    subtitle: "Innovation Meets Reality",
-    description:
-      "Discover how cutting-edge technology is transforming the way we work and live. Industry leaders are embracing this revolutionary change.",
-    image: "/modern-tech-innovation.png",
-    category: "Technology",
-    date: "Oct 28, 2025",
-    readTime: "5 min read",
-  },
-  {
-    id: 2,
-    title: "Global Markets Show Strong Growth",
-    subtitle: "Economic Outlook Brightens",
-    description:
-      "Financial analysts report optimistic trends across major markets. Investors are showing renewed confidence in emerging opportunities.",
-    image: "/financial-markets-growth.jpg",
-    category: "Business",
-    date: "Oct 27, 2025",
-    readTime: "3 min read",
-  },
-  {
-    id: 3,
-    title: "Sustainability Initiatives Gain Momentum",
-    subtitle: "Green Future Ahead",
-    description:
-      "Companies worldwide are committing to environmental goals. This shift represents a fundamental change in corporate responsibility.",
-    image: "/sustainable-environment-green.jpg",
-    category: "Environment",
-    date: "Oct 26, 2025",
-    readTime: "4 min read",
-  },
-  {
-    id: 4,
-    title: "Healthcare Advances Save Lives",
-    subtitle: "Medical Breakthroughs",
-    description:
-      "Recent developments in medical science are providing new hope for patients. Researchers celebrate major achievements in treatment options.",
-    image: "/healthcare-medical-research.png",
-    category: "Health",
-    date: "Oct 25, 2025",
-    readTime: "6 min read",
-  },
-];
 
 export default function LatestNews() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const imageRef = useRef<HTMLDivElement>(null);
   const categoryRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const headerRef = useRef<HTMLHeadingElement>(null);
+
+  // Fetch news articles
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await fetch("/api/news");
+        if (!response.ok) {
+          throw new Error("Failed to fetch news");
+        }
+        const data = await response.json();
+        console.log("Fetched news data:", data); // Debug log
+        setNewsItems(data);
+        setCurrentIndex(0); // Reset to first item when data loads
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load news");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
 
   /* --------------------------------------------------
       INITIAL ANIMATION — FIXED WITH GSAP CONTEXT
   -------------------------------------------------- */
   useEffect(() => {
+    if (newsItems.length === 0) return;
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
@@ -104,7 +80,6 @@ export default function LatestNews() {
           [
             categoryRef.current,
             titleRef.current,
-            subtitleRef.current,
             descriptionRef.current,
           ],
           {
@@ -119,13 +94,13 @@ export default function LatestNews() {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [newsItems.length]);
 
   /* --------------------------------------------------
       TRANSITION ANIMATION — FULLY FIXED
   -------------------------------------------------- */
   const animateTransition = (newIndex: number) => {
-    if (isAnimating) return;
+    if (isAnimating || newsItems.length === 0) return;
     setIsAnimating(true);
 
     const ctx = gsap.context(() => {
@@ -146,7 +121,6 @@ export default function LatestNews() {
           [
             categoryRef.current,
             titleRef.current,
-            subtitleRef.current,
             descriptionRef.current,
           ],
           {
@@ -173,7 +147,6 @@ export default function LatestNews() {
           [
             categoryRef.current,
             titleRef.current,
-            subtitleRef.current,
             descriptionRef.current,
           ],
           { x: 40, opacity: 0 },
@@ -192,28 +165,79 @@ export default function LatestNews() {
   };
 
   const handleNext = () => {
-    animateTransition((currentIndex + 1) % newsItems.length);
+    if (newsItems.length > 0) {
+      animateTransition((currentIndex + 1) % newsItems.length);
+    }
   };
 
   const handlePrevious = () => {
-    animateTransition(
-      (currentIndex - 1 + newsItems.length) % newsItems.length
-    );
+    if (newsItems.length > 0) {
+      animateTransition(
+        (currentIndex - 1 + newsItems.length) % newsItems.length
+      );
+    }
   };
 
   const handleDotClick = (index: number) => {
-    if (!isAnimating && index !== currentIndex) {
+    if (!isAnimating && index !== currentIndex && newsItems.length > 0) {
       animateTransition(index);
     }
   };
 
   /* AUTO SLIDE FIX */
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (!isAnimating) handleNext();
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [currentIndex, isAnimating]);
+    if (newsItems.length > 0) {
+      const interval = setInterval(() => {
+        if (!isAnimating) handleNext();
+      }, 6000);
+      return () => clearInterval(interval);
+    }
+  }, [currentIndex, isAnimating, newsItems.length]);
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div>
+        <Navbar />
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <div className="text-xl">Loading latest news...</div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div>
+        <Navbar />
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="text-xl text-red-600 mb-2">Error loading news</div>
+            <div className="text-gray-600">{error}</div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show empty state
+  if (newsItems.length === 0) {
+    return (
+      <div>
+        <Navbar />
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="text-xl text-gray-600 mb-2">No news articles available</div>
+            <div className="text-gray-500">Check back later for updates!</div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   const currentNews = newsItems[currentIndex];
 
@@ -246,102 +270,103 @@ export default function LatestNews() {
           </div>
 
           {/* MAIN CARD */}
-          <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[500px]">
-              
-              {/* IMAGE */}
-              <div ref={imageRef} className="relative overflow-hidden bg-gray-100">
-                <Image
-                  src={currentNews.image}
-                  alt={currentNews.title}
-                  fill
-                  className="object-cover"
+          {newsItems.length > 0 && (
+            <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[500px]">
+                
+                {/* IMAGE */}
+                <div ref={imageRef} className="relative overflow-hidden bg-gray-100">
+                  <Image
+                    src={currentNews.imageUrl || '/placeholder-image.svg'}
+                    alt={currentNews.title}
+                    fill
+                    className="object-cover"
+                    unoptimized={currentNews.imageUrl.startsWith('/uploads/')}
+                    onError={(e) => {
+                      console.error('Image failed to load:', currentNews.imageUrl);
+                      const target = e.target as HTMLImageElement;
+                      target.src = '/placeholder-image.svg';
+                    }}
+                  />
+                  <div className="absolute top-6 left-6 z-10">
+                    <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-orange-600 font-bold text-sm rounded-full shadow-lg">
+                      News
+                    </span>
+                  </div>
+                </div>
+
+                {/* CONTENT */}
+                <div className="flex flex-col justify-between p-8 md:p-10 lg:p-12">
+                  <div className="space-y-6">
+                    <div
+                      ref={categoryRef}
+                      className="flex items-center justify-between gap-4"
+                    >
+                      <span className="text-sm text-gray-600 font-medium">
+                        {new Date(currentNews.createdAt).toLocaleDateString()}
+                      </span>
+
+                      <span className="font-semibold text-orange-600">
+                        {currentIndex + 1}/{newsItems.length}
+                      </span>
+                    </div>
+
+                    <h3
+                      ref={titleRef}
+                      className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900"
+                    >
+                      {currentNews.title}
+                    </h3>
+
+                    <p
+                      ref={descriptionRef}
+                      className="text-base text-gray-600 leading-relaxed"
+                    >
+                      {currentNews.content}
+                    </p>
+
+                    <CustomButton>Read More →</CustomButton>
+                  </div>
+
+                  {/* NAVIGATION */}
+                  <div className="flex justify-between mt-8 pt-6 border-t">
+                    <div className="flex gap-2">
+                      {newsItems.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleDotClick(i)}
+                          className={`h-2 rounded-full transition-all ${
+                            i === currentIndex
+                              ? "bg-orange-600 w-8"
+                              : "bg-gray-300 w-2"
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button onClick={handlePrevious} className="p-2 rounded-full bg-gray-100 hover:bg-orange-600 hover:text-white transition">
+                        <ChevronLeft />
+                      </button>
+                      <button onClick={handleNext} className="p-2 rounded-full bg-gray-100 hover:bg-orange-600 hover:text-white transition">
+                        <ChevronRight />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* PROGRESS BAR */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
+                <div
+                  className="h-full bg-gradient-to-r from-orange-600 to-red-600 transition-all"
+                  style={{
+                    width: `${((currentIndex + 1) / newsItems.length) * 100}%`,
+                  }}
                 />
-                <div className="absolute top-6 left-6 z-10">
-                  <span className="px-4 py-2 bg-white/90 backdrop-blur-sm text-orange-600 font-bold text-sm rounded-full shadow-lg">
-                    {currentNews.category}
-                  </span>
-                </div>
-              </div>
-
-              {/* CONTENT */}
-              <div className="flex flex-col justify-between p-8 md:p-10 lg:p-12">
-                <div className="space-y-6">
-                  <div
-                    ref={categoryRef}
-                    className="flex items-center justify-between gap-4"
-                  >
-                    <span className="text-sm text-gray-600 font-medium">
-                      {currentNews.date}
-                    </span>
-
-                    <span className="font-semibold text-orange-600">
-                      {currentIndex + 1}/{newsItems.length}
-                    </span>
-                  </div>
-
-                  <h3
-                    ref={titleRef}
-                    className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900"
-                  >
-                    {currentNews.title}
-                  </h3>
-
-                  <p
-                    ref={subtitleRef}
-                    className="text-lg sm:text-xl text-orange-600 font-semibold"
-                  >
-                    {currentNews.subtitle}
-                  </p>
-
-                  <p
-                    ref={descriptionRef}
-                    className="text-base text-gray-600 leading-relaxed"
-                  >
-                    {currentNews.description}
-                  </p>
-
-                  <CustomButton>Read More →</CustomButton>
-                </div>
-
-                {/* NAVIGATION */}
-                <div className="flex justify-between mt-8 pt-6 border-t">
-                  <div className="flex gap-2">
-                    {newsItems.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => handleDotClick(i)}
-                        className={`h-2 rounded-full transition-all ${
-                          i === currentIndex
-                            ? "bg-orange-600 w-8"
-                            : "bg-gray-300 w-2"
-                        }`}
-                      />
-                    ))}
-                  </div>
-
-                  <div className="flex gap-2">
-                    <button onClick={handlePrevious} className="p-2 rounded-full bg-gray-100 hover:bg-orange-600 hover:text-white transition">
-                      <ChevronLeft />
-                    </button>
-                    <button onClick={handleNext} className="p-2 rounded-full bg-gray-100 hover:bg-orange-600 hover:text-white transition">
-                      <ChevronRight />
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
-
-            {/* PROGRESS BAR */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200">
-              <div
-                className="h-full bg-gradient-to-r from-orange-600 to-red-600 transition-all"
-                style={{
-                  width: `${((currentIndex + 1) / newsItems.length) * 100}%`,
-                }}
-              />
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
