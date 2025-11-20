@@ -15,7 +15,7 @@ export default function Payment() {
     amount: "",
     panNumber: "",
     transactionId: "",
-    transactionScreenshot: null as File | null,
+    proofImageUrl: null as File | null,
   });
   const [showQR, setShowQR] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -33,12 +33,12 @@ export default function Payment() {
     if (e.target.files && e.target.files[0]) {
       setFormData((prev) => ({
         ...prev,
-        transactionScreenshot: e.target.files![0],
+        proofImageUrl: e.target.files![0],
       }));
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     if (
       formData.name &&
@@ -46,7 +46,7 @@ export default function Payment() {
       formData.panNumber &&
       formData.transactionId &&
       formData.email &&
-      formData.transactionScreenshot
+      formData.proofImageUrl
     ) {
       setSubmitted(true);
       setShowPopup(true);
@@ -59,7 +59,7 @@ export default function Payment() {
           amount: "",
           panNumber: "",
           transactionId: "",
-          transactionScreenshot: null,
+          proofImageUrl: null,
         });
         setSubmitted(false);
       }, 3000);
@@ -99,7 +99,7 @@ export default function Payment() {
 
       <motion.div
         className="max-w-7xl mx-auto relative z-10"
-        variants={containerVariants}
+        variants={containerVariants} 
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
@@ -244,7 +244,7 @@ export default function Payment() {
                   <input
                     type="email"
                     name="email"
-                    value={formData.panNumber}
+                    value={formData.email}
                     onChange={handleChange}
                     placeholder="Example@gmail.com"
                     className="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-400  transition-all"
@@ -329,13 +329,13 @@ export default function Payment() {
                     >
                       <Upload className="w-5 h-5 text-orange-500 group-hover:scale-110 transition-transform" />
                       <span className="text-gray-700 font-medium">
-                        {formData.transactionScreenshot
-                          ? formData.transactionScreenshot.name
+                        {formData.proofImageUrl
+                          ? formData.proofImageUrl.name
                           : "Upload Screenshot"}
                       </span>
                     </label>
                   </div>
-                  {formData.transactionScreenshot && (
+                  {formData.proofImageUrl && (
                     <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
                       <CheckCircle2 className="w-4 h-4" />
                       File uploaded successfully
