@@ -42,15 +42,26 @@ export default function AboutPage() {
 
       {/* Hero Section - Image Left, Content Right */}
       <section className="max-w-6xl mx-auto px-4 py-16 pt-3.5">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+
           {/* Left - Image */}
-          <div className="flex justify-center">
-            <img
-              src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763358187/about_iw0wl9.jpg"
-              alt="Our team working together"
-              className="rounded-lg shadow-lg w-full max-w-xl object-cover"
-            />
-          </div>
+
+  {/* Images */}
+<div className="h-screen grid grid-rows-2 gap-6">
+  <img
+    src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547383/about_kq6w4v.jpg"
+    className="w-full h-full object-cover rounded-lg shadow-lg object-contain"
+  />
+  <img
+    src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547690/WhatsApp_Image_2025-11-17_at_10.06.48_ec861cb5-removebg-preview_v3smzw.png"
+    className="w-full h-full object-cover rounded-lg shadow-lg"
+  />
+</div>
+
+
+
+
+
 
           {/* Right - Content */}
           <div className="space-y-6 text-xl w-full">
@@ -134,7 +145,7 @@ export default function AboutPage() {
 
             <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
               Our vision is to create a world where innovation and compassion
-              come together to drive meaningful change. 
+              come together to drive meaningful change.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -152,12 +163,12 @@ export default function AboutPage() {
               </div>
 
               <p className="text-foreground/80 leading-relaxed">
-             Need Foundation Trust is an Inner Faith Organisation. All services should reach everyone. 
-             We strive to achieve the desired results by using resources properly both efficient
-              and effective manner.
-              Our work standard should meet the highest level by fulfilling the objectives
+                Need Foundation Trust is an Inner Faith Organisation. All services should reach everyone.
+                We strive to achieve the desired results by using resources properly both efficient
+                and effective manner.
+                Our work standard should meet the highest level by fulfilling the objectives
               </p>
-          
+
             </div>
 
             {/* Vision Card */}
@@ -171,12 +182,12 @@ export default function AboutPage() {
                 </div>
               </div>
               <p className="text-foreground/80 leading-relaxed">
-              Need Foundation Trust focus on social consciousness and developing an organised society.
-               Our Vision is People Centric Charity Organisation and to build an outstanding social service 
-               to the society.We bring the best results in the society by implementing 
-               values in each stage of work. 
+                Need Foundation Trust focus on social consciousness and developing an organised society.
+                Our Vision is People Centric Charity Organisation and to build an outstanding social service
+                to the society.We bring the best results in the society by implementing
+                values in each stage of work.
               </p>
-            
+
             </div>
           </div>
         </div>

@@ -244,7 +244,7 @@ export default function Payment() {
                   <input
                     type="email"
                     name="email"
-                    value={formData.panNumber}
+                    value={formData.email}
                     onChange={handleChange}
                     placeholder="Example@gmail.com"
                     className="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-400  transition-all"
