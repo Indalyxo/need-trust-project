@@ -4,31 +4,59 @@ import { donations } from '@/drizzle/schema';
 import { desc } from 'drizzle-orm';
 import { transporter } from "@/lib/mail";
 
+export async function GET() {
+  try {
+    const allDonations = await db.select().from(donations).orderBy(desc(donations.createdAt));
+    return NextResponse.json(allDonations);
+  } catch (error) {
+    console.error('Error fetching donations:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch donations' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, amount, panNumber, transactionId, proofImageUrl } = body;
+const { name, email, amount, panNumber, transactionId, proofImageUrl } = body;
 
-    if (!name || !email || !amount || !panNumber || !transactionId || !proofImageUrl) {
+if (!name || !email || !amount || !panNumber || !transactionId || !proofImageUrl) {
+  return NextResponse.json(
+    { error: 'All fields are required' },
+    { status: 400 }
+  );
+}
+
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: 'Invalid email format' },
         { status: 400 }
       );
     }
 
-    const newDonation = await db.insert(donations).values({
-      fullName: name,
-      email,
-      amount,
-      panCard: panNumber,
-      transactionId,
-      proofImageUrl,
-      status: 'pending'
-    }).returning();
+    // Validate amount is a positive number
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+      return NextResponse.json(
+        { error: 'Invalid donation amount' },
+        { status: 400 }
+      );
+    }
 
-    // ===========================
-    //  SEND THANK YOU EMAIL
-    // ===========================
+const newDonation = await db.insert(donations).values({
+  fullName: name,
+  email,
+  amount,
+  panCard: panNumber,
+  transactionId,
+  proofImageUrl,
+  status: 'pending'
+}).returning();
 
     await transporter.sendMail({
       from: `"Donation Team" <${process.env.EMAIL_USER}>`,
