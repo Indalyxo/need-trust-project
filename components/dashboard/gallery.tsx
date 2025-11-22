@@ -1,40 +1,114 @@
+"use client";
+
+import { useState } from "react";
+
 export default function GallerySection() {
-  const images = [
-    {
-      id: 1,
-      title: "Community Event 2025",
-      color: "from-blue-400 to-blue-600",
-    },
-    { id: 2, title: "Volunteer Day", color: "from-green-400 to-green-600" },
-    { id: 3, title: "Project Launch", color: "from-purple-400 to-purple-600" },
-    { id: 4, title: "Team Celebration", color: "from-pink-400 to-pink-600" },
-    { id: 5, title: "Global Impact", color: "from-orange-400 to-orange-600" },
-    { id: 6, title: "Future Vision", color: "from-indigo-400 to-indigo-600" },
-  ];
+  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    image: null as File | null,
+  });
+
+  const handleImageChange = (e: any) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({ ...formData, image: file });
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    if (!formData.title || !formData.image) {
+      return alert("Please fill all fields");
+    }
+
+    setLoading(true);
+
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("description", formData.description);
+    data.append("image", formData.image!);
+
+    const res = await fetch("/api/gallery", {
+      method: "POST",
+      body: data,
+    });
+
+    setLoading(false);
+
+    if (res.ok) {
+      alert("Gallery item uploaded successfully!");
+      setFormData({ title: "", description: "", image: null });
+      setPreview(null);
+    } else {
+      alert("Something went wrong!");
+    }
+  };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10">
+      {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-foreground mb-2">Gallery</h1>
-        <p className="text-muted-foreground">
-          Moments from our journey and achievements
-        </p>
+        <h1 className="text-3xl font-bold mb-2">Add Gallery Item</h1>
+        <p className="text-muted-foreground">Upload image with details</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {images.map((image) => (
-          <div
-            key={image.id}
-            className={`bg-gradient-to-br ${image.color} rounded-lg h-48 flex items-center justify-center shadow-sm hover:shadow-lg transition-shadow cursor-pointer group`}
-          >
-            <div className="text-center">
-              <p className="text-white font-semibold text-lg group-hover:scale-105 transition-transform">
-                {image.title}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+      {/* Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="p-6 bg-white rounded-xl shadow border space-y-4"
+      >
+        <input
+          type="text"
+          placeholder="Enter Image Title"
+          value={formData.title}
+          onChange={(e) =>
+            setFormData({ ...formData, title: e.target.value })
+          }
+          className="w-full border p-2 rounded-md"
+          required
+        />
+
+        <textarea
+          placeholder="Enter Description (optional)"
+          value={formData.description}
+          onChange={(e) =>
+            setFormData({ ...formData, description: e.target.value })
+          }
+          className="w-full border p-2 rounded-md"
+        />
+
+        {/* Image Upload */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="w-full border p-2 rounded-md"
+          required
+        />
+
+        {/* Image Preview */}
+        {preview && (
+          <img
+            src={preview}
+            alt="Preview"
+            className="w-40 h-40 object-cover rounded-md border"
+          />
+        )}
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+        >
+          {loading ? "Uploading..." : "Save Gallery Item"}
+        </button>
+      </form>
     </div>
   );
 }
