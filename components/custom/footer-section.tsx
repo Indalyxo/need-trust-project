@@ -13,7 +13,7 @@ export default function Footer() {
           {/* ✅ Logo added here */}
           <div className="mb-4">
             <Image
-              src="/Need Foundation trust.jpg"  // ✅ Correct: images in /public can be used like this
+              src="/Logo.jpg"  // ✅ Correct: images in /public can be used like this
               alt="Trust Logo"
               width={300}
               height={250}
