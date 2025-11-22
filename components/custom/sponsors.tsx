@@ -125,7 +125,7 @@ export function Sponsors() {
                   src={sponsor.imageUrl}
                   alt={sponsor.name}
                   fill
-                  className=" object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                  className="h-36 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                   unoptimized={sponsor.imageUrl.startsWith('/uploads/')}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
