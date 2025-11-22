@@ -36,74 +36,79 @@ export default function AboutPage() {
       </div>
 
       {/* Hero Section - Image Left, Content Right */}
-      <section className="max-w-6xl mx-auto px-4 py-16 pt-3.5">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Left - Image */}
-          <div className="flex justify-center">
-            <img
-              src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763358187/about_iw0wl9.jpg"
-              alt="Our team working together"
-              className="rounded-lg shadow-lg w-full max-w-xl object-cover "
-            />
-          </div>
+        <section className="max-w-6xl mx-auto px-4 py-16 pt-3.5">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
 
-          {/* Right - Content */}
-          <div className="space-y-6 text-xl w-full">
-            <div>
-              {/* <h2 className="text-3xl font-bold text-foreground mb-4"> 
-                Who We Are
-              </h2> */}
-              <p className="text-foreground/80 leading-relaxed mb-4">
-                We are a dedicated team committed to making a positive impact in
-                our community. With years of experience and passion for
-                excellence, we strive to deliver exceptional value to everyone
-                we serve.
-              </p>
-              <p className="text-foreground/80 leading-relaxed">
-                Our commitment to transparency, integrity, and innovation drives
-                everything we do. We believe in building lasting relationships
-                based on trust and mutual respect.
-              </p>
-            </div>
+    {/* Left - Image */}
+    <div className="h-[700px] md:h-[850px] grid grid-rows-2 gap-6">
+  <img
+    src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547383/about_kq6w4v.jpg"
+    className="w-full h-full object-cover rounded-lg shadow-lg"
+  />
 
-            {/* Trust Indicators */}
-            <div className="space-y-3 pt-4">
-              <div className="flex items-start gap-3">
-                <Shield className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-foreground">
-                    Trusted by Thousands
-                  </h3>
-                  <p className="text-sm text-foreground/70">
-                    Join our growing community of satisfied users
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Users className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-foreground">Expert Team</h3>
-                  <p className="text-sm text-foreground/70">
-                    Dedicated professionals with proven track records
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Heart className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-foreground">
-                    Community Focused
-                  </h3>
-                  <p className="text-sm text-foreground/70">
-                    Supporting causes that matter to us
-                  </p>
-                </div>
-              </div>
-            </div>
+  <img
+    src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547690/WhatsApp_Image_2025-11-17_at_10.06.48_ec861cb5-removebg-preview_v3smzw.png"
+    className="w-full h-full object-cover bg-white rounded-lg shadow-lg p-4"
+  />
+</div>
+
+
+    {/* Right - Content */}
+    <div className="space-y-6 text-center md:text-left text-xl w-full">
+      <div>
+
+        <h3 className="text-2xl font-bold">
+          Gomathy Akilandam
+          <p className="text-base text-gray-600">Trustee</p>
+        </h3>
+
+        <p className="text-foreground/80 leading-relaxed mb-6">
+          We are a dedicated team committed to making a positive impact in our community.
+          With years of experience and passion for excellence, we strive to deliver
+          exceptional value to everyone we serve.
+        </p>
+
+        <h3 className="text-2xl font-bold mt-6">
+          E.SA. Agilantam
+          <p className="text-base text-gray-600">Managing Trustee</p>
+        </h3>
+
+        <p className="text-foreground/80 leading-relaxed">
+          Our commitment to transparency, integrity, and innovation drives everything we do.
+          We believe in building lasting relationships based on trust and mutual respect.
+        </p>
+      </div>
+
+      {/* Trust Indicators */}
+      <div className="space-y-4 pt-4 text-left md:text-left">
+        <div className="flex items-start gap-3">
+          <Shield className="w-6 h-6 text-primary flex-shrink-0" />
+          <div>
+            <h3 className="font-semibold text-foreground">Trusted by Thousands</h3>
+            <p className="text-sm text-foreground/70">Join our growing community of satisfied users</p>
           </div>
         </div>
-      </section>
 
+        <div className="flex items-start gap-3">
+          <Users className="w-6 h-6 text-primary flex-shrink-0" />
+          <div>
+            <h3 className="font-semibold text-foreground">Expert Team</h3>
+            <p className="text-sm text-foreground/70">Dedicated professionals with proven track records</p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <Heart className="w-6 h-6 text-primary flex-shrink-0" />
+          <div>
+            <h3 className="font-semibold text-foreground">Community Focused</h3>
+            <p className="text-sm text-foreground/70">Supporting causes that matter to us</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
       {/* Mission & Vision Section */}
       <section className="bg-secondary/5 py-16">
         <div className="max-w-6xl mx-auto px-4">
