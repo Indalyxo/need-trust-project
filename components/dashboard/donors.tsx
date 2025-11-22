@@ -254,6 +254,9 @@ export default function DonorsSection() {
                     Transaction
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Image Proof
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -286,6 +289,18 @@ export default function DonorsSection() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">{donation.transactionId}</div>
                     </td>
+<td className="px-6 py-4 whitespace-nowrap">
+  {donation.proofImageUrl ? (
+    <button
+      onClick={() => window.open(donation.proofImageUrl, '_blank')}
+      className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    >
+      View Image
+    </button>
+  ) : (
+    <span className="text-sm text-gray-500">No image</span>
+  )}
+</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(donation.status)}`}>
                         {getStatusIcon(donation.status)}
