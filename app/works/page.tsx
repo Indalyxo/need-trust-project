@@ -50,6 +50,8 @@ const impacts = [
     icon: <Award className="w-6 h-6" />,
     stats: { value: "10,000+", label: "Environment" },
   },
+  
+
 ];
 
 export default function ServicesSection() {
@@ -233,9 +235,8 @@ export default function ServicesSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
                   viewport={{ amount: 0.3, once: true }}
-                  className={`flex flex-col md:flex-row ${
-                    i % 2 !== 0 ? "md:flex-row-reverse" : ""
-                  } items-center gap-10 md:gap-16`}
+                  className={`flex flex-col md:flex-row ${i % 2 !== 0 ? "md:flex-row-reverse" : ""
+                    } items-center gap-10 md:gap-16`}
                 >
                   {/* Text Section */}
                   <div className="md:w-1/2 space-y-6">
@@ -271,24 +272,24 @@ export default function ServicesSection() {
                   </div>
 
                   {/* Image Section */}
-                <motion.div
-  whileHover={{ scale: 1.03, rotateY: 2 }}
-  transition={{ duration: 0.4 }}
-  className="md:w-1/2 relative group"
->
-  {/* <div className="relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-100 bg-white"> */}
-  <img
-    src={impact.image}
-    alt={impact.title}
-    className="w-full h-80 md:h-96 object-contain object-cover rounded-2xl"
-  />
-{/* </div> */}
+                  <motion.div
+                    whileHover={{ scale: 1.03, rotateY: 2 }}
+                    transition={{ duration: 0.4 }}
+                    className="md:w-1/2 relative group"
+                  >
+                    {/* <div className="relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-100 bg-white"> */}
+                    <img
+                      src={impact.image}
+                      alt={impact.title}
+                      className="w-full h-80 md:h-96 object-contain object-cover rounded-2xl"
+                    />
+                    {/* </div> */}
 
 
-  {/* Decorative Elements */}
-  <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
-  <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
-</motion.div>
+                    {/* Decorative Elements */}
+                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
+                    <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
+                  </motion.div>
 
                 </motion.div>
               ))}
