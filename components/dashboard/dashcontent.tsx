@@ -5,6 +5,7 @@ import ImpactSection from "./impact";
 import SponsorsSection from "./sponsers";
 import GallerySection from "./gallery";
 import DonorsSection from "./donors";
+import CertificateSection from "./certificates";
 
 interface DashboardContentProps {
   activeSection: string;
@@ -21,6 +22,7 @@ export default function DashboardContent({
         {activeSection === "sponsors" && <SponsorsSection />}
         {activeSection === "gallery" && <GallerySection />}
         {activeSection === "donors" && <DonorsSection />}
+        {activeSection === "certificates" && <CertificateSection />}
       </div>
     </main>
   );
