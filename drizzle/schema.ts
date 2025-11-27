@@ -54,3 +54,12 @@ export const gallery = pgTable("gallery", {
     .defaultNow()
     .notNull(),
 });
+
+
+export const certificates = pgTable("certificates", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  image: text("image").notNull(),
+  createdAt: timestamp("created_at").defaultNow()
+});

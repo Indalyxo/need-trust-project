@@ -26,6 +26,7 @@ const menuItems = [
   { id: "sponsors", label: "Sponsors", icon: Handshake },
   { id: "gallery", label: "Gallery", icon: GalleryHorizontal },
   { id: "donors", label: "Donors", icon: HandHeart },
+  { id: "certificates", label: "Certificates", icon: LogOut },
 ];
 
 export default function Sidebar({
