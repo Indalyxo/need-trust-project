@@ -41,21 +41,33 @@ export default function AboutPage() {
 
     {/* Left - Image */}
     <div className="h-[700px] md:h-[850px] grid grid-rows-2 gap-6">
+      <img
+    src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547690/WhatsApp_Image_2025-11-17_at_10.06.48_ec861cb5-removebg-preview_v3smzw.png"
+    className="w-full h-full object-cover bg-white rounded-lg shadow-lg p-4"
+  />  
   <img
     src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547383/about_kq6w4v.jpg"
     className="w-full h-full object-cover rounded-lg shadow-lg"
   />
 
-  <img
-    src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547690/WhatsApp_Image_2025-11-17_at_10.06.48_ec861cb5-removebg-preview_v3smzw.png"
-    className="w-full h-full object-cover bg-white rounded-lg shadow-lg p-4"
-  />
+  
 </div>
 
 
     {/* Right - Content */}
     <div className="space-y-6 text-center md:text-left text-xl w-full">
       <div>
+         <h3 className="text-2xl font-bold mt-6">
+          E.SA. Agilantam
+          <p className="text-base text-gray-600 mb-7">Managing Trustee</p>
+        </h3>
+
+        <p className="text-foreground/80 leading-relaxed mb-40">
+          Our commitment to transparency, integrity, and innovation drives everything we do.
+          We believe in building lasting relationships based on trust and mutual respect.
+          Our commitment to transparency, integrity, and innovation drives everything we do.
+          We believe in building lasting relationships based on trust and mutual respect.
+        </p>
 
         <h3 className="text-2xl font-bold">
           Gomathy Akilandam
@@ -66,16 +78,6 @@ export default function AboutPage() {
           We are a dedicated team committed to making a positive impact in our community.
           With years of experience and passion for excellence, we strive to deliver
           exceptional value to everyone we serve.
-        </p>
-
-        <h3 className="text-2xl font-bold mt-6">
-          E.SA. Agilantam
-          <p className="text-base text-gray-600">Managing Trustee</p>
-        </h3>
-
-        <p className="text-foreground/80 leading-relaxed">
-          Our commitment to transparency, integrity, and innovation drives everything we do.
-          We believe in building lasting relationships based on trust and mutual respect.
         </p>
       </div>
 
