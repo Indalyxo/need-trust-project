@@ -44,3 +44,19 @@ export async function POST(req: Request) {
     );
   }
 }
+
+
+export async function GET() {
+  try {
+    const allCertificates = await db.select().from(certificates).orderBy(certificates.id);
+
+    return NextResponse.json({ success: true, data: allCertificates });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { success: false, message: "Error fetching certificates" },
+      { status: 500 }
+    );
+  }
+}
+
