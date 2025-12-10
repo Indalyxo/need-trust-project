@@ -40,7 +40,7 @@ export default function AboutPage() {
   <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
 
     {/* Left - Image */}
-    <div className="h-[700px] md:h-[850px] grid grid-rows-2 gap-6">
+    <div className="h-[700px] md:h-[1250px] grid grid-rows-2 gap-6">
       <img
     src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547690/WhatsApp_Image_2025-11-17_at_10.06.48_ec861cb5-removebg-preview_v3smzw.png"
     className="w-full h-full object-cover bg-white rounded-lg shadow-lg p-4"
@@ -57,18 +57,28 @@ export default function AboutPage() {
     {/* Right - Content */}
     <div className="space-y-6 text-center md:text-left text-xl w-full">
       <div>
-         <h3 className="text-2xl font-bold mt-6">
-          E.SA. Agilantam
-          <p className="text-base text-gray-600 mb-7">Managing Trustee</p>
-        </h3>
+          <h3 className="text-2xl font-bold mt-6">
+                E.SA. Agilantam
+                <p className="text-base text-gray-600">Managing Trustee</p>
+              </h3>
 
-        <p className="text-foreground/80 leading-relaxed mb-40">
-          Our commitment to transparency, integrity, and innovation drives everything we do.
-          We believe in building lasting relationships based on trust and mutual respect.
-          Our commitment to transparency, integrity, and innovation drives everything we do.
-          We believe in building lasting relationships based on trust and mutual respect.
-        </p>
+              <p className="text-foreground/80 leading-relaxed">
+                <h3 className="text-2xl font-bold mt-6">Academie Background</h3>
+                M.Phil (Entrepreneurship) Madurai Kamaraj University.<br />
+                FDP (Entrepreneurship) EDI Ahmedabad.<br />
+                MBA-Thiyagarajar School of Management.<br />
+                BBA-Sourashtra College.<br />
 
+              </p>
+              <p className="text-foreground/80 leading-relaxed mb-6">
+                <h3 className="text-2xl font-bold mt-6">Skills</h3>
+                
+                •	Completed Mediation Training and Certified Mediator<br/>
+                •	Motivated professional with an experience in Entrepreneurship Development, Corporate<br/>
+                •	Training, Employee Development, Customer service, Sales, New Business Development experience in the various Industries.<br/>
+                •	Ability to make a positive impact in any business environment that has been demonstrated by my employment record.<br/>
+
+              </p>
         <h3 className="text-2xl font-bold">
           Gomathy Akilandam
           <p className="text-base text-gray-600">Trustee</p>

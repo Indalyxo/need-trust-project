@@ -6,22 +6,22 @@ import { motion } from "framer-motion";
 const impactStats = [
   {
     icon: "restaurant",
-    number: "4mn+",
-    label: "Number of meals provided",
+    // number: "4mn+",
+    label: "meals provided ",
   },
   {
     icon: "groups",
-    number: "90000+",
-    label: "Number of Migrants Supported",
+    // number: "90000+",
+    label: " Migrants Supported",
   },
   {
     icon: "airwave",
-    number: "300+",
+    // number: "300+",
     label: "Oxygen Concentrators",
   },
   {
     icon: "child_care",
-    number: "100+",
+    // number: "100+",
     label: "Paediatric Support Initiatives",
   },
 ];
@@ -76,12 +76,12 @@ export default function ImpactSection() {
                   </span>
                 </div>
               </div>
-              <p className="text-5xl sm:text-6xl font-bold text-gray-900 mb-2">
+              {/* <p className="text-5xl sm:text-6xl font-bold text-gray-900 mb-2">
                 {item.number}
-              </p>
+              </p>*/}
               <p className="text-gray-600 text-sm leading-relaxed">
                 {item.label}
-              </p>
+              </p> 
             </div>
           ))}
         </div>

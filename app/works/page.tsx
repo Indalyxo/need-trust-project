@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import Navbar from "../../components/custom/navigation-menu";
-import { ExternalLink, TrendingUp, Users, Heart, Award } from "lucide-react";
+import { ExternalLink, TrendingUp, Users, Heart, Award, GraduationCap, } from "lucide-react";
 import Footer from "@/components/custom/footer-section";
 
 // --- Services Data ---
@@ -50,8 +50,17 @@ const impacts = [
     icon: <Award className="w-6 h-6" />,
     stats: { value: "10,000+", label: "Environment" },
   },
+    {
+    title: "NIP ",
+    description:
+      "In India, a government-backed pipeline of social and economic infrastructure projects",
+    // tagline: "Result: 70% improvement in preventive care awareness",
+    image:
+      "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1765294175/WhatsApp_Image_2025-11-12_at_19.44.43_37752e05_ztkbde.jpg",
+    icon: <GraduationCap className="w-6 h-6" />,
+    stats: { value: "100+", label: "NIP" },
+  },
   
-
 ];
 
 export default function ServicesSection() {

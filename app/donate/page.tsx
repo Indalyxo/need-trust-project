@@ -6,10 +6,8 @@ import {
   Upload,
   Heart,
   QrCode,
-  CheckCircle2,
   X,
   Mail,
-  CreditCard,
   FileText,
 } from "lucide-react";
 import CustomButton from "@/components/custom/custom-button";
@@ -34,20 +32,17 @@ export default function Payment() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // cleanup for blob URLs
   useEffect(() => {
     return () => {
       if (previewUrl?.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
 
-  // Input handler
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // File upload handler
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -69,7 +64,6 @@ export default function Payment() {
     setError(null);
   };
 
-  // Remove file
   const removeImage = () => {
     if (previewUrl?.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     setProofFile(null);
@@ -80,13 +74,14 @@ export default function Payment() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation
-    if (!formData.name.trim() ||
-        !formData.email.trim() ||
-        !formData.amount.trim() ||
-        !formData.panNumber.trim() ||
-        !formData.transactionId.trim() ||
-        !proofFile) {
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.amount.trim() ||
+      !formData.panNumber.trim() ||
+      !formData.transactionId.trim() ||
+      !proofFile
+    ) {
       setError("Please fill all fields & upload screenshot");
       return;
     }
@@ -107,7 +102,6 @@ export default function Payment() {
     setIsSubmitting(true);
 
     try {
-      // Upload screenshot first
       const fileFormData = new FormData();
       fileFormData.append("file", proofFile);
 
@@ -120,7 +114,6 @@ export default function Payment() {
 
       const uploadData = await uploadRes.json();
 
-      // Create donation record
       const donateRes = await fetch("/api/donations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -135,11 +128,9 @@ export default function Payment() {
         throw new Error(errData.error || "Error saving donation");
       }
 
-      // success UI
       setSuccess("Donation submitted successfully! We will verify and contact you.");
       setTimeout(() => setSuccess(null), 5000);
 
-      // Reset form
       setFormData({
         name: "",
         email: "",
@@ -159,51 +150,53 @@ export default function Payment() {
   return (
     <>
       <Navbar />
-      <section className="py-10 px-4 lg:px-20 bg-gradient-to-br from-orange-50 to-yellow-50 min-h-screen">
+
+      <section className="py-10 px-4 lg:px-20 bg-gradient-to-br from-orange-50 to-yellow-50 min-h-screen max-w-full overflow-x-hidden">
 
         {/* TOP Title */}
-        <div className="text-center mb-14">
-          <div className="inline-flex items-center px-4 py-2 bg-orange-100 rounded-full mb-4">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center px-4 py-2 bg-orange-100 rounded-full mb-3">
             <Heart className="w-5 h-5 text-orange-600 mr-2" />
             <span className="text-sm font-semibold text-orange-600">
               Support Our Mission
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
             Make a Donation
           </h1>
 
-          <p className="text-gray-700 mt-4 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-700 mt-3 text-base md:text-lg max-w-2xl mx-auto">
             Every contribution matters. Scan the QR or fill the form to donate.
           </p>
         </div>
 
         {/* Main Grid */}
-        <div className="grid lg:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10">
+
           {/* QR Box */}
-          <div className="bg-white p-8 rounded-2xl shadow-xl border border-orange-100">
-            <div className="flex items-center gap-3 mb-6">
+          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-orange-100">
+            <div className="flex items-center gap-3 mb-5">
               <div className="p-2 bg-orange-500 rounded-lg">
                 <QrCode className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900">Scan to Donate</h3>
+              <h3 className="text-xl md:text-2xl font-semibold text-gray-900">Scan to Donate</h3>
             </div>
 
             <motion.div
-              className="bg-orange-50 border-2 border-dashed border-orange-200 rounded-xl p-6 flex justify-center"
+              className="bg-orange-50 border-2 border-dashed border-orange-200 rounded-xl p-6 flex justify-center items-center"
               whileHover={{ scale: 1.02 }}
             >
               {showQR ? (
                 <img
-                  src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763184799/Screenshot_2025-11-15_110257_vuttqc.png"
+                  src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1765295113/qr-code_cd4nlg.webp"
                   alt="QR"
-                  className="w-72 h-72 rounded-xl shadow-lg"
+                  className="w-full max-w-[260px] h-auto rounded-xl shadow-lg mx-auto"
                 />
               ) : (
                 <div className="text-center">
-                  <QrCode className="w-24 h-24 text-orange-300 mx-auto mb-4" />
-                  <p className="text-gray-500">Click to show QR Code</p>
+                  <QrCode className="w-20 h-20 text-orange-300 mx-auto mb-4" />
+                  <p className="text-gray-500 text-sm md:text-base">Tap to show QR Code</p>
                 </div>
               )}
             </motion.div>
@@ -217,14 +210,15 @@ export default function Payment() {
           </div>
 
           {/* Donation Form */}
-          <div className="bg-white p-8 rounded-2xl shadow-xl border border-orange-100">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-orange-100">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Heart className="w-6 h-6 text-orange-600" />
               Donation Details
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Name */}
+
+              {/* Full Name */}
               <div>
                 <label className="font-semibold text-gray-700 text-sm mb-2 block">Full Name</label>
                 <input
@@ -233,7 +227,7 @@ export default function Payment() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Full Name (as per PAN)"
-                  className="w-full px-4 py-3 border rounded-lg border-orange-200"
+                  className="w-full px-4 py-3 border rounded-lg border-orange-200 focus:ring-2 focus:ring-orange-300"
                   required
                 />
               </div>
@@ -249,7 +243,7 @@ export default function Payment() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="example@gmail.com"
-                    className="w-full pl-10 py-3 border rounded-lg border-orange-200"
+                    className="w-full pl-10 py-3 border rounded-lg border-orange-200 focus:ring-2 focus:ring-orange-300"
                     required
                   />
                 </div>
@@ -266,13 +260,13 @@ export default function Payment() {
                     value={formData.amount}
                     onChange={handleChange}
                     placeholder="0.00"
-                    className="w-full pl-10 py-3 border rounded-lg border-orange-200"
+                    className="w-full pl-10 py-3 border rounded-lg border-orange-200 focus:ring-2 focus:ring-orange-300"
                     required
                   />
                 </div>
               </div>
 
-              {/* PAN */}
+              {/* PAN Number */}
               <div>
                 <label className="font-semibold text-gray-700 text-sm mb-2 block">PAN Card Number</label>
                 <input
@@ -282,12 +276,12 @@ export default function Payment() {
                   onChange={handleChange}
                   maxLength={10}
                   placeholder="ABCDE1234F"
-                  className="w-full px-4 py-3 border rounded-lg border-orange-200 uppercase"
+                  className="w-full px-4 py-3 border rounded-lg border-orange-200 uppercase focus:ring-2 focus:ring-orange-300"
                   required
                 />
               </div>
 
-              {/* Transaction Id */}
+              {/* Transaction ID */}
               <div>
                 <label className="font-semibold text-gray-700 text-sm mb-2 block">Transaction ID</label>
                 <div className="relative">
@@ -298,27 +292,30 @@ export default function Payment() {
                     value={formData.transactionId}
                     onChange={handleChange}
                     placeholder="UPI Transaction ID"
-                    className="w-full pl-10 py-3 border rounded-lg border-orange-200"
+                    className="w-full pl-10 py-3 border rounded-lg border-orange-200 focus:ring-2 focus:ring-orange-300"
                     required
                   />
                 </div>
               </div>
 
-              {/* Image Upload */}
+              {/* Screenshot Upload */}
               <div>
                 <label className="font-semibold text-gray-700 text-sm mb-2 block">Transaction Screenshot</label>
 
                 {!previewUrl ? (
                   <div
-                    className="border-2 border-dashed border-orange-300 rounded-xl p-6 cursor-pointer bg-orange-50 text-center"
+                    className="border-2 border-dashed border-orange-300 rounded-xl p-6 cursor-pointer bg-orange-50 text-center max-w-full"
                     onClick={() => fileInputRef.current?.click()}
                   >
                     <Upload className="w-6 h-6 mx-auto text-orange-500 mb-2" />
-                    <p>Upload Screenshot (PNG/JPG)</p>
+                    <p className="text-gray-600 text-sm">Upload Screenshot (PNG/JPG)</p>
                   </div>
                 ) : (
                   <div className="relative">
-                    <img src={previewUrl} className="w-full rounded-xl border border-orange-200" />
+                    <img
+                      src={previewUrl}
+                      className="w-full rounded-xl border border-orange-200 max-h-[320px] object-cover"
+                    />
                     <button
                       type="button"
                       onClick={removeImage}
@@ -338,14 +335,14 @@ export default function Payment() {
                 />
               </div>
 
-              {/* Error */}
+              {/* ERROR */}
               {error && (
                 <div className="p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-sm">
                   {error}
                 </div>
               )}
 
-              {/* Success */}
+              {/* SUCCESS */}
               {success && (
                 <div className="p-3 bg-green-100 border border-green-300 text-green-700 rounded-lg text-sm">
                   {success}
@@ -359,8 +356,10 @@ export default function Payment() {
               >
                 {isSubmitting ? "Submitting..." : "Confirm Donation"}
               </button>
+
             </form>
           </div>
+
         </div>
       </section>
     </>
