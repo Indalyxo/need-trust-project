@@ -10,18 +10,10 @@ const links = [
   { label: "About Us", href: "/about" },
   { label: "Latest News", href: "/latestnews" },
 
-  // Dropdown parent (Works)
-  {
-    label: "Works",
-    href: "/works",
-    dropdown: [
-      { label: "Service Projects", href: "/works/service-projects" },
-      { label: "Education Support", href: "/works/education" },
-      { label: "Women Empowerment", href: "/works/women" },
-      { label: "Medical Assistance", href: "/works/medical" },
-      { label: "Awareness Programs", href: "/works/awareness" },
-    ],
-  },
+  
+    { label: "Works", href: "/works" },
+    
+  ,
 
   { label: "Cerificates", href: "/cerificates" },
   { label: "Gallery", href: "/gallery" },
@@ -44,7 +36,7 @@ function NavigationMenu() {
   const handleDonate = () => router.push("/donate");
 
   return (
-    <nav className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+    <nav className="w-full bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           
@@ -63,7 +55,6 @@ function NavigationMenu() {
             {links.map((link) => (
               <li key={link.label} className="relative group">
 
-                {/* If dropdown exists */}
                 {link.dropdown ? (
                   <>
                     <span
@@ -83,7 +74,6 @@ function NavigationMenu() {
                       <ChevronDown className="w-4 h-4" />
                     </span>
 
-                    {/* Desktop Dropdown Menu */}
                     {desktopDropdownOpen === link.label && (
                       <div className="absolute top-12 left-0 w-56 bg-white shadow-lg border border-gray-200 rounded-lg py-2 z-50 animate-fadeIn">
                         {link.dropdown.map((item) => (
@@ -128,7 +118,7 @@ function NavigationMenu() {
             <CustomButton onClick={handleDonate}>Donate Now</CustomButton>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
@@ -140,7 +130,7 @@ function NavigationMenu() {
 
       {/* ------------ MOBILE NAVIGATION ------------ */}
       <div
-        className={`lg:hidden overflow-hidden transition-all duration-300 
+        className={`lg:hidden overflow-hidden transition-all duration-300 z-50 relative
         ${mobileMenuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"}
       `}
       >
@@ -149,7 +139,6 @@ function NavigationMenu() {
           {links.map((link) => (
             <div key={link.label}>
               
-              {/* If dropdown exists */}
               {link.dropdown ? (
                 <>
                   <div
@@ -168,7 +157,6 @@ function NavigationMenu() {
                     />
                   </div>
 
-                  {/* Mobile Dropdown Items */}
                   <div
                     className={`overflow-hidden transition-all duration-300 ml-4
                     ${
@@ -189,7 +177,6 @@ function NavigationMenu() {
                   </div>
                 </>
               ) : (
-                /* Normal Mobile Link */
                 <a
                   onClick={() => handleLinkClick(link)}
                   className={`block px-4 py-3 rounded-lg text-base font-medium cursor-pointer
@@ -217,10 +204,10 @@ function NavigationMenu() {
         </div>
       </div>
 
-      {/* Backdrop */}
+      {/* Backdrop (fixed) */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
