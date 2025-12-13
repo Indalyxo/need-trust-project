@@ -2,14 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import {
-  Upload,
-  Heart,
-  QrCode,
-  X,
-  Mail,
-  FileText,
-} from "lucide-react";
+import { Upload, Heart, QrCode, X, Mail, FileText } from "lucide-react";
 import CustomButton from "@/components/custom/custom-button";
 import Navbar from "@/components/custom/navigation-menu";
 
@@ -157,9 +150,7 @@ export default function Payment() {
         <div className="text-center mb-12">
           <div className="inline-flex items-center px-4 py-2 bg-orange-100 rounded-full mb-3">
             <Heart className="w-5 h-5 text-orange-600 mr-2" />
-            <span className="text-sm font-semibold text-orange-600">
-              Support Our Mission
-            </span>
+            <span className="text-sm font-semibold text-orange-600">Support Our Mission</span>
           </div>
 
           <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent">
@@ -172,7 +163,7 @@ export default function Payment() {
         </div>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6 md:gap-10">
 
           {/* QR Box */}
           <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-orange-100">
@@ -184,14 +175,14 @@ export default function Payment() {
             </div>
 
             <motion.div
-              className="bg-orange-50 border-2 border-dashed border-orange-200 rounded-xl p-6 flex justify-center items-center"
+              className="w-full bg-orange-50 border-2 border-dashed border-orange-200 rounded-xl p-6 flex justify-center items-center"
               whileHover={{ scale: 1.02 }}
             >
               {showQR ? (
                 <img
                   src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1765295113/qr-code_cd4nlg.webp"
                   alt="QR"
-                  className="w-full max-w-[260px] h-auto rounded-xl shadow-lg mx-auto"
+                  className="w-full max-w-[260px] md:max-w-[320px] lg:max-w-[400px] h-auto rounded-xl shadow-lg mx-auto"
                 />
               ) : (
                 <div className="text-center">
@@ -210,14 +201,13 @@ export default function Payment() {
           </div>
 
           {/* Donation Form */}
-          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-orange-100">
+          <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-orange-100 w-full">
             <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <Heart className="w-6 h-6 text-orange-600" />
               Donation Details
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-
               {/* Full Name */}
               <div>
                 <label className="font-semibold text-gray-700 text-sm mb-2 block">Full Name</label>
@@ -301,17 +291,16 @@ export default function Payment() {
               {/* Screenshot Upload */}
               <div>
                 <label className="font-semibold text-gray-700 text-sm mb-2 block">Transaction Screenshot</label>
-
                 {!previewUrl ? (
                   <div
-                    className="border-2 border-dashed border-orange-300 rounded-xl p-6 cursor-pointer bg-orange-50 text-center max-w-full"
+                    className="border-2 border-dashed border-orange-300 rounded-xl p-6 cursor-pointer bg-orange-50 text-center w-full"
                     onClick={() => fileInputRef.current?.click()}
                   >
                     <Upload className="w-6 h-6 mx-auto text-orange-500 mb-2" />
                     <p className="text-gray-600 text-sm">Upload Screenshot (PNG/JPG)</p>
                   </div>
                 ) : (
-                  <div className="relative">
+                  <div className="relative w-full">
                     <img
                       src={previewUrl}
                       className="w-full rounded-xl border border-orange-200 max-h-[320px] object-cover"
@@ -325,7 +314,6 @@ export default function Payment() {
                     </button>
                   </div>
                 )}
-
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -335,14 +323,12 @@ export default function Payment() {
                 />
               </div>
 
-              {/* ERROR */}
+              {/* ERROR & SUCCESS */}
               {error && (
                 <div className="p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-sm">
                   {error}
                 </div>
               )}
-
-              {/* SUCCESS */}
               {success && (
                 <div className="p-3 bg-green-100 border border-green-300 text-green-700 rounded-lg text-sm">
                   {success}
@@ -356,10 +342,8 @@ export default function Payment() {
               >
                 {isSubmitting ? "Submitting..." : "Confirm Donation"}
               </button>
-
             </form>
           </div>
-
         </div>
       </section>
     </>

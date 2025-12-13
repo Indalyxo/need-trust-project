@@ -6,150 +6,117 @@ import Footer from "../../components/custom/footer-section";
 export default function AboutPage() {
   return (
     
-    <main id="about-us" className="min-h-screen bg-background ">
-      <Navbar/>
-      {/* Header */}
-      {/* <div className="bg-gradient-to-b from-primary/10 to-background py-16 text-center">
-        <h1 className="text-5xl font-bold text-foreground mb-2">About Us</h1>
-      </div> */}
-
-      <div className="text-center mb-12 mt-15">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
+    <main id="about-us" className="min-h-screen bg-background mt-10 px-4">
+<Navbar />
+      {/* ---------- HEADER ---------- */}
+      <div className="text-center mb-12">
+        {/* <div className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 rounded-full mb-6">
           <Heart className="w-4 h-4 text-white" />
-          <span className="text-sm font-semibold text-white uppercase tracking-wider">
-            About Us
-          </span>
-        </div>
+          <span className="text-white font-semibold">About Us</span>
+        </div> */}
 
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900">
-          Who We Are
-          <br />
-          <span className="bg-clip-text text-transparent bg-linear-to-tl mt-4 from-orange-600 via-orange-500 to-yellow-400 ">
-            Our Story
-          </span>
+        <h2 className="text-4xl font-bold">
+          Who We Are <br />
+          <span className="text-orange-500">Our Story</span>
         </h2>
-
-        <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-          Discover our journey, values, and commitment to making a difference in
-          the world.
-        </p>
       </div>
 
-      {/* Hero Section - Image Left, Content Right */}
-        <section className="max-w-6xl mx-auto px-4 py-16 pt-3.5">
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      {/* ---------- PROFILE SECTION ---------- */}
+      <section className="max-w-6xl mx-auto space-y-16">
 
-    {/* Left - Image */}
-    <div className="h-[700px] md:h-[1250px] grid grid-rows-2 gap-6">
-      <img
-    src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547690/WhatsApp_Image_2025-11-17_at_10.06.48_ec861cb5-removebg-preview_v3smzw.png"
-    className="w-full h-full object-cover bg-white rounded-lg shadow-lg p-4"
-  />  
-  <img
-    src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547383/about_kq6w4v.jpg"
-    className="w-full h-full object-cover rounded-lg shadow-lg"
-  />
+        {/* ===== PROFILE 1 ===== */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 
-  
-</div>
-
-
-    {/* Right - Content */}
-    <div className="space-y-6 text-center md:text-left text-xl w-full">
-      <div>
-          <h3 className="text-2xl font-bold mt-6">
-                E.SA. Agilantam
-                <p className="text-base text-gray-600">Managing Trustee</p>
-              </h3>
-
-              <p className="text-foreground/80 leading-relaxed">
-                <h3 className="text-2xl font-bold mt-6">Academie Background</h3>
-                M.Phil (Entrepreneurship) Madurai Kamaraj University.<br />
-                FDP (Entrepreneurship) EDI Ahmedabad.<br />
-                MBA-Thiyagarajar School of Management.<br />
-                BBA-Sourashtra College.<br />
-
-              </p>
-              <p className="text-foreground/80 leading-relaxed mb-6">
-                <h3 className="text-2xl font-bold mt-6">Skills</h3>
-                
-                •	Completed Mediation Training and Certified Mediator<br/>
-                •	Motivated professional with an experience in Entrepreneurship Development, Corporate<br/>
-                •	Training, Employee Development, Customer service, Sales, New Business Development experience in the various Industries.<br/>
-                •	Ability to make a positive impact in any business environment that has been demonstrated by my employment record.<br/>
-
-              </p>
-        <h3 className="text-2xl font-bold">
-          Gomathy Akilandam
-          <p className="text-base text-gray-600">Trustee</p>
-        </h3>
-
-        <p className="text-foreground/80 leading-relaxed mb-6">
-          We are a dedicated team committed to making a positive impact in our community.
-          With years of experience and passion for excellence, we strive to deliver
-          exceptional value to everyone we serve.
-        </p>
-      </div>
-
-      {/* Trust Indicators */}
-      <div className="space-y-4 pt-4 text-left md:text-left">
-        <div className="flex items-start gap-3">
-          <Shield className="w-6 h-6 text-primary flex-shrink-0" />
-          <div>
-            <h3 className="font-semibold text-foreground">Trusted by Thousands</h3>
-            <p className="text-sm text-foreground/70">Join our growing community of satisfied users</p>
+          {/* IMAGE 1 */}
+          <div className="order-1">
+            <img
+              src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547690/WhatsApp_Image_2025-11-17_at_10.06.48_ec861cb5-removebg-preview_v3smzw.png"
+              alt="E.SA. Agilantam"
+              className="  w-full 
+    max-w-[260px] 
+    md:max-w-[380px] 
+    lg:max-w-[420px]
+    rounded-lg 
+    shadow-md 
+    mx-auto 
+    md:mx-0"
+            />
           </div>
-        </div>
 
-        <div className="flex items-start gap-3">
-          <Users className="w-6 h-6 text-primary flex-shrink-0" />
-          <div>
-            <h3 className="font-semibold text-foreground">Expert Team</h3>
-            <p className="text-sm text-foreground/70">Dedicated professionals with proven track records</p>
-          </div>
-        </div>
+          {/* TEXT 1 */}
+          <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
 
-        <div className="flex items-start gap-3">
-          <Heart className="w-6 h-6 text-primary flex-shrink-0" />
-          <div>
-            <h3 className="font-semibold text-foreground">Community Focused</h3>
-            <p className="text-sm text-foreground/70">Supporting causes that matter to us</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-  </div>
-</section>
-      {/* Mission & Vision Section */}
-      <section className="bg-secondary/5 py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          {/* <h2 className="text-4xl font-bold text-center text-foreground mb-12">
-            Our Vision & Mission
-          </h2> */}
+            <h3 className="text-2xl font-bold">E.SA. Agilantam</h3>
+            <p className="text-gray-600">Managing Trustee</p>
 
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-tl from-orange-600 via-orange-500 to-yellow-400 rounded-full mb-6">
-              <Telescope className="w-4 h-4 text-white" />
-              <span className="text-sm font-semibold text-white uppercase tracking-wider">
-                Vision & Mission
-              </span>
+            <div className="text-foreground/80">
+              <h4 className="text-xl font-semibold mb-2">
+                Academic Background
+              </h4>
+              <p><b>M.Phil</b> – Entrepreneurship</p>
+              <p><b>FDP</b> – Entrepreneurship EDI Ahmedabad</p>
+              <p><b>MBA </b>– Thiagarajar School of Management</p>
+              <p><b>BBA </b>– Sourashtra College</p>
             </div>
+            <div className="text-foreground/80">
+              <h4 className="text-xl font-semibold mb-2">
+                Skills
+              </h4>
+              <ul className="list-disc pl-5 space-y-2 text-foreground/80">
+                <li>Completed Mediation Training and Certified Mediator</li>
+                <li>
+                  Motivated professional with experience in Entrepreneurship Development,
+                  Corporate
+                </li>
+                <li>Training, Employee Development, Customer Service, Sales, and New
+                  Business Development across various industries.</li>
+                <li>
+                  Ability to make a positive impact in any business environment, demonstrated
+                  through employment record.
+                </li>
+              </ul>
 
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-gray-800 to-gray-900">
-              Vision & Mission That
-              <br />
-              <span className="bg-clip-text text-transparent bg-linear-to-tl mt-4 from-orange-600 via-orange-500 to-yellow-400 ">
-                Inspires
-              </span>
-            </h2>
 
-            <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Our vision is to create a world where innovation and compassion
-              come together to drive meaningful change. 
-            </p>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        </div>
+
+        {/* ===== PROFILE 2 ===== */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+
+          {/* IMAGE 2 */}
+          <div className="order-1">
+            <img
+              src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547383/about_kq6w4v.jpg"
+              alt="Team"
+              className="  w-full 
+    max-w-[260px] 
+    md:max-w-[380px] 
+    lg:max-w-[420px]
+    rounded-lg 
+    shadow-md 
+    mx-auto 
+    md:mx-0"
+            />
+          </div>
+
+          {/* TEXT 2 */}
+          <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
+
+
+            <h3 className="text-2xl font-bold">Gomathy Akilandam</h3>
+            <p className="text-gray-600">Trustee</p>
+
+            <p className="text-foreground/80 leading-relaxed">
+              We are a dedicated team committed to creating positive impact
+              through meaningful service.
+            </p>
+
+          </div>
+          
+        </div>
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-7">
             {/* Mission Card */}
             <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3 mb-4">
@@ -191,7 +158,7 @@ export default function AboutPage() {
              
             </div>
           </div>
-        </div>
+
       </section>
       <Footer/>
 

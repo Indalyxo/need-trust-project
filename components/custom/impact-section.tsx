@@ -30,7 +30,7 @@ export default function ImpactSection() {
   return (
     <section
       id="impact"
-      className="relative py-20 px-4 sm:px-6 lg:py-28 lg:px-8 bg-gray-50 overflow-hidden"
+      className="relative py-20 px-4 sm:px-6 lg:py-28 lg:px-8 bg-gray-50 overflow-hidden "
     >
       <div className="text-center mb-12">
         <motion.div
@@ -63,7 +63,7 @@ export default function ImpactSection() {
 
       {/* Scrolling container */}
       <div className="overflow-hidden">
-        <div className="flex gap-8 animate-scroll-slow w-full">
+        <div className="flex gap-8 animate-scroll-slow w-full mb-7">
           {[...impactStats, ...impactStats].map((item, index) => (
             <div
               key={index}
