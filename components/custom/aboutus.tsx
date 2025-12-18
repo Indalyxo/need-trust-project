@@ -112,50 +112,68 @@ export default function AboutPage() {
             </p>
 
           </div>
-          
+
         </div>
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-7">
-            {/* Mission Card */}
-            <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-4">
-                {/* <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-7">
+          {/* Mission Card */}
+          <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-4">
+              {/* <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                   <span className="text-2xl font-bold text-primary">M</span>
                 </div> */}
-                <div className="border-b-2 border-orange-500">
-                  <h3 className="text-2xl font-bold text-foreground">
-                    Mission
-                  </h3>
-                </div>
+              <div className="border-b-2 border-orange-500">
+                <h3 className="text-2xl font-bold text-foreground">
+                  Mission
+                </h3>
               </div>
+            </div>
 
-              <p className="text-foreground/80 leading-relaxed">
-               Need Foundation Trust is an Inner Faith Organisation. All services should reach everyone. 
-             We strive to achieve the desired results by using resources properly both efficient
+            <p className="text-foreground/80 leading-relaxed">
+              Need Foundation Trust is an Inner Faith Organisation. All services should reach everyone.
+              We strive to achieve the desired results by using resources properly both efficient
               and effective manner.
               Our work standard should meet the highest level by fulfilling the objectives
-              </p>
-            
-            </div>
+            </p>
 
-            {/* Vision Card */}
-            <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-4">
-                {/* <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+          </div>
+
+          {/* Vision Card */}
+          <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-4">
+              {/* <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                   <span className="text-2xl font-bold text-primary">V</span>
                 </div> */}
-                <div className="border-b-2 border-orange-500">
-                  <h3 className="text-2xl font-bold text-foreground">Vision</h3>
-                </div>
+              <div className="border-b-2 border-orange-500">
+                <h3 className="text-2xl font-bold text-foreground">Vision</h3>
               </div>
-              <p className="text-foreground/80 leading-relaxed">
-                Need Foundation Trust focus on social consciousness and developing an organised society.
-               Our Vision is People Centric Charity Organisation and to build an outstanding social service 
-               to the society.We bring the best results in the society by implementing 
-               values in each stage of work. 
-              </p>
-             
             </div>
+            <p className="text-foreground/80 leading-relaxed">
+              Need Foundation Trust focus on social consciousness and developing an organised society.
+              Our Vision is People Centric Charity Organisation and to build an outstanding social service
+              to the society.We bring the best results in the society by implementing
+              values in each stage of work.
+            </p>
+
           </div>
+          {/* Values */}
+          <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-4">
+              {/* <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl font-bold text-primary">V</span>
+                </div> */}
+              <div className="border-b-2 border-orange-500">
+                <h3 className="text-2xl font-bold text-foreground">Value</h3>
+              </div>
+            </div>
+            <p className="text-foreground/80 leading-relaxed">
+              We Value rituals, which are the outer appearance. The inner value of us
+              Spirituality is TRUTH. That truth expresses not as mantras or slokas but as
+              values such as honesty, loyalty, reliability, etc.
+
+            </p>
+
+          </div>
+        </div>
 
       </section>
     </main>
