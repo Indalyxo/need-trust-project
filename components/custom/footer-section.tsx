@@ -31,7 +31,7 @@ export default function Footer() {
         </div>
 
         {/* QUICK LINKS */}
-        <div>
+        {/* <div>
           <h2 className="text-xl font-semibold text-white mb-4">
             Quick Links
           </h2>
@@ -40,6 +40,30 @@ export default function Footer() {
             <li>
               <a href="/about" className="hover:text-white transition">
                 About Us
+              </a>
+            </li>
+            <li>
+              <a href="/work" className="hover:text-white transition">
+                Works
+              </a>
+            </li>
+            <li>
+              <a href="/donate" className="hover:text-white transition">
+                Donate
+              </a>
+            </li>
+          </ul>
+        </div> */}
+        {/* Certificates */}
+         <div>
+          <h2 className="text-xl font-semibold text-white mb-4">
+            Certificates Quick Links
+          </h2>
+
+          <ul className="space-y-3 text-sm">
+            <li>
+              <a href="" className="hover:text-white transition">
+                Ers Certificates
               </a>
             </li>
             <li>

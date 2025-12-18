@@ -190,6 +190,7 @@ export default function Payment() {
                   <p className="text-gray-500 text-sm md:text-base">Tap to show QR Code</p>
                 </div>
               )}
+
             </motion.div>
 
             <CustomButton
@@ -198,6 +199,13 @@ export default function Payment() {
             >
               {showQR ? "Hide QR Code" : "Show QR Code"}
             </CustomButton>
+
+            <p className="text-gray-900 text-start mt-3 text-2xl max-w-2xl mx-auto gap-3">
+               <h4><b>A/C NO: 510101001939350</b></h4>
+              <b>IFSC CODE: UBIN0921017</b><br/>
+              <b>BANK: Union Bank of India </b><br />
+              <b>Branch : HighGround</b> <br />
+            </p>
           </div>
 
           {/* Donation Form */}

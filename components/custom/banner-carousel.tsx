@@ -28,8 +28,24 @@ export default function BannerCarousel() {
       subtitle: "Your Donation Can Save Lives",
       logo: "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763359201/donation_zo33wh.png",
       image:
-        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763367341/2_ufjeoz_se37wu.jpg",
+        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1766034727/5_vzjqui.jpg",
     },
+      {
+      title: "Need Trust Foundation",
+      subtitle: "Empowering Communities, Transforming Lives",
+      logo: "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763358914/trust_qbvmui.png",
+      image:
+        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1766034818/3_ukr9ea.jpg",
+    },
+    {
+      title: "Support Patients in Need",
+      subtitle: "Your Donation Can Save Lives",
+      logo: "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763359201/donation_zo33wh.png",
+      image:
+        "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1766035219/4_f0ukkz.jpg",
+    },
+    
+
   ];
 
   return (
