@@ -118,6 +118,12 @@ export default function Footer() {
           </h2>
 
           <div className="space-y-5 text-sm">
+             <div className="bg-gray-800/60 rounded-lg p-4">
+              <p className="text-white font-medium">
+                E.SA. Agilantam
+              </p>
+              <p className="text-gray-400">Managing Trustee</p>
+            </div>
             <div className="bg-gray-800/60 rounded-lg p-4">
               <p className="text-white font-medium">
                 Gomathy Akilandam
@@ -125,12 +131,7 @@ export default function Footer() {
               <p className="text-gray-400">Trustee</p>
             </div>
 
-            <div className="bg-gray-800/60 rounded-lg p-4">
-              <p className="text-white font-medium">
-                E.SA. Agilantam
-              </p>
-              <p className="text-gray-400">Managing Trustee</p>
-            </div>
+           
           </div>
         </div>
       </div>
