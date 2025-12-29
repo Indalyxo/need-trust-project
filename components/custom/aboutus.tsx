@@ -4,10 +4,10 @@ import { Heart } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <main id="about-us" className="min-h-screen bg-background mt-10 px-4">
+    <main id="about-us" className="bg-background mt-6 px-4">
 
       {/* ---------- HEADER ---------- */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-6">
         <div className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 rounded-full mb-6">
           <Heart className="w-4 h-4 text-white" />
           <span className="text-white font-semibold">About Us</span>
@@ -19,14 +19,49 @@ export default function AboutPage() {
         </h2>
       </div>
 
-      {/* ---------- PROFILE SECTION ---------- */}
-      <section className="max-w-6xl mx-auto space-y-16">
+       {/* ---------- PROFILE SECTION ---------- */}
+       <section className="max-w-6xl mx-auto">
+       <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="space-y-12">
+          {/* Our Origin */}
+          <section className="space-y-2">
+            <h3 className="text-3xl font-bold text-foreground text-orange-500">Our Origin</h3>
+            <div className="space-y-3 text-lg text-foreground/80 leading-relaxed">
+              <p>
+                <strong className="font-semibold text-foreground">Need Foundation Trust</strong> was established in{" "}
+                <strong className="font-semibold text-foreground">2005</strong> with the vision of creating a positive
+                impact
+              </p>
+              <p>It is an inner-faith, Not for Profit Organization</p>
+              <p>NEED believes in value implementation and consciousness approach in every activity it undertook</p>
+            </div>
+          </section>
+
+          {/* Our Objectives */}
+          <section className="space-y-4">
+            <h3 className="text-3xl font-bold text-foreground text-orange-500">Our Objectives</h3>
+            <ul className="space-y-3 text-lg text-foreground/80 leading-relaxed list-disc list-inside">
+              <li>To develop Entrepreneurship among youth and women</li>
+              <li>
+                Enabling youth to acquire skills for employment and self employment. To conduct skill Development
+                training programmes leading to self wage employment
+              </li>
+              <li>Give necessary Tuitions, Coaching etc to the students who are studying higher education</li>
+              <li>Publishing Free Medical Camps/Free Eye Camps &amp; Blood Donation</li>
+              <li>
+                To Associate with Institution such as W.H.O (world Health Organization) in conducting Awareness
+                Programmes in Health planning, Hygiene etc..
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
 
         {/* ===== PROFILE 1 ===== */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 
           {/* IMAGE 1 */}
-          <div className="order-1">
+          {/* <div className="order-1">
             <img
               src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547690/WhatsApp_Image_2025-11-17_at_10.06.48_ec861cb5-removebg-preview_v3smzw.png"
               alt="E.SA. Agilantam"
@@ -39,10 +74,10 @@ export default function AboutPage() {
     mx-auto 
     md:mx-0"
             />
-          </div>
+          </div>  */}
 
           {/* TEXT 1 */}
-          <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
+          {/* <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
 
 
             <h3 className="text-2xl font-bold">E.SA. Agilantam</h3>
@@ -78,13 +113,13 @@ export default function AboutPage() {
 
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* ===== PROFILE 2 ===== */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+         {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start"> */}
 
           {/* IMAGE 2 */}
-          <div className="order-1">
+          {/* <div className="order-1">
             <img
               src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547383/about_kq6w4v.jpg"
               alt="Team"
@@ -97,10 +132,10 @@ export default function AboutPage() {
     mx-auto 
     md:mx-0"
             />
-          </div>
+          </div>  */}
 
           {/* TEXT 2 */}
-          <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
+          {/* <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
 
 
             <h3 className="text-2xl font-bold">Gomathy Akilandam</h3>
@@ -113,7 +148,7 @@ export default function AboutPage() {
 
           </div>
 
-        </div>
+        </div> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-7">
           {/* Mission Card */}
           <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">

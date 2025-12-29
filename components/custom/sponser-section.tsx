@@ -151,13 +151,13 @@ const SponsorSection = () => {
               <div className="flex animate-scroll-right space-x-8 py-4">
                 {[...sponsors, ...sponsors, ...sponsors].map((sponsor, index) => (
                   <a
-                    key={`right-${index}`}
+                    key={right-${index}}
                     href={sponsor.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-shrink-0 group"
                   >
-                    <div className="w-24 h-16 bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                    <div className="w-24 h-28 bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300 group-hover:scale-110">
                       <div className="relative w-full h-full">
                         <Image
                           src={sponsor.imageUrl}
@@ -184,19 +184,19 @@ const SponsorSection = () => {
               <div className="flex animate-scroll-left space-x-8 py-4">
                 {[...sponsors, ...sponsors, ...sponsors].map((sponsor, index) => (
                   <a
-                    key={`left-${index}`}
+                    key={left-${index}}
                     href={sponsor.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-shrink-0 group"
                   >
-                    <div className="w-24 h-16 bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                    <div className="w-24 h-28 bg-white rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300 group-hover:scale-110">
                       <div className="relative w-full h-full">
                         <Image
                           src={sponsor.imageUrl}
                           alt={sponsor.name}
                           fill
-                          className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                          className=" object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                           unoptimized={sponsor.imageUrl.startsWith('/uploads/')}
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;

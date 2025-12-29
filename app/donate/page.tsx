@@ -201,7 +201,7 @@ export default function Payment() {
             </CustomButton>
 
             <p className="text-gray-900 text-start mt-3 text-2xl max-w-2xl mx-auto gap-3">
-               <h4><b>A/C NO: 510101001939350</b></h4>
+              <b>A/C NO: 510101001939350</b><br/>
               <b>IFSC CODE: UBIN0921017</b><br/>
               <b>BANK: Union Bank of India </b><br />
               <b>Branch : HighGround</b> <br />

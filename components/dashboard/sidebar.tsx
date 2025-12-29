@@ -22,7 +22,7 @@ interface SidebarProps {
 const menuItems = [
   // { id: "banner", label: "Banner", icon: "🎨" },
   { id: "latest-news", label: "Latest News", icon: Newspaper },
-  { id: "impact", label: "Impact", icon: HandFist },
+  { id: "impacts-admin", label: "Manage Impacts", icon: HandFist },
   { id: "sponsors", label: "Sponsors", icon: Handshake },
   { id: "gallery", label: "Gallery", icon: GalleryHorizontal },
   { id: "donors", label: "Donors", icon: HandHeart },
