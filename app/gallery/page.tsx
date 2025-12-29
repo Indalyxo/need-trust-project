@@ -46,39 +46,56 @@ export default function GallerySection() {
             </p>
           </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="relative overflow-hidden rounded-lg aspect-square cursor-pointer group"
-                onMouseEnter={() => setHoveredId(item.id)}
-                onMouseLeave={() => setHoveredId(null)}
-              >
-                <Image
-                  src={item.imagePath}
-                  alt={item.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
+          {/* Categories */}
+          {items.length === 0 ? (
+            <p className="text-gray-500">No gallery items yet.</p>
+          ) : (
+            Object.entries(
+              items.reduce((acc: Record<string, GalleryItem[]>, item) => {
+                const key = item.title || "Uncategorized";
+                if (!acc[key]) acc[key] = [];
+                acc[key].push(item);
+                return acc;
+              }, {})
+            ).map(([category, group]) => (
+              <section key={category} className="mb-12">
+                <h2 className="text-2xl font-semibold mb-4">{category}</h2>
 
-                <div
-                  className={`absolute inset-0 bg-black/70 flex flex-col items-center justify-center transition-opacity duration-300 ${
-                    hoveredId === item.id ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <div className="text-center px-6">
-                    <h3 className="text-white text-2xl font-bold mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-200 text-sm leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {group.map((item) => (
+                    <div
+                      key={item.id}
+                      className="relative overflow-hidden rounded-lg aspect-square cursor-pointer group"
+                      onMouseEnter={() => setHoveredId(item.id)}
+                      onMouseLeave={() => setHoveredId(null)}
+                    >
+                      <Image
+                        src={item.imagePath}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+
+                      <div
+                        className={`absolute inset-0 bg-black/70 flex flex-col items-center justify-center transition-opacity duration-300 ${
+                          hoveredId === item.id ? "opacity-100" : "opacity-0"
+                        }`}
+                      >
+                        <div className="text-center px-6">
+                          <h3 className="text-white text-2xl font-bold mb-2">
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-200 text-sm leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            ))}
-          </div>
+              </section>
+            ))
+          )}
         </div>
       </section>
 

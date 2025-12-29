@@ -9,13 +9,8 @@ const links = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Latest News", href: "/latestnews" },
-
-  
-    { label: "Works", href: "/works" },
-    
-  ,
-
-  { label: "Cerificates", href: "/cerificates" },
+  { label: "Works", href: "/works" },
+  { label: "Certificates", href: "/certificates" },
   { label: "Gallery", href: "/gallery" },
 ];
 

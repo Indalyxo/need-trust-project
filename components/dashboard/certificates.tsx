@@ -17,6 +17,10 @@ export default function CertificateSection() {
 
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editId, setEditId] = useState<number | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [editPhoto, setEditPhoto] = useState<File | null>(null);
 
   // Fetch certificates
   const loadCertificates = async () => {
@@ -36,7 +40,7 @@ export default function CertificateSection() {
     e.preventDefault();
 
     if (!title || !photo) {
-      alert("Title and Photo are required!");
+      alert("Title and File are required!");
       return;
     }
 
@@ -60,6 +64,58 @@ export default function CertificateSection() {
       loadCertificates(); // refresh certificates
     } else {
       alert("Something went wrong!");
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this certificate?")) return;
+
+    const res = await fetch(`/api/certificates/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+
+    if (data.message || data.success) {
+      setCertificates((s) => s.filter((c) => c.id !== id));
+      alert("Deleted successfully");
+    } else {
+      alert("Failed to delete");
+    }
+  };
+
+  const startEdit = (cert: Certificate) => {
+    setEditId(cert.id);
+    setEditTitle(cert.title);
+    setEditDescription(cert.description || "");
+    setEditPhoto(null);
+  };
+
+  const cancelEdit = () => {
+    setEditId(null);
+    setEditTitle("");
+    setEditDescription("");
+    setEditPhoto(null);
+  };
+
+  const saveEdit = async (id: number) => {
+    const formData = new FormData();
+    formData.append("title", editTitle);
+    formData.append("description", editDescription);
+    if (editPhoto) formData.append("photo", editPhoto);
+
+    const res = await fetch(`/api/certificates/${id}`, {
+      method: "PATCH",
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      alert("Updated successfully");
+      cancelEdit();
+      loadCertificates();
+    } else {
+      alert("Failed to update");
     }
   };
 
@@ -94,10 +150,10 @@ export default function CertificateSection() {
           </div>
 
           <div>
-            <label className="block font-medium">Upload Photo *</label>
+            <label className="block font-medium">Upload File (image or PDF) *</label>
             <input
               type="file"
-              accept="image/*"
+              accept="image/*,application/pdf"
               onChange={(e) => setPhoto(e.target.files?.[0] || null)}
               className="w-full cursor-pointer"
               required
@@ -128,21 +184,92 @@ export default function CertificateSection() {
                 key={cert.id}
                 className="border rounded-lg shadow hover:shadow-lg transition p-3 bg-white"
               >
-                <img
-                  src={cert.image}
-                  alt={cert.title}
-                  className="w-full h-48 object-cover rounded"
-                />
-
-                <h2 className="mt-3 text-lg font-semibold">{cert.title}</h2>
-
-                {cert.description && (
-                  <p className="text-gray-600 text-sm mt-2">{cert.description}</p>
+                {cert.image && cert.image.toLowerCase().endsWith(".pdf") ? (
+                  <div className="w-full h-48 flex items-center justify-center rounded bg-gray-100">
+                    <a
+                      href={cert.image.startsWith("/") ? cert.image : "/" + cert.image}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-blue-600 underline"
+                    >
+                      Open PDF
+                    </a>
+                  </div>
+                ) : (
+                  <img
+                    src={cert.image}
+                    alt={cert.title}
+                    className="w-full h-48 object-cover rounded"
+                  />
                 )}
 
-                <p className="text-xs text-gray-400 mt-3">
-                  {new Date(cert.createdAt).toLocaleDateString()}
-                </p>
+                {editId === cert.id ? (
+                  <div className="mt-3">
+                    <input
+                      type="text"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      className="w-full border p-2 rounded mb-2"
+                    />
+
+                    <textarea
+                      value={editDescription}
+                      onChange={(e) => setEditDescription(e.target.value)}
+                      className="w-full border p-2 rounded mb-2"
+                    />
+
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      onChange={(e) => setEditPhoto(e.target.files?.[0] || null)}
+                      className="w-full mb-2"
+                    />
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => saveEdit(cert.id)}
+                        className="bg-green-600 text-white px-3 py-1 rounded"
+                      >
+                        Save
+                      </button>
+
+                      <button
+                        onClick={cancelEdit}
+                        className="bg-gray-300 text-black px-3 py-1 rounded"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <h2 className="mt-3 text-lg font-semibold">{cert.title}</h2>
+
+                    {cert.description && (
+                      <p className="text-gray-600 text-sm mt-2">{cert.description}</p>
+                    )}
+
+                    <p className="text-xs text-gray-400 mt-3">
+                      {new Date(cert.createdAt).toLocaleDateString()}
+                    </p>
+
+                    <div className="mt-3 flex gap-2">
+                      <button
+                        onClick={() => startEdit(cert)}
+                        className="bg-yellow-400 text-black px-3 py-1 rounded"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(cert.id)}
+                        className="bg-red-600 text-white px-3 py-1 rounded"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
           </div>

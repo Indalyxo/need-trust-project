@@ -56,13 +56,26 @@ export default function CertificateSection() {
               key={cert.id}
               className="border rounded-xl shadow-lg hover:shadow-2xl transition p-5 bg-white"
             >
-              <img
-                src={cert.image.startsWith("/") ? cert.image : "/" + cert.image}
-                alt={cert.title}
-                className="w-full h-64 md:h-80 lg:h-96 object-cover rounded-lg cursor-pointer"
-                onClick={() => setSelectedImage(cert.image.startsWith("/") ? cert.image : "/" + cert.image)}
-                onError={(e) => (e.currentTarget.src = "/no-image.png")}
-              />
+              {cert.image && cert.image.toLowerCase().endsWith(".pdf") ? (
+                <div
+                  className="w-full h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden cursor-pointer bg-gray-100"
+                  onClick={() => setSelectedImage(cert.image.startsWith("/") ? cert.image : "/" + cert.image)}
+                >
+                  <iframe
+                    src={`${cert.image.startsWith("/") ? cert.image : "/" + cert.image}#toolbar=0`}
+                    className="w-full h-full pointer-events-none"
+                    title={cert.title}
+                  />
+                </div>
+              ) : (
+                <img
+                  src={cert.image.startsWith("/") ? cert.image : "/" + cert.image}
+                  alt={cert.title}
+                  className="w-full h-64 md:h-80 lg:h-96 object-cover rounded-lg cursor-pointer"
+                  onClick={() => setSelectedImage(cert.image.startsWith("/") ? cert.image : "/" + cert.image)}
+                  onError={(e) => (e.currentTarget.src = "/no-image.png")}
+                />
+              )}
 
               <h2 className="mt-4 text-2xl font-semibold">{cert.title}</h2>
 
@@ -84,11 +97,19 @@ export default function CertificateSection() {
           className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
           onClick={() => setSelectedImage(null)}
         >
-          <img
-            src={selectedImage}
-            alt="Full Screen"
-            className="max-h-full max-w-full object-contain"
-          />
+          {selectedImage.toLowerCase().endsWith(".pdf") ? (
+            <iframe
+              src={selectedImage}
+              className="w-full h-full max-w-4xl max-h-[90vh]"
+              title="PDF Viewer"
+            />
+          ) : (
+            <img
+              src={selectedImage}
+              alt="Full Screen"
+              className="max-h-full max-w-full object-contain"
+            />
+          )}
         </div>
       )}
     </div>

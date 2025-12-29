@@ -151,7 +151,7 @@ const SponsorSection = () => {
               <div className="flex animate-scroll-right space-x-8 py-4">
                 {[...sponsors, ...sponsors, ...sponsors].map((sponsor, index) => (
                   <a
-                    key={`right-${index}`}
+                    key={right-${index}}
                     href={sponsor.link}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -184,7 +184,7 @@ const SponsorSection = () => {
               <div className="flex animate-scroll-left space-x-8 py-4">
                 {[...sponsors, ...sponsors, ...sponsors].map((sponsor, index) => (
                   <a
-                    key={`left-${index}`}
+                    key={left-${index}}
                     href={sponsor.link}
                     target="_blank"
                     rel="noopener noreferrer"

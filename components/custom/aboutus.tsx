@@ -4,10 +4,10 @@ import { Heart } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <main id="about-us" className="min-h-screen bg-background mt-10 px-4">
+    <main id="about-us" className="bg-background mt-6 px-4">
 
       {/* ---------- HEADER ---------- */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-6">
         <div className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 rounded-full mb-6">
           <Heart className="w-4 h-4 text-white" />
           <span className="text-white font-semibold">About Us</span>

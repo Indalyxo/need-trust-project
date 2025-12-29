@@ -63,3 +63,15 @@ export const certificates = pgTable("certificates", {
   image: text("image").notNull(),
   createdAt: timestamp("created_at").defaultNow()
 });
+
+export const impacts = pgTable("impacts", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  imagePath: varchar("image_path", { length: 500 }).notNull(),
+  icon: varchar("icon", { length: 50 }).notNull(),
+  statsValue: varchar("stats_value", { length: 100 }).notNull(),
+  statsLabel: varchar("stats_label", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});

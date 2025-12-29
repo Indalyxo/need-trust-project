@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/custom/navigation-menu";
 import { ExternalLink, TrendingUp, Users, Heart, Award, GraduationCap, } from "lucide-react";
 import Footer from "@/components/custom/footer-section";
@@ -18,52 +18,44 @@ const services = [
   },
 ];
 
-// --- Impact Data ---
-const impacts = [
-  {
-    title: "ENTREPRENEURSHIP",
-    description:
-      "Entrepreneurship is the ability to identify opportunities and turn ideas into impactful solutions.combines creativity, risk-taking, and leadership to build ventures that create value.",
-    // tagline: "Result: 80% increased income levels",
-    image:
-      "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763188003/WhatsApp_Image_2025-11-12_at_19.05.59_7d662c40_peinj3.jpg",
-    icon: <Users className="w-6 h-6" />,
-    stats: { value: "50+", label: "Entrepreneurship" },
-  },
-  {
-    title: "Health Awareness",
-    description:
-      "Health is the state of complete physical, mental, and social well-being.It enables a balanced, active, and fulfilling life every day.",
-    // tagline: "Result: 95% school retention rate",
-    image:
-      "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763188071/WhatsApp_Image_2025-11-12_at_19.44.22_dd951e55_lslxbh.jpg",
-    icon: <Heart className="w-6 h-6" />,
-    stats: { value: "100+", label: "Health" },
-  },
-  {
-    title: "ENVIRONMENT ",
-    description:
-      "The environment is the natural world that supports all life on Earth.Protecting it ensures a healthier, safer, and sustainable future for everyone.",
-    // tagline: "Result: 70% improvement in preventive care awareness",
-    image:
-      "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763188458/WhatsApp_Image_2025-11-12_at_19.07.12_a00b991d_zccrtb.jpg",
-    icon: <Award className="w-6 h-6" />,
-    stats: { value: "10,000+", label: "Environment" },
-  },
-    {
-    title: "NIP ",
-    description:
-      "In India, a government-backed pipeline of social and economic infrastructure projects",
-    // tagline: "Result: 70% improvement in preventive care awareness",
-    image:
-      "https://res.cloudinary.com/dkbtx5r9v/image/upload/v1765294175/WhatsApp_Image_2025-11-12_at_19.44.43_37752e05_ztkbde.jpg",
-    icon: <GraduationCap className="w-6 h-6" />,
-    stats: { value: "100+", label: "NIP" },
-  },
-  
-];
+interface Impact {
+  id: number;
+  title: string;
+  description: string;
+  imagePath: string;
+  icon: string;
+  statsValue: string;
+  statsLabel: string;
+}
+
+const iconMap: { [key: string]: React.ReactNode } = {
+  Users: <Users className="w-6 h-6" />,
+  Heart: <Heart className="w-6 h-6" />,
+  Award: <Award className="w-6 h-6" />,
+  GraduationCap: <GraduationCap className="w-6 h-6" />,
+};
 
 export default function ServicesSection() {
+  const [impacts, setImpacts] = useState<Impact[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchImpacts = async () => {
+      try {
+        const res = await fetch("/api/impacts");
+        const json = await res.json();
+        if (json.success) {
+          setImpacts(json.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch impacts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImpacts();
+  }, []);
   return (
     <>
       <div>
@@ -237,71 +229,67 @@ export default function ServicesSection() {
 
             {/* Impact Cards */}
             <div className="flex flex-col gap-24">
-              {impacts.map((impact, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 60 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  viewport={{ amount: 0.3, once: true }}
-                  className={`flex flex-col md:flex-row ${i % 2 !== 0 ? "md:flex-row-reverse" : ""
-                    } items-center gap-10 md:gap-16`}
-                >
-                  {/* Text Section */}
-                  <div className="md:w-1/2 space-y-6">
-                    {/* Icon and Stats Badge */}
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl shadow-lg">
-                        {impact.icon}
+              {loading ? (
+                <div className="text-center text-gray-600">Loading impacts...</div>
+              ) : impacts.length === 0 ? (
+                <div className="text-center text-gray-600">No impacts available</div>
+              ) : (
+                impacts.map((impact, i) => (
+                  <motion.div
+                    key={impact.id}
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    viewport={{ amount: 0.3, once: true }}
+                    className={`flex flex-col md:flex-row ${i % 2 !== 0 ? "md:flex-row-reverse" : ""
+                      } items-center gap-10 md:gap-16`}
+                  >
+                    {/* Text Section */}
+                    <div className="md:w-1/2 space-y-6">
+                      {/* Icon and Stats Badge */}
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl shadow-lg">
+                          {iconMap[impact.icon] || <Award className="w-6 h-6" />}
+                        </div>
+                        <div className="px-4 py-2 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border-2 border-orange-200">
+                          <p className="text-2xl font-bold text-orange-600">
+                            {impact.statsValue}
+                          </p>
+                          <p className="text-xs text-gray-600 font-medium">
+                            {impact.statsLabel}
+                          </p>
+                        </div>
                       </div>
-                      <div className="px-4 py-2 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border-2 border-orange-200">
-                        <p className="text-2xl font-bold text-orange-600">
-                          {impact.stats.value}
-                        </p>
-                        <p className="text-xs text-gray-600 font-medium">
-                          {impact.stats.label}
-                        </p>
-                      </div>
+
+                      <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
+                        {impact.title}
+                      </h3>
+
+                      <p className="text-gray-700 leading-relaxed text-lg">
+                        {impact.description}
+                      </p>
                     </div>
 
-                    <h3 className="text-3xl md:text-4xl font-bold text-gray-900">
-                      {impact.title}
-                    </h3>
+                    {/* Image Section */}
+                    <motion.div
+                      whileHover={{ scale: 1.03, rotateY: 2 }}
+                      transition={{ duration: 0.4 }}
+                      className="md:w-1/2 relative group"
+                    >
+                      <img
+                        src={impact.imagePath}
+                        alt={impact.title}
+                        className="w-full h-80 md:h-96 object-contain object-cover rounded-2xl"
+                      />
 
-                    <p className="text-gray-700 leading-relaxed text-lg">
-                      {impact.description}
-                    </p>
+                      {/* Decorative Elements */}
+                      <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
+                      <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
+                    </motion.div>
 
-                    {/* <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-100 to-yellow-100 rounded-full">
-                      <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-                      <p className="text-sm text-orange-700 font-semibold uppercase tracking-wide">
-                        {impact.tagline}
-                      </p>
-                    </div> */}
-                  </div>
-
-                  {/* Image Section */}
-                  <motion.div
-                    whileHover={{ scale: 1.03, rotateY: 2 }}
-                    transition={{ duration: 0.4 }}
-                    className="md:w-1/2 relative group"
-                  >
-                    {/* <div className="relative overflow-hidden rounded-2xl shadow-2xl border-4 border-orange-100 bg-white"> */}
-                    <img
-                      src={impact.image}
-                      alt={impact.title}
-                      className="w-full h-80 md:h-96 object-contain object-cover rounded-2xl"
-                    />
-                    {/* </div> */}
-
-
-                    {/* Decorative Elements */}
-                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-orange-400 to-yellow-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
-                    <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-300" />
                   </motion.div>
-
-                </motion.div>
-              ))}
+                ))
+              )}
             </div>
 
             {/* Call to Action */}
