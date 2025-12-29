@@ -200,12 +200,18 @@ export default function Payment() {
               {showQR ? "Hide QR Code" : "Show QR Code"}
             </CustomButton>
 
-            <p className="text-gray-900 text-start mt-3 text-2xl max-w-2xl mx-auto gap-3">
-               <h4><b>A/C NO: 510101001939350</b></h4>
-              <b>IFSC CODE: UBIN0921017</b><br/>
-              <b>BANK: Union Bank of India </b><br />
-              <b>Branch : HighGround</b> <br />
-            </p>
+           <div className="mt-3 max-w-2xl mx-auto text-center md:text-start">
+  <h4 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
+    A/C NO: 510101001939350
+  </h4>
+
+  <p className="text-base md:text-lg text-gray-900 leading-relaxed space-y-2">
+    <span className="block font-semibold">IFSC CODE: UBIN0921017</span>
+    <span className="block font-semibold">BANK: Union Bank of India</span>
+    <span className="block font-semibold">Branch: HighGround</span>
+  </p>
+</div>
+
           </div>
 
           {/* Donation Form */}
