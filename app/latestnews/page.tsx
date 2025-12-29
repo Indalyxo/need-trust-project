@@ -275,7 +275,10 @@ export default function LatestNews() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[500px]">
                 
                 {/* IMAGE */}
-                <div ref={imageRef} className="relative overflow-hidden bg-gray-100">
+                <div ref={imageRef} className="
+    relative overflow-hidden bg-gray-100
+    h-[260px] sm:h-[320px] md:h-[400px] lg:h-auto
+  ">
                   <Image
                     src={currentNews.imageUrl || '/placeholder-image.svg'}
                     alt={currentNews.title}

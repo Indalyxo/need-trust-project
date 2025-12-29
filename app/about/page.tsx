@@ -44,7 +44,7 @@ export default function AboutPage() {
           </div>
 
           {/* TEXT 1 */}
-          <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
+          <div className="order-2 space-y-4 text-left px-2 md:ml-0 md:px-0">
 
 
             <h3 className="text-2xl font-bold">E.SA. Agilantam</h3>
@@ -102,16 +102,27 @@ export default function AboutPage() {
           </div>
 
           {/* TEXT 2 */}
-          <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
+          <div className="order-2 space-y-4 text-left px-2 md:ml-0 md:px-0">
 
 
             <h3 className="text-2xl font-bold">Gomathy Akilandam</h3>
             <p className="text-gray-600">Trustee</p>
-
-            <p className="text-foreground/80 leading-relaxed">
-              We are a dedicated team committed to creating positive impact
-              through meaningful service.
+             <div className="text-foreground/80">
+              <h4 className="text-xl font-semibold mb-2">
+                Academic Background
+              </h4>
+              <p> <b>M.A </b>- literature </p>
+             
+            </div>
+            
+            <div className="text-foreground/80">
+              <h4 className="text-xl font-semibold mb-2">
+                Skills
+              </h4>
+               <p className="text-foreground/80 leading-relaxed">
+               MBA looks after the Administration and Accounts of the Trust. Well experienced in Tally Prime and ERP. She coordinates the operations of PMBJK. She has 31 years pf experience in both accounts and administration in ltd companies and trust operations.
             </p>
+            </div>
 
           </div>
           

@@ -19,9 +19,10 @@ export default function AboutPage() {
         </h2>
       </div>
 
-       {/* ---------- PROFILE SECTION ---------- */}
-       <section className="max-w-6xl mx-auto">
-       <div className="container mx-auto px-4 py-8 max-w-4xl">
+      {/* ---------- PROFILE SECTION ---------- */}
+      <section className="max-w-6xl mx-auto space-y">
+ <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
         <div className="space-y-12">
           {/* Our Origin */}
           <section className="space-y-2">
@@ -56,6 +57,7 @@ export default function AboutPage() {
           </section>
         </div>
       </div>
+    </div>
 
         {/* ===== PROFILE 1 ===== */}
         {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
