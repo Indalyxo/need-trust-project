@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Mail, Phone } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -93,18 +94,18 @@ export default function Footer() {
             Tirunelveli – 627 007
           </p>
 
-          <p className="text-sm mt-3">
-            📧{" "}
+          <p className="flex items-center justify-center md:justify-start gap-3">
+           <Mail className="w-5 h-5 text-orange-500" /> {" "}
             <a
               href="mailto:nellaiconnectad@gmail.com"
               className="hover:text-white"
             >
-              nellaiconnectad@gmail.com
+                nellaiconnectad@gmail.com
             </a>
           </p>
 
-          <p className="text-sm mt-1">
-            📞{" "}
+          <p className="flex items-center justify-center md:justify-start gap-3">
+            <Phone className="w-5 h-5 text-orange-500" />{" "}
             <a href="tel:+919952541141" className="hover:text-white">
               +91 99525 41141
             </a>

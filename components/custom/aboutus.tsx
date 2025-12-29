@@ -20,12 +20,12 @@ export default function AboutPage() {
       </div>
 
       {/* ---------- PROFILE SECTION ---------- */}
-      <section className="max-w-6xl mx-auto space-y-10">
+      <section className="max-w-6xl mx-auto space-y">
  <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <div className="space-y-12">
           {/* Our Origin */}
-          <section className="space-y-4">
+          <section className="space-y-2">
             <h3 className="text-3xl font-bold text-foreground text-orange-500">Our Origin</h3>
             <div className="space-y-3 text-lg text-foreground/80 leading-relaxed">
               <p>
