@@ -2,8 +2,27 @@
 
 import Image from "next/image";
 import { Mail, Phone } from "lucide-react";
+import { useEffect, useState } from "react";
 
+type Certificate = {
+  id: number;
+  title: string;
+  image: string; // this is your file path
+};
 export default function Footer() {
+   const [certificates, setCertificates] = useState<Certificate[]>([]);
+
+  useEffect(() => {
+    fetch("/api/certificates")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setCertificates(data.data);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <footer
       id="contact-us"
@@ -56,28 +75,26 @@ export default function Footer() {
           </ul>
         </div> */}
         {/* Certificates */}
-         <div>
+         <div className="h-101">
           <h2 className="text-xl font-semibold text-white mb-4">
             Certificates Quick Links
           </h2>
 
           <ul className="space-y-3 text-sm">
-            <li>
-              <a href="" className="hover:text-white transition">
-                Ers Certificates
-              </a>
-            </li>
-            <li>
-              <a href="/work" className="hover:text-white transition">
-                Works
-              </a>
-            </li>
-            <li>
-              <a href="/donate" className="hover:text-white transition">
-                Donate
-              </a>
-            </li>
-          </ul>
+  {certificates.map((cert) => (
+    <li key={cert.id}>
+      <a
+        href={cert.image}   // IMPORTANT: use image, not file_url
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-white transition"
+      >
+        {cert.title}
+      </a>
+    </li>
+  ))}
+</ul>
+
         </div>
 
         {/* CONTACT */}
