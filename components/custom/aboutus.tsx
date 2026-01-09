@@ -4,10 +4,9 @@ import { Heart } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <main id="about-us" className="bg-background mt-6 px-4">
-
+    <main id="about-us" className="min-h-screen bg-background mt-10 px-4">
       {/* ---------- HEADER ---------- */}
-      <div className="text-center mb-6">
+      <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 rounded-full mb-6">
           <Heart className="w-4 h-4 text-white" />
           <span className="text-white font-semibold">About Us</span>
@@ -20,11 +19,10 @@ export default function AboutPage() {
       </div>
 
       {/* ---------- PROFILE SECTION ---------- */}
-      <section className="max-w-6xl mx-auto space-y">
- <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <div className="space-y-12">
-          {/* Our Origin */}
+      <section className="max-w-6xl mx-auto space-y-8">
+        <div className="container mx-auto px-4 py-12 max-w-4xl">
+          <div className="space-y-12">
+            {/* Our Origin */}
           <section className="space-y-2">
             <h3 className="text-3xl font-bold text-foreground text-orange-500">Our Origin</h3>
             <div className="space-y-3 text-lg text-foreground/80 leading-relaxed">
@@ -57,9 +55,8 @@ export default function AboutPage() {
           </section>
         </div>
       </div>
-    </div>
 
-        {/* ===== PROFILE 1 ===== */}
+      {/* ===== PROFILE 1 ===== */}
         {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 
           {/* IMAGE 1 */}
@@ -67,21 +64,12 @@ export default function AboutPage() {
             <img
               src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547690/WhatsApp_Image_2025-11-17_at_10.06.48_ec861cb5-removebg-preview_v3smzw.png"
               alt="E.SA. Agilantam"
-              className="  w-full 
-    max-w-[260px] 
-    md:max-w-[380px] 
-    lg:max-w-[420px]
-    rounded-lg 
-    shadow-md 
-    mx-auto 
-    md:mx-0"
+              className="w-full max-w-[260px] md:max-w-[380px] lg:max-w-[420px] rounded-lg shadow-md mx-auto md:mx-0"
             />
-          </div>  */}
+          </div> */}
 
           {/* TEXT 1 */}
           {/* <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
-
-
             <h3 className="text-2xl font-bold">E.SA. Agilantam</h3>
             <p className="text-gray-600">Managing Trustee</p>
 
@@ -119,27 +107,17 @@ export default function AboutPage() {
 
         {/* ===== PROFILE 2 ===== */}
          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start"> */}
-
           {/* IMAGE 2 */}
           {/* <div className="order-1">
             <img
               src="https://res.cloudinary.com/dkbtx5r9v/image/upload/v1763547383/about_kq6w4v.jpg"
               alt="Team"
-              className="  w-full 
-    max-w-[260px] 
-    md:max-w-[380px] 
-    lg:max-w-[420px]
-    rounded-lg 
-    shadow-md 
-    mx-auto 
-    md:mx-0"
+              className="w-full max-w-[260px] md:max-w-[380px] lg:max-w-[420px] rounded-lg shadow-md mx-auto md:mx-0"
             />
-          </div>  */}
+          </div> */}
 
           {/* TEXT 2 */}
           {/* <div className="order-2 space-y-4 text-left px-2 ml-[9rem] md:ml-0 md:px-0">
-
-
             <h3 className="text-2xl font-bold">Gomathy Akilandam</h3>
             <p className="text-gray-600">Trustee</p>
 
@@ -155,31 +133,21 @@ export default function AboutPage() {
           {/* Mission Card */}
           <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-4">
-              {/* <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl font-bold text-primary">M</span>
-                </div> */}
               <div className="border-b-2 border-orange-500">
-                <h3 className="text-2xl font-bold text-foreground">
-                  Mission
-                </h3>
+                <h3 className="text-2xl font-bold text-foreground">Mission</h3>
               </div>
             </div>
-
             <p className="text-foreground/80 leading-relaxed">
               Need Foundation Trust is an Inner Faith Organisation. All services should reach everyone.
               We strive to achieve the desired results by using resources properly both efficient
               and effective manner.
               Our work standard should meet the highest level by fulfilling the objectives
             </p>
-
           </div>
 
           {/* Vision Card */}
           <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-4">
-              {/* <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl font-bold text-primary">V</span>
-                </div> */}
               <div className="border-b-2 border-orange-500">
                 <h3 className="text-2xl font-bold text-foreground">Vision</h3>
               </div>
@@ -190,14 +158,11 @@ export default function AboutPage() {
               to the society.We bring the best results in the society by implementing
               values in each stage of work.
             </p>
-
           </div>
+
           {/* Values */}
           <div className="bg-card border border-border rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-4">
-              {/* <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl font-bold text-primary">V</span>
-                </div> */}
               <div className="border-b-2 border-orange-500">
                 <h3 className="text-2xl font-bold text-foreground">Value</h3>
               </div>
@@ -206,9 +171,7 @@ export default function AboutPage() {
               We Value rituals, which are the outer appearance. The inner value of us
               Spirituality is TRUTH. That truth expresses not as mantras or slokas but as
               values such as honesty, loyalty, reliability, etc.
-
             </p>
-
           </div>
         </div>
 
