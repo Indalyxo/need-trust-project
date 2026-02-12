@@ -22,6 +22,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "axios": "^1.13.1",
     "bar-of-progress": "^1.1.0",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -33,6 +34,7 @@
     "lucide-react": "^0.548.0",
     "motion": "^12.23.24",
     "next": "16.0.0",
+    "next-auth": "^5.0.0-beta.30",
     "nodemailer": "^7.0.10",
     "pg": "^8.16.3",
     "react": "19.2.0",
@@ -44,6 +46,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/nodemailer": "^7.0.4",
     "@types/pg": "^8.15.6",
