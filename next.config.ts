@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       },
       {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
       },
@@ -16,7 +20,6 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
       },
     ],
-    // Allow local images from uploads folder
     unoptimized: false,
   },
 };

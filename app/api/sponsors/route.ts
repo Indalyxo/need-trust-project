@@ -1,44 +1,91 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import { sponsors } from '@/drizzle/schema';
-import { desc } from 'drizzle-orm';
+import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { sponsors } from "@/drizzle/schema";
+import { desc } from "drizzle-orm";
+import cloudinary from "@/lib/cloudinary";
+
+/* ----------------------------- GET ----------------------------- */
 
 export async function GET() {
   try {
-    const allSponsors = await db.select().from(sponsors).orderBy(desc(sponsors.createdAt));
-    return NextResponse.json(allSponsors);
+    const allSponsors = await db
+      .select()
+      .from(sponsors)
+      .orderBy(desc(sponsors.createdAt));
+
+    return NextResponse.json({ success: true, data: allSponsors });
   } catch (error) {
-    console.error('Error fetching sponsors:', error);
+    console.error("Error fetching sponsors:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch sponsors' },
+      { success: false, message: "Failed to fetch sponsors" },
       { status: 500 }
     );
   }
 }
 
+/* ----------------------------- POST ----------------------------- */
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { imageUrl, name, link } = body;
+    const formData = await request.formData();
 
-    if (!imageUrl || !name || !link) {
+    const name = formData.get("name") as string | null;
+    const link = formData.get("link") as string | null;
+    const file = formData.get("image") as File | null;
+
+    if (!name || !link || !file) {
       return NextResponse.json(
-        { error: 'Image URL, name, and link are required' },
+        { error: "Name, link, and image are required" },
         { status: 400 }
       );
     }
 
-    const newSponsor = await db.insert(sponsors).values({
-      imageUrl,
-      name,
-      link,
-    }).returning();
+    // Validate image
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json(
+        { error: "Only image files are allowed" },
+        { status: 400 }
+      );
+    }
 
-    return NextResponse.json(newSponsor[0], { status: 201 });
-  } catch (error) {
-    console.error('Error creating sponsor:', error);
+    // Optional size limit (5MB)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { error: "Image must be under 5MB" },
+        { status: 400 }
+      );
+    }
+
+    // Convert File → Base64
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const base64Image = `data:${file.type};base64,${buffer.toString("base64")}`;
+
+    // Upload to Cloudinary
+    const upload = await cloudinary.uploader.upload(base64Image, {
+      folder: "sponsors",
+      resource_type: "image",
+    });
+
+    // Save to DB
+    const [newSponsor] = await db
+      .insert(sponsors)
+      .values({
+        imageUrl: upload.secure_url,
+        name,
+        link,
+      })
+      .returning();
+
     return NextResponse.json(
-      { error: 'Failed to create sponsor' },
+      { success: true, data: newSponsor },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Error creating sponsor:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to create sponsor" },
       { status: 500 }
     );
   }

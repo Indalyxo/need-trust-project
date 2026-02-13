@@ -2,37 +2,35 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { news } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
+import cloudinary from "@/lib/cloudinary";
 
-// GET - Fetch single news article
+/* ----------------------------- GET ----------------------------- */
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> }
 ) {
-  try {
-    const resolvedParams = await params;
-    const newsId = parseInt(resolvedParams.id);
-    
-    if (isNaN(newsId)) {
-      return NextResponse.json(
-        { error: "Invalid news ID" },
-        { status: 400 }
-      );
-    }
+  const { id } = await context.params;
+  const newsId = Number(id);
 
-    const newsArticle = await db
+  if (isNaN(newsId)) {
+    return NextResponse.json({ error: "Invalid news ID" }, { status: 400 });
+  }
+
+  try {
+    const [article] = await db
       .select()
       .from(news)
-      .where(eq(news.id, newsId))
-      .limit(1);
+      .where(eq(news.id, newsId));
 
-    if (newsArticle.length === 0) {
+    if (!article) {
       return NextResponse.json(
         { error: "News article not found" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(newsArticle[0]);
+    return NextResponse.json({ success: true, data: article });
   } catch (error) {
     console.error("Error fetching news:", error);
     return NextResponse.json(
@@ -42,104 +40,155 @@ export async function GET(
   }
 }
 
-// DELETE - Delete news article
+/* ---------------------------- DELETE ---------------------------- */
+
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
+  const newsId = Number(id);
+
+  if (isNaN(newsId)) {
+    return NextResponse.json({ error: "Invalid news ID" }, { status: 400 });
+  }
+
   try {
-    const resolvedParams = await params;
-    console.log("DELETE request received for ID:", resolvedParams.id);
-    
-    const newsId = parseInt(resolvedParams.id);
-    
-    if (isNaN(newsId)) {
-      console.error("Invalid news ID:", resolvedParams.id);
-      return NextResponse.json(
-        { error: "Invalid news ID" },
-        { status: 400 }
-      );
-    }
+    const [article] = await db
+      .select()
+      .from(news)
+      .where(eq(news.id, newsId));
 
-    console.log("Attempting to delete news with ID:", newsId);
-
-    const deletedNews = await db
-      .delete(news)
-      .where(eq(news.id, newsId))
-      .returning();
-
-    console.log("Delete result:", deletedNews);
-
-    if (deletedNews.length === 0) {
-      console.error("News article not found for ID:", newsId);
+    if (!article) {
       return NextResponse.json(
         { error: "News article not found" },
         { status: 404 }
       );
     }
 
-    console.log("Successfully deleted news article:", deletedNews[0]);
-    return NextResponse.json({ 
+    // 🔥 Delete image from Cloudinary
+    if (article.imageUrl) {
+      const publicId = extractCloudinaryPublicId(article.imageUrl);
+      if (publicId) {
+        await cloudinary.uploader.destroy(publicId, {
+          resource_type: "image",
+        });
+      }
+    }
+
+    await db.delete(news).where(eq(news.id, newsId));
+
+    return NextResponse.json({
+      success: true,
       message: "News article deleted successfully",
-      deletedArticle: deletedNews[0]
     });
   } catch (error) {
     console.error("Error deleting news:", error);
     return NextResponse.json(
-      { error: `Failed to delete news: ${error instanceof Error ? error.message : 'Unknown error'}` },
+      { error: "Failed to delete news" },
       { status: 500 }
     );
   }
 }
 
-// PUT - Update news article
-export async function PUT(
+/* ----------------------------- PATCH ---------------------------- */
+
+export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
+  const newsId = Number(id);
+
+  if (isNaN(newsId)) {
+    return NextResponse.json({ error: "Invalid news ID" }, { status: 400 });
+  }
+
   try {
-    const resolvedParams = await params;
-    const newsId = parseInt(resolvedParams.id);
-    const body = await request.json();
-    const { title, content, imageUrl } = body;
+    const formData = await request.formData();
 
-    if (isNaN(newsId)) {
-      return NextResponse.json(
-        { error: "Invalid news ID" },
-        { status: 400 }
-      );
-    }
+    const title = formData.get("title") as string | null;
+    const content = formData.get("content") as string | null;
+    const file = formData.get("image") as File | null;
 
-    if (!title || !content || !imageUrl) {
-      return NextResponse.json(
-        { error: "Title, content, and image URL are required" },
-        { status: 400 }
-      );
-    }
+    const [existing] = await db
+      .select()
+      .from(news)
+      .where(eq(news.id, newsId));
 
-    const updatedNews = await db
-      .update(news)
-      .set({
-        title,
-        content,
-        imageUrl,
-      })
-      .where(eq(news.id, newsId))
-      .returning();
-
-    if (updatedNews.length === 0) {
+    if (!existing) {
       return NextResponse.json(
         { error: "News article not found" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(updatedNews[0]);
+    const updateData: any = {};
+
+    if (title !== null) updateData.title = title;
+    if (content !== null) updateData.content = content;
+
+    /* --------- Image replacement --------- */
+    if (file && file.name) {
+      if (!file.type.startsWith("image/")) {
+        return NextResponse.json(
+          { error: "Only image files are allowed" },
+          { status: 400 }
+        );
+      }
+
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
+
+      const upload = await cloudinary.uploader.upload(base64, {
+        folder: "news",
+        resource_type: "image",
+      });
+
+      updateData.imageUrl = upload.secure_url;
+
+      // 🔥 Delete old Cloudinary image
+      if (existing.imageUrl) {
+        const oldPublicId = extractCloudinaryPublicId(existing.imageUrl);
+        if (oldPublicId) {
+          await cloudinary.uploader.destroy(oldPublicId, {
+            resource_type: "image",
+          });
+        }
+      }
+    }
+
+    const [updated] = await db
+      .update(news)
+      .set(updateData)
+      .where(eq(news.id, newsId))
+      .returning();
+
+    return NextResponse.json({
+      success: true,
+      data: updated,
+    });
   } catch (error) {
     console.error("Error updating news:", error);
     return NextResponse.json(
       { error: "Failed to update news" },
       { status: 500 }
     );
+  }
+}
+
+/* ------------------------ Helper ------------------------ */
+
+function extractCloudinaryPublicId(url: string): string | null {
+  try {
+    const parts = url.split("/upload/");
+    if (parts.length < 2) return null;
+
+    return parts[1]
+      .replace(/^v\d+\//, "")
+      .replace(/\.[^/.]+$/, "");
+  } catch {
+    return null;
   }
 }

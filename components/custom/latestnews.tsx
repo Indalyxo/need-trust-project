@@ -30,27 +30,38 @@ export function LatestNews() {
   const headerRef = useRef<HTMLHeadingElement>(null);
 
   // Fetch news data
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/news');
-        if (!response.ok) {
-          throw new Error('Failed to fetch news');
-        }
-        const data = await response.json();
-        setNewsItems(data);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching news:', err);
-        setError('Failed to load news');
-      } finally {
-        setLoading(false);
-      }
-    };
+useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/news");
 
-    fetchNews();
-  }, []);
+      if (!response.ok) {
+        throw new Error("Failed to fetch news");
+      }
+
+      const json = await response.json();
+
+      // ✅ IMPORTANT FIX
+      if (json.success && Array.isArray(json.data)) {
+        setNewsItems(json.data);
+      } else {
+        setNewsItems([]);
+      }
+
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching news:", err);
+      setError("Failed to load news");
+      setNewsItems([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchNews();
+}, []);
+
 
   /* --------------------------------------------
       INITIAL MOUNT ANIMATION (SAFE WITH CONTEXT)

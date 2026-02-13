@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { news } from "@/drizzle/schema";
 import { desc } from "drizzle-orm";
+import cloudinary from "@/lib/cloudinary";
 
-// GET - Fetch all news articles
+/* ---------------------------- GET ---------------------------- */
+
 export async function GET() {
   try {
     const newsArticles = await db
@@ -11,51 +13,79 @@ export async function GET() {
       .from(news)
       .orderBy(desc(news.createdAt));
 
-    return NextResponse.json(newsArticles);
+    return NextResponse.json({ success: true, data: newsArticles });
   } catch (error) {
     console.error("Error fetching news:", error);
     return NextResponse.json(
-      { error: "Failed to fetch news" },
+      { success: false, message: "Failed to fetch news" },
       { status: 500 }
     );
   }
 }
 
-// POST - Create new news article
+/* ---------------------------- POST ---------------------------- */
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { title, content, imageUrl } = body;
+    const formData = await request.formData();
 
-    if (!title || !content || !imageUrl) {
+    const title = formData.get("title") as string | null;
+    const content = formData.get("content") as string | null;
+    const file = formData.get("image") as File | null;
+
+    if (!title || !content || !file) {
       return NextResponse.json(
-        { error: "Title, content, and image URL are required" },
+        { error: "Title, content, and image are required" },
         { status: 400 }
       );
     }
 
-    // Validate that imageUrl is not a blob URL
-    if (imageUrl.startsWith('blob:')) {
+    // Validate image type
+    if (!file.type.startsWith("image/")) {
       return NextResponse.json(
-        { error: "Invalid image URL. Please upload the image properly." },
+        { error: "Only image files are allowed" },
         { status: 400 }
       );
     }
 
-    const newNews = await db
+    // Optional: size limit (5MB)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { error: "Image size must be under 5MB" },
+        { status: 400 }
+      );
+    }
+
+    // Convert File → Base64
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const base64Image = `data:${file.type};base64,${buffer.toString("base64")}`;
+
+    // Upload to Cloudinary
+    const upload = await cloudinary.uploader.upload(base64Image, {
+      folder: "news",
+      resource_type: "image",
+    });
+
+    // Save to DB
+    const [newNews] = await db
       .insert(news)
       .values({
         title,
         content,
-        imageUrl,
+        imageUrl: upload.secure_url,
       })
       .returning();
 
-    return NextResponse.json(newNews[0], { status: 201 });
+    return NextResponse.json(
+      { success: true, data: newNews },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Error creating news:", error);
     return NextResponse.json(
-      { error: "Failed to create news" },
+      { success: false, message: "Failed to create news" },
       { status: 500 }
     );
   }

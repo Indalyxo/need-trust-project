@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { impacts } from "@/drizzle/schema";
-import { writeFile } from "fs/promises";
-import path from "path";
+import cloudinary from "@/lib/cloudinary";
+
+/* ------------------------------ GET ------------------------------ */
 
 export async function GET() {
   try {
     const allImpacts = await db.select().from(impacts).orderBy(impacts.id);
+
     return NextResponse.json({
       success: true,
       data: allImpacts,
@@ -20,6 +22,8 @@ export async function GET() {
   }
 }
 
+/* ------------------------------ POST ------------------------------ */
+
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
@@ -29,7 +33,7 @@ export async function POST(req: Request) {
     const icon = formData.get("icon") as string;
     const statsValue = formData.get("statsValue") as string;
     const statsLabel = formData.get("statsLabel") as string;
-    const file = formData.get("image") as File;
+    const file = formData.get("image") as File | null;
 
     if (!title || !description || !icon || !statsValue || !statsLabel || !file) {
       return NextResponse.json(
@@ -38,26 +42,32 @@ export async function POST(req: Request) {
       );
     }
 
-    // Save file to public/uploads/impacts
+    // Accept only images
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json(
+        { success: false, message: "Only image files are allowed" },
+        { status: 400 }
+      );
+    }
+
+    // Convert File → Base64
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const filename = `${Date.now()}-${file.name}`;
-    const filepath = path.join(
-      process.cwd(),
-      "public/uploads/impacts",
-      filename
-    );
+    const base64Image = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-    await writeFile(filepath, buffer);
+    // Upload to Cloudinary
+    const upload = await cloudinary.uploader.upload(base64Image, {
+      folder: "impacts",
+      resource_type: "image",
+    });
 
-    const imagePath = `/uploads/impacts/${filename}`;
-
+    // Save Cloudinary URL in DB
     const result = await db
       .insert(impacts)
       .values({
         title,
         description,
-        imagePath,
+        imagePath: upload.secure_url,
         icon,
         statsValue,
         statsLabel,

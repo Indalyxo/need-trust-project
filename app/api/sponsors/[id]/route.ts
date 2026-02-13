@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import { sponsors } from '@/drizzle/schema';
-import { eq } from 'drizzle-orm';
+import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { sponsors } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
+import cloudinary from "@/lib/cloudinary";
 
 export async function DELETE(
   request: NextRequest,
@@ -9,33 +10,65 @@ export async function DELETE(
 ) {
   try {
     const { id } = await context.params;
-    const sponsorId = parseInt(id);
+    const sponsorId = Number(id);
 
     if (isNaN(sponsorId)) {
       return NextResponse.json(
-        { error: 'Invalid sponsor ID' },
+        { error: "Invalid sponsor ID" },
         { status: 400 }
       );
     }
 
-    const deletedSponsor = await db
-      .delete(sponsors)
-      .where(eq(sponsors.id, sponsorId))
-      .returning();
+    // 🔍 Fetch sponsor first
+    const [sponsor] = await db
+      .select()
+      .from(sponsors)
+      .where(eq(sponsors.id, sponsorId));
 
-    if (deletedSponsor.length === 0) {
+    if (!sponsor) {
       return NextResponse.json(
-        { error: 'Sponsor not found' },
+        { error: "Sponsor not found" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ message: 'Sponsor deleted successfully' });
+    // 🔥 Delete image from Cloudinary
+    if (sponsor.imageUrl) {
+      const publicId = extractCloudinaryPublicId(sponsor.imageUrl);
+      if (publicId) {
+        await cloudinary.uploader.destroy(publicId, {
+          resource_type: "image",
+        });
+      }
+    }
+
+    // 🗑️ Delete DB row
+    await db.delete(sponsors).where(eq(sponsors.id, sponsorId));
+
+    return NextResponse.json({
+      success: true,
+      message: "Sponsor deleted successfully",
+    });
   } catch (error) {
-    console.error('Error deleting sponsor:', error);
+    console.error("Error deleting sponsor:", error);
     return NextResponse.json(
-      { error: 'Failed to delete sponsor' },
+      { error: "Failed to delete sponsor" },
       { status: 500 }
     );
+  }
+}
+
+/* ------------------------ Helper ------------------------ */
+
+function extractCloudinaryPublicId(url: string): string | null {
+  try {
+    const parts = url.split("/upload/");
+    if (parts.length < 2) return null;
+
+    return parts[1]
+      .replace(/^v\d+\//, "")
+      .replace(/\.[^/.]+$/, "");
+  } catch {
+    return null;
   }
 }

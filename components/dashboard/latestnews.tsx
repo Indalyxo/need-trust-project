@@ -34,21 +34,33 @@ export default function NewsCardsWithModal() {
   const [error, setError] = useState("");
 
   // Fetch news articles
-  const fetchNews = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch("/api/news");
-      if (!response.ok) {
-        throw new Error("Failed to fetch news");
-      }
-      const data = await response.json();
-      setNewsArticles(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
+const fetchNews = async () => {
+  try {
+    setIsLoading(true);
+    const response = await fetch("/api/news");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch news");
     }
-  };
+
+    const json = await response.json();
+
+    // ✅ FIX IS HERE
+    if (json.success && Array.isArray(json.data)) {
+      setNewsArticles(json.data);
+    } else {
+      setNewsArticles([]);
+    }
+
+    setError("");
+  } catch (err) {
+    setError(err instanceof Error ? err.message : "An error occurred");
+    setNewsArticles([]);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   // Delete news article
   const deleteNews = async (id: number) => {
