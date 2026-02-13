@@ -98,35 +98,18 @@ export default function DonationForm() {
     setSuccess(null);
 
     try {
-      // Upload transaction proof first
+      // ✅ Send FormData directly to /api/donations
       const formData = new FormData();
-      formData.append("file", selectedFile);
+      formData.append("name", fullName.trim());
+      formData.append("email", email.trim());
+      formData.append("amount", amount.trim());
+      formData.append("panNumber", panCard.trim());
+      formData.append("transactionId", transactionId.trim());
+      formData.append("proofImage", selectedFile);
 
-      const uploadResponse = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload transaction proof");
-      }
-
-      const uploadData = await uploadResponse.json();
-
-      // Create donation record
       const donationResponse = await fetch("/api/donations", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fullName: fullName.trim(),
-          email: email.trim(),
-          amount: amount.trim(),
-          panCard: panCard.trim(),
-          transactionId: transactionId.trim(),
-          proofImageUrl: uploadData.imageUrl,
-        }),
+        body: formData, // ✅ No Content-Type header
       });
 
       if (!donationResponse.ok) {

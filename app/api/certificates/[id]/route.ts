@@ -2,53 +2,49 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { certificates } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
-import path from "path";
-import { unlink, writeFile } from "fs/promises";
+import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
+
+/* -------------------------------- DELETE -------------------------------- */
 
 export async function DELETE(
   req: Request,
   context: { params: Promise<{ id: string }> }
 ) {
-  // ⬅️ You MUST await params in Next.js 15
   const { id } = await context.params;
-
   const numericId = Number(id);
 
   if (isNaN(numericId)) {
-    return NextResponse.json(
-      { error: "Invalid certificate ID" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid certificate ID" }, { status: 400 });
   }
 
   try {
-    // fetch the certificate to get image path
     const [cert] = await db
       .select()
       .from(certificates)
       .where(eq(certificates.id, numericId));
 
-    if (cert && cert.image) {
-      try {
-        const filePath = path.join(process.cwd(), "public", cert.image.replace(/^\//, ""));
-        await unlink(filePath);
-      } catch (err) {
-        // file might not exist; log and continue
-        console.error("Failed to remove certificate image:", err);
-      }
+    if (!cert) {
+      return NextResponse.json({ error: "Certificate not found" }, { status: 404 });
+    }
+
+    // Delete from Cloudinary
+    if (cert.image) {
+      await deleteFromCloudinary(cert.image);
     }
 
     await db.delete(certificates).where(eq(certificates.id, numericId));
 
-    return NextResponse.json({ message: "Certificate deleted successfully" });
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error(error);
+    console.error("Delete Certificate Error:", error);
     return NextResponse.json(
       { error: "Failed to delete certificate" },
       { status: 500 }
     );
   }
 }
+
+/* -------------------------------- PATCH -------------------------------- */
 
 export async function PATCH(
   req: Request,
@@ -68,50 +64,49 @@ export async function PATCH(
     const description = form.get("description") as string | null;
     const file = form.get("photo") as File | null;
 
-    // fetch existing record
     const [existing] = await db
       .select()
       .from(certificates)
       .where(eq(certificates.id, numericId));
 
-    const updateData: any = {};
+    if (!existing) {
+      return NextResponse.json({ error: "Certificate not found" }, { status: 404 });
+    }
 
+    const updateData: any = {};
     if (title !== null) updateData.title = title;
     if (description !== null) updateData.description = description;
 
+    // New file upload
     if (file && file.name) {
       const mime = file.type || "";
       if (!(mime.startsWith("image/") || mime === "application/pdf")) {
         return NextResponse.json(
-          { success: false, message: "Only images or PDFs are allowed" },
+          { error: "Only images or PDFs are allowed" },
           { status: 400 }
         );
       }
 
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const fileName = `${Date.now()}-${file.name}`;
-      const filePath = path.join(process.cwd(), "public/certificates", fileName);
-      await writeFile(filePath, buffer);
+      const newUrl = await uploadToCloudinary(file, "certificates", "auto");
+      updateData.image = newUrl;
 
-      updateData.image = `/certificates/${fileName}`;
-
-      // remove old file
-      if (existing && existing.image) {
-        try {
-          const oldPath = path.join(process.cwd(), "public", existing.image.replace(/^\//, ""));
-          await unlink(oldPath);
-        } catch (err) {
-          console.error("Failed to remove old image:", err);
-        }
+      // Delete old file
+      if (existing.image) {
+        await deleteFromCloudinary(existing.image);
       }
     }
 
-    await db.update(certificates).set(updateData).where(eq(certificates.id, numericId));
+    await db
+      .update(certificates)
+      .set(updateData)
+      .where(eq(certificates.id, numericId));
 
     return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ success: false, message: "Failed to update" }, { status: 500 });
+  } catch (error) {
+    console.error("Update Certificate Error:", error);
+    return NextResponse.json(
+      { error: "Failed to update certificate" },
+      { status: 500 }
+    );
   }
 }

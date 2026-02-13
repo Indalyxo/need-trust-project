@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getInlineViewUrl } from "@/lib/cloudinary-utils";
 
 interface Certificate {
   id: number;
@@ -15,8 +16,8 @@ export default function CertificateSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // For fullscreen modal
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  // For fullscreen modal (images and PDFs)
+  const [selectedMedia, setSelectedMedia] = useState<{ url: string, isPdf: boolean } | null>(null);
 
   useEffect(() => {
     fetch("/api/certificates")
@@ -34,6 +35,10 @@ export default function CertificateSection() {
         setLoading(false);
       });
   }, []);
+
+  const isPdf = (url: string) => {
+    return url.includes('/raw/upload/') || url.includes('.pdf');
+  };
 
   if (loading) {
     return <p className="text-center mt-10 text-lg">Loading certificates...</p>;
@@ -56,24 +61,29 @@ export default function CertificateSection() {
               key={cert.id}
               className="border rounded-xl shadow-lg hover:shadow-2xl transition p-5 bg-white"
             >
-              {cert.image && cert.image.toLowerCase().endsWith(".pdf") ? (
+              {/* Check if it's a PDF */}
+              {isPdf(cert.image) ? (
                 <div
-                  className="w-full h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden cursor-pointer bg-gray-100"
-                  onClick={() => setSelectedImage(cert.image.startsWith("/") ? cert.image : "/" + cert.image)}
+                  className="w-full h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden cursor-pointer bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
+                  onClick={() => setSelectedMedia({ url: cert.image, isPdf: true })}
                 >
-                  <iframe
-                    src={`${cert.image.startsWith("/") ? cert.image : "/" + cert.image}#toolbar=0`}
-                    className="w-full h-full pointer-events-none"
-                    title={cert.title}
-                  />
+                  <div className="text-center">
+                    <svg className="w-20 h-20 text-red-500 mx-auto mb-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                    </svg>
+                    <p className="text-gray-600 font-medium">Click to view PDF</p>
+                  </div>
                 </div>
               ) : (
                 <img
-                  src={cert.image.startsWith("/") ? cert.image : "/" + cert.image}
+                  src={cert.image}
                   alt={cert.title}
                   className="w-full h-64 md:h-80 lg:h-96 object-cover rounded-lg cursor-pointer"
-                  onClick={() => setSelectedImage(cert.image.startsWith("/") ? cert.image : "/" + cert.image)}
-                  onError={(e) => (e.currentTarget.src = "/no-image.png")}
+                  onClick={() => setSelectedMedia({ url: cert.image, isPdf: false })}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/placeholder-image.svg';
+                  }}
                 />
               )}
 
@@ -91,23 +101,37 @@ export default function CertificateSection() {
         </div>
       )}
 
-      {/* Fullscreen Image Modal */}
-      {selectedImage && (
+      {/* Fullscreen Modal for Images and PDFs */}
+      {selectedMedia && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
-          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedMedia(null)}
         >
-          {selectedImage.toLowerCase().endsWith(".pdf") ? (
-            <iframe
-              src={selectedImage}
-              className="w-full h-full max-w-4xl max-h-[90vh]"
-              title="PDF Viewer"
-            />
+          <button
+            onClick={() => setSelectedMedia(null)}
+            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10 bg-red-500 rounded-full w-12 h-12 flex items-center justify-center"
+          >
+            ×
+          </button>
+
+          {selectedMedia.isPdf ? (
+            <div
+              className="w-full h-full max-w-6xl max-h-[90vh] bg-white rounded-lg overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Use Google Docs Viewer for better PDF rendering */}
+              <iframe
+                src={`https://docs.google.com/viewer?url=${encodeURIComponent(selectedMedia.url)}&embedded=true`}
+                className="w-full h-full"
+                title="PDF Viewer"
+              />
+            </div>
           ) : (
             <img
-              src={selectedImage}
+              src={selectedMedia.url}
               alt="Full Screen"
               className="max-h-full max-w-full object-contain"
+              onClick={(e) => e.stopPropagation()}
             />
           )}
         </div>

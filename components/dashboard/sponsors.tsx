@@ -24,12 +24,19 @@ export default function SponsorsManagement() {
       if (!response.ok) {
         throw new Error('Failed to fetch sponsors');
       }
-      const data = await response.json();
-      setSponsors(data);
+      const json = await response.json();
+      
+      // ✅ Handle { success, data } response format
+      if (json.success && Array.isArray(json.data)) {
+        setSponsors(json.data);
+      } else {
+        setSponsors([]);
+      }
       setError(null);
     } catch (err) {
       console.error('Error fetching sponsors:', err);
       setError('Failed to load sponsors');
+      setSponsors([]);
     } finally {
       setLoading(false);
     }

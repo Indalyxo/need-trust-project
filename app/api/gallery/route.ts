@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { gallery } from '@/drizzle/schema';
-import { writeFile } from "fs/promises";
-import path from "path";
+import { gallery } from "@/drizzle/schema";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export async function POST(req: Request) {
   try {
@@ -16,35 +15,30 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    // Convert image → buffer
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json(
+        { error: "Only image files are allowed" },
+        { status: 400 }
+      );
+    }
 
-    // Generate filename
-    const fileName = Date.now() + "-" + file.name.replace(/\s+/g, "_");
+    // Upload to Cloudinary
+    const uploadUrl = await uploadToCloudinary(file, "gallery");
 
-    // Save image inside /public/uploads/gallery/
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "uploads",
-      "gallery",
-      fileName
-    );
+    // Store URL in DB
+    await db.insert(gallery).values({
+      title,
+      description,
+      imagePath: uploadUrl,
+    });
 
-    await writeFile(filePath, buffer);
-
-    // Public URL for frontend
-  await db.insert(gallery).values({
-  title,
-  description,
-  imagePath: `/uploads/gallery/${fileName}`
-});
-
-
-    return NextResponse.json({ success: true, imagePath: `/uploads/gallery/${fileName}` }, { status: 200 });
+    return NextResponse.json({
+      success: true,
+      url: uploadUrl,
+    });
   } catch (error) {
-    console.error("Gallery Upload Error:", error);
+    console.error("Cloudinary Upload Error:", error);
     return NextResponse.json(
       { error: "Upload failed" },
       { status: 500 }

@@ -66,39 +66,15 @@ export default function NewsInputForm({ onSuccess }: NewsInputFormProps) {
         return;
       }
 
-      // Upload image first
-      const imageFormData = new FormData();
-      imageFormData.append("file", formData.image);
+      // ✅ Send FormData directly to /api/news
+      const newsFormData = new FormData();
+      newsFormData.append("title", formData.title);
+      newsFormData.append("content", formData.description);
+      newsFormData.append("image", formData.image);
 
-      const uploadResponse = await fetch("/api/upload", {
-        method: "POST",
-        body: imageFormData,
-      });
-
-      if (!uploadResponse.ok) {
-        const uploadError = await uploadResponse.json();
-        throw new Error(uploadError.error || "Failed to upload image");
-      }
-
-      const { imageUrl } = await uploadResponse.json();
-      console.log("Uploaded image URL:", imageUrl); // Debug log
-
-      // Validate that we got a proper URL, not a blob
-      if (!imageUrl || imageUrl.startsWith('blob:')) {
-        throw new Error("Invalid image URL received from upload");
-      }
-
-      // Create news article
       const newsResponse = await fetch("/api/news", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: formData.title,
-          content: formData.description,
-          imageUrl,
-        }),
+        body: newsFormData, // ✅ No Content-Type header
       });
 
       if (!newsResponse.ok) {

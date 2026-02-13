@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { db } from '@/lib/db';
-import { certificates } from '@/drizzle/schema';
-import { writeFile } from "fs/promises";
-import path from "path";
+import { db } from "@/lib/db";
+import { certificates } from "@/drizzle/schema";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export async function POST(req: Request) {
   try {
@@ -19,34 +18,31 @@ export async function POST(req: Request) {
       );
     }
 
-    // Accept images and PDFs
+    // Accept images & PDFs
     const mime = file.type || "";
     if (!(mime.startsWith("image/") || mime === "application/pdf")) {
       return NextResponse.json(
-        { success: false, message: "Only images or PDFs are allowed" },
+        { success: false, message: "Only images or PDFs allowed" },
         { status: 400 }
       );
     }
 
-    // Save uploaded file to public folder
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // Upload to Cloudinary
+    const uploadUrl = await uploadToCloudinary(file, "certificates", "auto");
 
-    const fileName = `${Date.now()}-${file.name}`;
-    const filePath = path.join(process.cwd(), "public/certificates", fileName);
-
-    await writeFile(filePath, buffer);
-
-    // Save to DB
+    // Save Cloudinary URL to DB
     await db.insert(certificates).values({
       title,
       description,
-      image: `/certificates/${fileName}`,
+      image: uploadUrl,
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      url: uploadUrl,
+    });
   } catch (error) {
-    console.log(error);
+    console.error("Certificate Upload Error:", error);
     return NextResponse.json(
       { success: false, message: "Error uploading certificate" },
       { status: 500 }
@@ -54,18 +50,19 @@ export async function POST(req: Request) {
   }
 }
 
-
 export async function GET() {
   try {
-    const allCertificates = await db.select().from(certificates).orderBy(certificates.id);
+    const allCertificates = await db
+      .select()
+      .from(certificates)
+      .orderBy(certificates.id);
 
     return NextResponse.json({ success: true, data: allCertificates });
   } catch (error) {
-    console.log(error);
+    console.error("Certificate Fetch Error:", error);
     return NextResponse.json(
       { success: false, message: "Error fetching certificates" },
       { status: 500 }
     );
   }
 }
-

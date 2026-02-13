@@ -86,33 +86,15 @@ export default function SponsorInputForm({ onSponsorAdded }: SponsorInputFormPro
     setSuccess(null);
 
     try {
-      // Upload image first
+      // ✅ Send FormData directly to /api/sponsors
       const formData = new FormData();
-      formData.append('file', selectedFile);
+      formData.append('name', name.trim());
+      formData.append('link', link.trim());
+      formData.append('image', selectedFile);
 
-      const uploadResponse = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error('Failed to upload image');
-      }
-
-      const uploadData = await uploadResponse.json();
-      console.log('Upload response:', uploadData); // Debug log
-
-      // Create sponsor with uploaded image URL
       const sponsorResponse = await fetch('/api/sponsors', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          link: link.trim(),
-          imageUrl: uploadData.imageUrl, // Changed from uploadData.url to uploadData.imageUrl
-        }),
+        body: formData, // ✅ No Content-Type header
       });
 
       if (!sponsorResponse.ok) {

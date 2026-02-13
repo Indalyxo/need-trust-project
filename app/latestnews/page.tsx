@@ -30,26 +30,35 @@ export default function LatestNews() {
   const headerRef = useRef<HTMLHeadingElement>(null);
 
   // Fetch news articles
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await fetch("/api/news");
-        if (!response.ok) {
-          throw new Error("Failed to fetch news");
-        }
-        const data = await response.json();
-        console.log("Fetched news data:", data); // Debug log
-        setNewsItems(data);
-        setCurrentIndex(0); // Reset to first item when data loads
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load news");
-      } finally {
-        setIsLoading(false);
+useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      const response = await fetch("/api/news");
+      if (!response.ok) {
+        throw new Error("Failed to fetch news");
       }
-    };
 
-    fetchNews();
-  }, []);
+      const json = await response.json();
+      console.log("Fetched news data:", json);
+
+      // ✅ FIX IS HERE
+      if (json.success && Array.isArray(json.data)) {
+        setNewsItems(json.data);
+        setCurrentIndex(0);
+      } else {
+        setNewsItems([]);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load news");
+      setNewsItems([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchNews();
+}, []);
+
 
   /* --------------------------------------------------
       INITIAL ANIMATION — FIXED WITH GSAP CONTEXT
