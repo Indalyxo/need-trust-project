@@ -65,7 +65,7 @@ export default function Sidebar({
             </div>
             <div>
               <h1 className="text-lg font-bold text-sidebar-foreground">
-                TrustHub
+                Need Foundation Trust
               </h1>
               <p className="text-xs text-sidebar-foreground/60">Dashboard</p>
             </div>
@@ -103,7 +103,7 @@ export default function Sidebar({
             <span className="font-medium">Logout</span>
           </button>
           <div className="text-xs text-sidebar-foreground/60 text-center mt-4">
-            <p>© 2025 TrustHub</p>
+            <p>© 2026 Need Foundation Trust</p>
             <p>All rights reserved</p>
           </div>
         </div>
