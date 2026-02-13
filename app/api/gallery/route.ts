@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { gallery } from "@/drizzle/schema";
-import cloudinary from "@/lib/cloudinary";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export async function POST(req: Request) {
   try {
@@ -15,27 +15,27 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    // Convert File → Buffer → Base64
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const base64File = `data:${file.type};base64,${buffer.toString("base64")}`;
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json(
+        { error: "Only image files are allowed" },
+        { status: 400 }
+      );
+    }
 
     // Upload to Cloudinary
-    const uploadResult = await cloudinary.uploader.upload(base64File, {
-      folder: "gallery",                 // Cloudinary folder
-      resource_type: "auto",              // image | pdf | video
-    });
+    const uploadUrl = await uploadToCloudinary(file, "gallery");
 
     // Store URL in DB
     await db.insert(gallery).values({
       title,
       description,
-      imagePath: uploadResult.secure_url, // Cloudinary URL
+      imagePath: uploadUrl,
     });
 
     return NextResponse.json({
       success: true,
-      url: uploadResult.secure_url,
+      url: uploadUrl,
     });
   } catch (error) {
     console.error("Cloudinary Upload Error:", error);

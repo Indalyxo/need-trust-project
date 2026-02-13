@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { certificates } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
-import cloudinary from "@/lib/cloudinary";
+import { deleteFromCloudinary, uploadToCloudinary } from "@/lib/cloudinary";
 
 /* -------------------------------- DELETE -------------------------------- */
 
@@ -27,14 +27,9 @@ export async function DELETE(
       return NextResponse.json({ error: "Certificate not found" }, { status: 404 });
     }
 
-    // 🔥 Delete from Cloudinary
+    // Delete from Cloudinary
     if (cert.image) {
-      const publicId = extractCloudinaryPublicId(cert.image);
-      if (publicId) {
-        await cloudinary.uploader.destroy(publicId, {
-          resource_type: "auto",
-        });
-      }
+      await deleteFromCloudinary(cert.image);
     }
 
     await db.delete(certificates).where(eq(certificates.id, numericId));
@@ -82,7 +77,7 @@ export async function PATCH(
     if (title !== null) updateData.title = title;
     if (description !== null) updateData.description = description;
 
-    // 🔥 New file upload
+    // New file upload
     if (file && file.name) {
       const mime = file.type || "";
       if (!(mime.startsWith("image/") || mime === "application/pdf")) {
@@ -92,25 +87,12 @@ export async function PATCH(
         );
       }
 
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const base64 = `data:${mime};base64,${buffer.toString("base64")}`;
+      const newUrl = await uploadToCloudinary(file, "certificates", "auto");
+      updateData.image = newUrl;
 
-      const upload = await cloudinary.uploader.upload(base64, {
-        folder: "certificates",
-        resource_type: "auto",
-      });
-
-      updateData.image = upload.secure_url;
-
-      // 🔥 Delete old Cloudinary file
+      // Delete old file
       if (existing.image) {
-        const oldPublicId = extractCloudinaryPublicId(existing.image);
-        if (oldPublicId) {
-          await cloudinary.uploader.destroy(oldPublicId, {
-            resource_type: "auto",
-          });
-        }
+        await deleteFromCloudinary(existing.image);
       }
     }
 
@@ -126,20 +108,5 @@ export async function PATCH(
       { error: "Failed to update certificate" },
       { status: 500 }
     );
-  }
-}
-
-/* --------------------------- Helper Function ---------------------------- */
-
-function extractCloudinaryPublicId(url: string): string | null {
-  try {
-    const parts = url.split("/upload/");
-    if (parts.length < 2) return null;
-
-    return parts[1]
-      .replace(/^v\d+\//, "")
-      .replace(/\.[^/.]+$/, "");
-  } catch {
-    return null;
   }
 }

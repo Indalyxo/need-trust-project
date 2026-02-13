@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { certificates } from "@/drizzle/schema";
-import cloudinary from "@/lib/cloudinary";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export async function POST(req: Request) {
   try {
@@ -27,27 +27,19 @@ export async function POST(req: Request) {
       );
     }
 
-    // Convert File → Buffer → Base64
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const base64File = `data:${mime};base64,${buffer.toString("base64")}`;
-
     // Upload to Cloudinary
-    const uploadResult = await cloudinary.uploader.upload(base64File, {
-      folder: "certificates",
-      resource_type: "auto", // image | pdf
-    });
+    const uploadUrl = await uploadToCloudinary(file, "certificates", "auto");
 
     // Save Cloudinary URL to DB
     await db.insert(certificates).values({
       title,
       description,
-      image: uploadResult.secure_url,
+      image: uploadUrl,
     });
 
     return NextResponse.json({
       success: true,
-      url: uploadResult.secure_url,
+      url: uploadUrl,
     });
   } catch (error) {
     console.error("Certificate Upload Error:", error);

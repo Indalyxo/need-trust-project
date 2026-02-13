@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { impacts } from "@/drizzle/schema";
-import cloudinary from "@/lib/cloudinary";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 /* ------------------------------ GET ------------------------------ */
 
@@ -50,16 +50,8 @@ export async function POST(req: Request) {
       );
     }
 
-    // Convert File → Base64
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const base64Image = `data:${file.type};base64,${buffer.toString("base64")}`;
-
     // Upload to Cloudinary
-    const upload = await cloudinary.uploader.upload(base64Image, {
-      folder: "impacts",
-      resource_type: "image",
-    });
+    const uploadUrl = await uploadToCloudinary(file, "impacts");
 
     // Save Cloudinary URL in DB
     const result = await db
@@ -67,7 +59,7 @@ export async function POST(req: Request) {
       .values({
         title,
         description,
-        imagePath: upload.secure_url,
+        imagePath: uploadUrl,
         icon,
         statsValue,
         statsLabel,

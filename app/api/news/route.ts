@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { news } from "@/drizzle/schema";
 import { desc } from "drizzle-orm";
-import cloudinary from "@/lib/cloudinary";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 /* ---------------------------- GET ---------------------------- */
 
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Optional: size limit (5MB)
+    // Size limit (5MB)
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
       return NextResponse.json(
@@ -57,16 +57,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert File → Base64
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const base64Image = `data:${file.type};base64,${buffer.toString("base64")}`;
-
     // Upload to Cloudinary
-    const upload = await cloudinary.uploader.upload(base64Image, {
-      folder: "news",
-      resource_type: "image",
-    });
+    const uploadUrl = await uploadToCloudinary(file, "news");
 
     // Save to DB
     const [newNews] = await db
@@ -74,7 +66,7 @@ export async function POST(request: NextRequest) {
       .values({
         title,
         content,
-        imageUrl: upload.secure_url,
+        imageUrl: uploadUrl,
       })
       .returning();
 

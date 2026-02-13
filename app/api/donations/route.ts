@@ -20,14 +20,14 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-const { name, email, amount, panNumber, transactionId, proofImageUrl } = body;
+    const { name, email, amount, panNumber, transactionId, proofImageUrl } = body;
 
-if (!name || !email || !amount || !panNumber || !transactionId || !proofImageUrl) {
-  return NextResponse.json(
-    { error: 'All fields are required' },
-    { status: 400 }
-  );
-}
+    if (!name || !email || !amount || !panNumber || !transactionId || !proofImageUrl) {
+      return NextResponse.json(
+        { error: 'All fields are required' },
+        { status: 400 }
+      );
+    }
 
 
     // Validate email format
@@ -48,15 +48,15 @@ if (!name || !email || !amount || !panNumber || !transactionId || !proofImageUrl
       );
     }
 
-const newDonation = await db.insert(donations).values({
-  fullName: name,
-  email,
-  amount,
-  panCard: panNumber,
-  transactionId,
-  proofImageUrl,
-  status: 'pending'
-}).returning();
+    const newDonation = await db.insert(donations).values({
+      fullName: name,
+      email,
+      amount,
+      panCard: panNumber,
+      transactionId,
+      proofImageUrl,
+      status: 'pending'
+    }).returning();
 
     await transporter.sendMail({
       from: `"Donation Team" <${process.env.EMAIL_USER}>`,

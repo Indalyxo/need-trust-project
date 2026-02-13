@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import cloudinary from "@/lib/cloudinary";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,19 +37,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert file → Base64
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const base64Image = `data:${file.type};base64,${buffer.toString("base64")}`;
-
     // Upload to Cloudinary
-    const upload = await cloudinary.uploader.upload(base64Image, {
-      folder: "uploads",
-      resource_type: "image",
-    });
+    const uploadUrl = await uploadToCloudinary(file, "uploads");
 
     return NextResponse.json(
-      { imageUrl: upload.secure_url },
+      { success: true, imageUrl: uploadUrl },
       { status: 201 }
     );
   } catch (error) {
