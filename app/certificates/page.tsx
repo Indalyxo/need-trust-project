@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { getInlineViewUrl } from "@/lib/cloudinary-utils";
-
+import Navbar from "../../components/custom/navigation-menu";
+import Footer from "@/components/custom/footer-section";
 interface Certificate {
   id: number;
   title: string;
@@ -49,6 +50,8 @@ export default function CertificateSection() {
   }
 
   return (
+    <div>
+      <Navbar />
     <div className="max-w-6xl mx-auto p-5">
       <h1 className="text-4xl font-bold mb-8 text-center">Certificates</h1>
 
@@ -136,6 +139,8 @@ export default function CertificateSection() {
           )}
         </div>
       )}
+    </div>
+    <Footer />
     </div>
   );
 }
