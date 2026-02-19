@@ -55,9 +55,7 @@ export default function AboutPage() {
                 Academic Background
               </h4>
               <p><b>M.Phil</b> – (Entrepreneurship)</p>
-              <p><b>FDP</b></p>
-              <p><b>MBA </b></p>
-              <p><b>BBA </b></p>
+              <p><b>FDP</b>,<b>MBA </b></p>
             </div>
             <div className="text-foreground/80">
               <h4 className="text-xl font-semibold mb-2">
