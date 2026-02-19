@@ -77,10 +77,10 @@ export default function AboutPage() {
               <h4 className="text-xl font-semibold mb-2">
                 Academic Background
               </h4>
-              <p><b>M.Phil</b> – Entrepreneurship</p>
-              <p><b>FDP</b> – Entrepreneurship EDI Ahmedabad</p>
-              <p><b>MBA </b>– Thiagarajar School of Management</p>
-              <p><b>BBA </b>– Sourashtra College</p>
+              <p><b>M.Phil</b> – (Entrepreneurship)</p>
+              <p><b>FDP</b></p>
+              <p><b>MBA </b>/p>
+              <p><b>BBA </b></p>
             </div>
             <div className="text-foreground/80">
               <h4 className="text-xl font-semibold mb-2">
