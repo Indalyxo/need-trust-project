@@ -10,14 +10,15 @@ type Certificate = {
   image: string; // this is your file path
 };
 export default function Footer() {
-   const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
 
   useEffect(() => {
     fetch("/api/certificates")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setCertificates(data.data);
+          // Limit to maximum 6 certificates
+          setCertificates(data.data.slice(0, 6));
         }
       })
       .catch((err) => console.error(err));
@@ -75,25 +76,25 @@ export default function Footer() {
           </ul>
         </div> */}
         {/* Certificates */}
-         <div className="h-101">
+        <div className="h-101">
           <h2 className="text-xl font-semibold text-white mb-4">
             Certificates Quick Links
           </h2>
 
           <ul className="space-y-3 text-sm">
-  {certificates.map((cert) => (
-    <li key={cert.id}>
-      <a
-        href={cert.image}   // IMPORTANT: use image, not file_url
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-white transition"
-      >
-        {cert.title}
-      </a>
-    </li>
-  ))}
-</ul>
+            {certificates.map((cert) => (
+              <li key={cert.id}>
+                <a
+                  href={cert.image}   // IMPORTANT: use image, not file_url
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition"
+                >
+                  {cert.title}
+                </a>
+              </li>
+            ))}
+          </ul>
 
         </div>
 
@@ -112,12 +113,12 @@ export default function Footer() {
           </p>
 
           <p className="flex items-center justify-center md:justify-start gap-3">
-           <Mail className="w-5 h-5 text-orange-500" /> {" "}
+            <Mail className="w-5 h-5 text-orange-500" /> {" "}
             <a
               href="mailto:nellaiconnectad@gmail.com"
               className="hover:text-white"
             >
-                nellaiconnectad@gmail.com
+              nellaiconnectad@gmail.com
             </a>
           </p>
 
@@ -136,7 +137,7 @@ export default function Footer() {
           </h2>
 
           <div className="space-y-5 text-sm">
-             <div className="bg-gray-800/60 rounded-lg p-4">
+            <div className="bg-gray-800/60 rounded-lg p-4">
               <p className="text-white font-medium">
                 E.SA. Agilantam
               </p>
@@ -149,7 +150,7 @@ export default function Footer() {
               <p className="text-gray-400">Trustee</p>
             </div>
 
-           
+
           </div>
         </div>
       </div>
