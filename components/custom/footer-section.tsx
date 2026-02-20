@@ -76,7 +76,7 @@ export default function Footer() {
           </ul>
         </div> */}
         {/* Certificates */}
-        <div className="h-101">
+        <div className="">
           <h2 className="text-xl font-semibold text-white mb-4">
             Certificates Quick Links
           </h2>
