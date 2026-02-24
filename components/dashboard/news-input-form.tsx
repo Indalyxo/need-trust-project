@@ -106,11 +106,7 @@ export default function NewsInputForm({ onSuccess }: NewsInputFormProps) {
 
   return (
     <div className="w-full">
-      <h1 className="text-3xl font-bold text-foreground mb-8">
-        Add Latest News
-      </h1>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {/* Image Input */}
         <div className="space-y-2">
           <label
@@ -119,7 +115,7 @@ export default function NewsInputForm({ onSuccess }: NewsInputFormProps) {
           >
             Image
           </label>
-          <div className="relative border-2 border-dashed border-border rounded-lg p-6 hover:border-primary transition-colors cursor-pointer">
+          <div className="relative border-2 border-dashed border-border rounded-lg p-4 hover:border-primary transition-colors cursor-pointer">
             <input
               type="file"
               id="image"
@@ -129,13 +125,13 @@ export default function NewsInputForm({ onSuccess }: NewsInputFormProps) {
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
             {formData.imagePreview ? (
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col items-center gap-2">
                 <img
                   src={formData.imagePreview || "/placeholder.svg"}
                   alt="Preview"
-                  className="max-h-48 rounded-md object-cover"
+                  className="max-h-40 rounded-md object-cover"
                 />
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   Click to change image
                 </p>
               </div>
@@ -198,7 +194,7 @@ export default function NewsInputForm({ onSuccess }: NewsInputFormProps) {
             value={formData.description}
             onChange={handleInputChange}
             placeholder="Enter news description"
-            rows={5}
+            rows={4}
             className="w-full px-4 py-2 border border-input rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
           />
         </div>
