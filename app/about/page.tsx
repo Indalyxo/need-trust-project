@@ -111,9 +111,9 @@ export default function AboutPage() {
               <h4 className="text-xl font-semibold mb-2">
                 Academic Background
               </h4>
-
+               <b>MBA</b> 
               <p>
-                <b>MBA</b> 
+               
                 <b>M.A </b>- ( English Literature )  </p>
 
             </div>
