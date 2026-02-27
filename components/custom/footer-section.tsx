@@ -18,7 +18,7 @@ export default function Footer() {
       .then((data) => {
         if (data.success) {
           // Limit to maximum 6 certificates
-          setCertificates(data.data.slice(0, 6));
+          setCertificates(data.data.slice(0, 10));
         }
       })
       .catch((err) => console.error(err));
@@ -47,7 +47,7 @@ export default function Footer() {
 
           <p className="text-sm leading-relaxed max-w-xs">
             We are a non-profit organization dedicated to serving the community
-            through education, healthcare, and social welfare initiatives.
+            through Education, Healthcare, and Social Welfare Initiatives.
           </p>
         </div>
 

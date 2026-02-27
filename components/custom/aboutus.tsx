@@ -42,14 +42,14 @@ export default function AboutPage() {
             <ul className="space-y-3 text-lg text-foreground/80 leading-relaxed list-disc list-inside">
               <li>To develop Entrepreneurship among youth and women</li>
               <li>
-                Enabling youth to acquire skills for employment and self employment. To conduct skill Development
-                training programmes leading to self wage employment
+                Enabling youth to acquire skills for employment and self employment. To conduct<br/><span className="ml-6.5"/>Skill Development
+                Training programmes leading to self wage employment
               </li>
               <li>Give necessary Tuitions, Coaching etc to the students who are studying higher education</li>
               <li>Publishing Free Medical Camps/Free Eye Camps &amp; Blood Donation</li>
               <li>
                 To Associate with Institution such as W.H.O (world Health Organization) in conducting Awareness
-                Programmes in Health planning, Hygiene etc..
+                <br/><span className="ml-6.5"/>Programmes in Health planning, Hygiene etc..
               </li>
             </ul>
           </section>

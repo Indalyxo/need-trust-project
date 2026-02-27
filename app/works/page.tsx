@@ -12,7 +12,7 @@ const services = [
     title: "Nellai Connect Platform",
     description:
       "Nellai Connect bridges Tirunelveli's people, services, and businesses through a smart digital platform. Connecting communities, simplifying access, and empowering local growth.",
-    tagline: "Focus Areas: Training • Employment • Awareness",
+    tagline: "Neighbourhood / National / International",
     url: "https://nellaiconnect.in",
     icon: <TrendingUp className="w-8 h-8" />,
   },
