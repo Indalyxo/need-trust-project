@@ -16,6 +16,14 @@ export default function GallerySection() {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
+  // Priority order for categories
+  const priorityCategories = [
+    "EDUCATION - NEP",
+    "ENTREPRENEURSHIP",
+    "ENVIRONMENT",
+    "ELECTION AWARENESS"
+  ];
+
   useEffect(() => {
     const fetchGallery = async () => {
       try {
@@ -30,6 +38,45 @@ export default function GallerySection() {
 
     fetchGallery();
   }, []);
+
+  // Group items by title (category)
+  const groupedItems = items.reduce((acc: Record<string, GalleryItem[]>, item) => {
+    const key = item.title || "Uncategorized";
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(item);
+    return acc;
+  }, {});
+
+  // Separate priority categories and others
+  const priorityEntries: [string, GalleryItem[]][] = [];
+  const otherEntries: [string, GalleryItem[]][] = [];
+
+  Object.entries(groupedItems).forEach(([category, group]) => {
+    const upperCategory = category.toUpperCase();
+    if (priorityCategories.some(pc => upperCategory.includes(pc) || pc.includes(upperCategory))) {
+      priorityEntries.push([category, group]);
+    } else {
+      otherEntries.push([category, group]);
+    }
+  });
+
+  // Sort priority entries based on the priority order
+  priorityEntries.sort((a, b) => {
+    const aUpper = a[0].toUpperCase();
+    const bUpper = b[0].toUpperCase();
+    
+    const aIndex = priorityCategories.findIndex(pc => 
+      aUpper.includes(pc) || pc.includes(aUpper)
+    );
+    const bIndex = priorityCategories.findIndex(pc => 
+      bUpper.includes(pc) || pc.includes(bUpper)
+    );
+    
+    return aIndex - bIndex;
+  });
+
+  // Combine priority and other entries
+  const sortedEntries = [...priorityEntries, ...otherEntries];
 
   return (
     <div>
@@ -50,14 +97,7 @@ export default function GallerySection() {
           {items.length === 0 ? (
             <p className="text-gray-500">No gallery items yet.</p>
           ) : (
-            Object.entries(
-              items.reduce((acc: Record<string, GalleryItem[]>, item) => {
-                const key = item.title || "Uncategorized";
-                if (!acc[key]) acc[key] = [];
-                acc[key].push(item);
-                return acc;
-              }, {})
-            ).map(([category, group]) => (
+            sortedEntries.map(([category, group]) => (
               <section key={category} className="mb-12">
                 <h2 className="text-2xl font-semibold mb-4">{category}</h2>
 
