@@ -12,13 +12,68 @@ type Certificate = {
 export default function Footer() {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
 
+  // Function to sort certificates in the desired order
+  const sortCertificates = (certs: Certificate[]) => {
+    const order = [
+      "12AA Certificate",
+      "12 AA-Renewal",
+      "80 G- Certificate",
+      "80 G- Renewal",
+      "NGO- Darpan",
+      "CSR",
+      "FCRA"
+    ];
+
+    return certs.sort((a, b) => {
+      const getOrderIndex = (title: string) => {
+        const upperTitle = title.toUpperCase().trim();
+
+        // Find matching order index
+        for (let i = 0; i < order.length; i++) {
+          const orderItem = order[i].toUpperCase();
+          if (upperTitle.includes(orderItem) || orderItem.includes(upperTitle)) {
+            return i;
+          }
+        }
+        // If not in priority list, put at the end
+        return order.length;
+      };
+
+      const indexA = getOrderIndex(a.title);
+      const indexB = getOrderIndex(b.title);
+
+      return indexA - indexB;
+    });
+  };
+
   useEffect(() => {
     fetch("/api/certificates")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          // Limit to maximum 6 certificates
-          setCertificates(data.data.slice(0, 10));
+          // Sort certificates first
+          const sortedCerts = sortCertificates(data.data);
+
+          // Get priority certificates (the ones in our order list)
+          const priorityCerts = sortedCerts.filter(cert => {
+            const upperTitle = cert.title.toUpperCase().trim();
+            const priorityNames = [
+              "12AA CERTIFICATE",
+              "12 AA-RENEWAL",
+              "80 G- CERTIFICATE",
+              "80 G- RENEWAL",
+              "NGO- DARPAN",
+              "CSR",
+              "FCRA"
+            ];
+
+            return priorityNames.some(name =>
+              upperTitle.includes(name) || name.includes(upperTitle)
+            );
+          });
+
+          // Limit to maximum 10 priority certificates
+          setCertificates(priorityCerts.slice(0, 10));
         }
       })
       .catch((err) => console.error(err));
