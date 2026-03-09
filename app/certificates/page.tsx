@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getInlineViewUrl } from "@/lib/cloudinary-utils";
 import Navbar from "../../components/custom/navigation-menu";
 import Footer from "@/components/custom/footer-section";
 interface Certificate {
@@ -25,7 +24,11 @@ export default function CertificateSection() {
       .then(async (res) => {
         try {
           const data = await res.json();
-          if (data.success) setCertificates(data.data);
+          if (data.success) {
+            // Sort certificates by priority order
+            const sortedCertificates = sortCertificates(data.data);
+            setCertificates(sortedCertificates);
+          }
         } catch (err) {
           setError("Failed to load certificates.");
         }
@@ -36,6 +39,45 @@ export default function CertificateSection() {
         setLoading(false);
       });
   }, []);
+
+  // Function to sort certificates in the desired order
+  const sortCertificates = (certs: Certificate[]) => {
+    const order = [
+      "12AA Certificate",
+      "12 AA-Renewal",
+      "80 G- Certificate",
+      "80 G- Renewal",
+      "NGO- Darpan",
+      "CSR",
+      "FCRA"
+    ];
+
+    return certs.sort((a, b) => {
+      const getOrderIndex = (title: string) => {
+        const upperTitle = title.toUpperCase().trim();
+        
+        // Find matching order index
+        for (let i = 0; i < order.length; i++) {
+          const orderItem = order[i].toUpperCase();
+          if (upperTitle.includes(orderItem) || orderItem.includes(upperTitle)) {
+            return i;
+          }
+        }
+        // If not in priority list, put at the end
+        return order.length;
+      };
+
+      const indexA = getOrderIndex(a.title);
+      const indexB = getOrderIndex(b.title);
+
+      // If same priority, sort by creation date (newest first)
+      if (indexA === indexB) {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
+
+      return indexA - indexB;
+    });
+  };
 
   const isPdf = (url: string) => {
     return url.includes('/raw/upload/') || url.includes('.pdf');

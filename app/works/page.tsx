@@ -246,18 +246,10 @@ export default function ServicesSection() {
                   >
                     {/* Text Section */}
                     <div className="md:w-1/2 space-y-6">
-                      {/* Icon and Stats Badge */}
+                      {/* Icon */}
                       <div className="flex items-center gap-4">
                         <div className="p-3 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-xl shadow-lg">
                           {iconMap[impact.icon] || <Award className="w-6 h-6" />}
-                        </div>
-                        <div className="px-4 py-2 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border-2 border-orange-200">
-                          <p className="text-2xl font-bold text-orange-600">
-                            {impact.statsValue}
-                          </p>
-                          <p className="text-xs text-gray-600 font-medium">
-                            {impact.statsLabel}
-                          </p>
                         </div>
                       </div>
 
