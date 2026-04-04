@@ -57,7 +57,7 @@ export default function AboutPage() {
               <p><b>M.Phil</b> – (Entrepreneurship)</p>
               <p><b>FDP </b>– (Entrepreneurship)
               </p>
-              <b>MBA </b>
+              <p><b>MBA </b>– (Marketing & HR) </p>
             </div>
             <div className="text-foreground/80">
               <h4 className="text-xl font-semibold mb-2">
@@ -111,7 +111,7 @@ export default function AboutPage() {
               <h4 className="text-xl font-semibold mb-2">
                 Academic Background
               </h4>
-              <b>MBA</b>
+             <p> <b>MBA </b>– (Finance)</p>
               <p>
 
                 <b>M.A </b>- ( English Literature )  </p>
@@ -123,7 +123,7 @@ export default function AboutPage() {
                 Skills
               </h4>
               <p className="text-foreground/80 leading-relaxed">
-                MBA looks after the Administration and Accounts of the Trust. Well experienced in Tally Prime and ERP. She coordinates the operations of PMBJK. She has 31 years pf experience in both accounts and administration in ltd companies and trust operations.
+               She looks after MBA Administration and Accounts of the Trust. Well experienced in Tally Prime and ERP. She coordinates the operations of PMBJK. She has 31 years pf experience in both accounts and administration in ltd companies and trust operations.
               </p>
             </div>
 
