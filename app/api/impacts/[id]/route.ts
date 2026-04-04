@@ -66,14 +66,8 @@ export async function PATCH(
   }
 
   try {
-    const formData = await req.formData();
-
-    const title = formData.get("title") as string | null;
-    const description = formData.get("description") as string | null;
-    const icon = formData.get("icon") as string | null;
-    const statsValue = formData.get("statsValue") as string | null;
-    const statsLabel = formData.get("statsLabel") as string | null;
-    const file = formData.get("image") as File | null;
+    const body = await req.json();
+    const { title, description } = body;
 
     const [existing] = await db
       .select()
@@ -91,42 +85,8 @@ export async function PATCH(
       updatedAt: new Date(),
     };
 
-    if (title !== null) updateData.title = title;
-    if (description !== null) updateData.description = description;
-    if (icon !== null) updateData.icon = icon;
-    if (statsValue !== null) updateData.statsValue = statsValue;
-    if (statsLabel !== null) updateData.statsLabel = statsLabel;
-
-    /* ---------- Image replacement ---------- */
-    if (file && file.name) {
-      if (!file.type.startsWith("image/")) {
-        return NextResponse.json(
-          { success: false, message: "Only image files allowed" },
-          { status: 400 }
-        );
-      }
-
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
-
-      const upload = await cloudinary.uploader.upload(base64, {
-        folder: "impacts",
-        resource_type: "image",
-      });
-
-      updateData.imagePath = upload.secure_url;
-
-      // 🔥 Remove old Cloudinary image
-      if (existing.imagePath) {
-        const oldPublicId = extractCloudinaryPublicId(existing.imagePath);
-        if (oldPublicId) {
-          await cloudinary.uploader.destroy(oldPublicId, {
-            resource_type: "image",
-          });
-        }
-      }
-    }
+    if (title !== undefined) updateData.title = title;
+    if (description !== undefined) updateData.description = description;
 
     const result = await db
       .update(impacts)

@@ -30,12 +30,9 @@ export async function POST(req: Request) {
 
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    const icon = formData.get("icon") as string;
-    const statsValue = formData.get("statsValue") as string;
-    const statsLabel = formData.get("statsLabel") as string;
     const file = formData.get("image") as File | null;
 
-    if (!title || !description || !icon || !statsValue || !statsLabel || !file) {
+    if (!title || !description || !file) {
       return NextResponse.json(
         { success: false, message: "Missing required fields" },
         { status: 400 }
@@ -60,9 +57,6 @@ export async function POST(req: Request) {
         title,
         description,
         imagePath: uploadUrl,
-        icon,
-        statsValue,
-        statsLabel,
       })
       .returning();
 

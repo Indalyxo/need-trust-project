@@ -8,12 +8,7 @@ interface Impact {
   title: string;
   description: string;
   imagePath: string;
-  icon: string;
-  statsValue: string;
-  statsLabel: string;
 }
-
-const iconOptions = ["Users", "Heart", "Award", "GraduationCap"];
 
 export default function ImpactsAdmin() {
   const [impacts, setImpacts] = useState<Impact[]>([]);
@@ -23,18 +18,12 @@ export default function ImpactsAdmin() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    icon: "Users",
-    statsValue: "",
-    statsLabel: "",
     image: null as File | null,
   });
 
   const [editData, setEditData] = useState({
     title: "",
     description: "",
-    icon: "Users",
-    statsValue: "",
-    statsLabel: "",
   });
 
   const [preview, setPreview] = useState<string | null>(null);
@@ -74,8 +63,6 @@ export default function ImpactsAdmin() {
     if (
       !formData.title ||
       !formData.description ||
-      !formData.statsValue ||
-      !formData.statsLabel ||
       !formData.image
     ) {
       return alert("Please fill all fields");
@@ -87,9 +74,6 @@ export default function ImpactsAdmin() {
       const data = new FormData();
       data.append("title", formData.title);
       data.append("description", formData.description);
-      data.append("icon", formData.icon);
-      data.append("statsValue", formData.statsValue);
-      data.append("statsLabel", formData.statsLabel);
       data.append("image", formData.image);
 
       const res = await fetch("/api/impacts", {
@@ -97,26 +81,26 @@ export default function ImpactsAdmin() {
         body: data,
       });
 
+      const result = await res.json();
       setLoading(false);
 
-      if (res.ok) {
+      if (res.ok && result.success) {
         alert("Impact uploaded successfully!");
         setFormData({
           title: "",
           description: "",
-          icon: "Users",
-          statsValue: "",
-          statsLabel: "",
           image: null,
         });
         setPreview(null);
         loadImpacts();
       } else {
-        alert("Something went wrong!");
+        console.error("Upload failed:", result);
+        alert(`Upload failed: ${result.message || "Something went wrong!"}`);
       }
     } catch (error) {
       setLoading(false);
-      alert("Failed to upload impact");
+      console.error("Upload error:", error);
+      alert("Failed to upload impact: " + (error instanceof Error ? error.message : "Unknown error"));
     }
   };
 
@@ -141,9 +125,6 @@ export default function ImpactsAdmin() {
     setEditData({
       title: impact.title,
       description: impact.description,
-      icon: impact.icon,
-      statsValue: impact.statsValue,
-      statsLabel: impact.statsLabel,
     });
   };
 
@@ -183,40 +164,12 @@ export default function ImpactsAdmin() {
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md space-y-6">
         <h2 className="text-2xl font-bold">Add New Impact</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           <input
             type="text"
             placeholder="Title"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
-
-          <select
-            value={formData.icon}
-            onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-            className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-          >
-            {iconOptions.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-
-          <input
-            type="text"
-            placeholder="Stats Value (e.g., 50+)"
-            value={formData.statsValue}
-            onChange={(e) => setFormData({ ...formData, statsValue: e.target.value })}
-            className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
-
-          <input
-            type="text"
-            placeholder="Stats Label"
-            value={formData.statsLabel}
-            onChange={(e) => setFormData({ ...formData, statsLabel: e.target.value })}
             className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
           />
         </div>
@@ -290,31 +243,6 @@ export default function ImpactsAdmin() {
                   rows={3}
                   placeholder="Description"
                 />
-                <select
-                  value={editData.icon}
-                  onChange={(e) => setEditData({ ...editData, icon: e.target.value })}
-                  className="w-full px-3 py-1 border rounded text-sm"
-                >
-                  {iconOptions.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="text"
-                  value={editData.statsValue}
-                  onChange={(e) => setEditData({ ...editData, statsValue: e.target.value })}
-                  className="w-full px-3 py-1 border rounded text-sm"
-                  placeholder="Stats Value"
-                />
-                <input
-                  type="text"
-                  value={editData.statsLabel}
-                  onChange={(e) => setEditData({ ...editData, statsLabel: e.target.value })}
-                  className="w-full px-3 py-1 border rounded text-sm"
-                  placeholder="Stats Label"
-                />
                 <div className="flex gap-2">
                   <button
                     onClick={() => saveEdit(impact.id)}
@@ -339,10 +267,6 @@ export default function ImpactsAdmin() {
                 />
                 <h3 className="font-bold text-lg text-gray-900">{impact.title}</h3>
                 <p className="text-sm text-gray-700 line-clamp-2">{impact.description}</p>
-                <div className="text-sm text-orange-600 font-semibold">
-                  {impact.statsValue} - {impact.statsLabel}
-                </div>
-                <div className="text-xs text-gray-500">Icon: {impact.icon}</div>
                 <div className="flex gap-2">
                   <button
                     onClick={() => startEdit(impact)}
