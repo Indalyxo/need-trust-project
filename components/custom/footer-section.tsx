@@ -21,7 +21,9 @@ export default function Footer() {
       "80 G- Renewal",
       "NGO- Darpan",
       "CSR",
-      "FCRA"
+      "FCRA",
+      "GST",
+      "RNI",
     ];
 
     return certs.sort((a, b) => {
@@ -64,7 +66,9 @@ export default function Footer() {
               "80 G- RENEWAL",
               "NGO- DARPAN",
               "CSR",
-              "FCRA"
+              "FCRA",
+              "GST",
+              "RNI",
             ];
 
             return priorityNames.some(name =>
