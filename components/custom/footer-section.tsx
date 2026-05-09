@@ -73,7 +73,7 @@ export default function Footer() {
           });
 
           // Limit to maximum 10 priority certificates
-          setCertificates(priorityCerts.slice(0, 10));
+          setCertificates(priorityCerts.slice(0, 20));
         }
       })
       .catch((err) => console.error(err));
